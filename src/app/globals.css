@@ -35,7 +35,7 @@
   --color-brand-yellow: var(--brand-yellow);
   --color-brand-light: var(--brand-light);
 
-  --color-error: var(--error);
+  --color-error: var(--error-red);
 }
 @theme {
   --breakpoint-md: 774px; /*태블릿*/
