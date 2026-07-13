@@ -40,4 +40,6 @@
 @theme {
   --breakpoint-md: 774px; /*태블릿*/
   --breakpoint-sm: 375px; /*모바일*/
+
+  --font-pretendard: var(--font-pretendard-variable), sans-serif;
 }
