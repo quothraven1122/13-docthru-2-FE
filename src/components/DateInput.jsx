@@ -4,7 +4,6 @@ import Calendar from "react-calendar";
 import Image from "next/image";
 
 export default function DateInput({ selectedDate, setSelectedDate, ...inputProps }) {
-  //const [selectedDate, setSelectedDate] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
