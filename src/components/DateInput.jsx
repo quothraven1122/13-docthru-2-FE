@@ -7,7 +7,7 @@ export default function DateInput({ selectedDate, setSelectedDate, ...inputProps
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div>
+    <div className="relative">
       <div
         onClick={() => {
           if (!selectedDate) setSelectedDate(new Date());
@@ -33,6 +33,7 @@ export default function DateInput({ selectedDate, setSelectedDate, ...inputProps
           prev2Label={null} //100년 단위 이동 막기
           next2Label={null}
           {...inputProps}
+          className="absolute right-0 mt-[10px]"
         />
       )}
     </div>
