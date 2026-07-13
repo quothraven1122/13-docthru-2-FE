@@ -32,8 +32,8 @@ export default function DateInput({ selectedDate, setSelectedDate, ...inputProps
           formatDay={(_, day) => day.getDate().toString()}
           prev2Label={null} //100년 단위 이동 막기
           next2Label={null}
-          {...inputProps}
           className="absolute right-0 mt-[10px]"
+          {...inputProps}
         />
       )}
     </div>
