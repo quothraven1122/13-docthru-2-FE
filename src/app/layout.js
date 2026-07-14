@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import ModalProvider from "@/providers/ModalProvider";
 
 const pretendard = localFont({
   src: "../../public/fonts/PretendardVariable.woff2",
@@ -16,7 +17,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${pretendard.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ModalProvider>{children}</ModalProvider>
+      </body>
     </html>
   );
 }
