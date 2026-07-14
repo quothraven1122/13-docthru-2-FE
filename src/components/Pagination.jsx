@@ -31,9 +31,9 @@ export default function Pagination({ visiblePageCount, totalPageCount }) {
       <div className="flex gap-[6px]">
         {visiblePages.map((page, index) => (
           <div
-            key={index}
+            key={page}
             onClick={() => setCurrent(page)}
-            className={`w-[40px] h-[40px] rounded-[8px] flex justify-center items-center cursor-pointer ${page === current && "bg-gray-800 text-brand-yellow"}`}
+            className={`w-[40px] h-[40px] rounded-[8px] flex justify-center items-center cursor-pointer ${page === current ? "bg-gray-800 text-brand-yellow" : ""}`}
           >
             {page}
           </div>
