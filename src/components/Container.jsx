@@ -24,6 +24,7 @@ export default function Container({ date, maxMember, member, onViewOriginal, onC
 
       <div className="flex items-center gap-2 md:flex-col">
         <button
+          aria-label="원문보기 버튼"
           type="button"
           onClick={onViewOriginal}
           className={`${buttonBaseClassName} border-brand-dark bg-brand-yellow text-gray-900 md:px-[4.22rem]  lg:px-[5.28rem] `}
@@ -31,6 +32,7 @@ export default function Container({ date, maxMember, member, onViewOriginal, onC
           원문 보기
         </button>
         <button
+          aria-label="작업물 작성 버튼"
           type="button"
           onClick={onChallenge}
           disabled={challengeDisabled}
