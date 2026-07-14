@@ -2,6 +2,8 @@
 
 import { useRef, useState } from "react";
 
+import Image from "next/image";
+
 import { useClickOutside } from "@/hooks/useClickOutside";
 
 function normalizeOptions(options) {
@@ -43,10 +45,11 @@ export default function Dropdown({
           {selected ? selected.label : placeholder}
         </span>
         <span className="flex size-12 items-center justify-center p-3">
-          <img
+          <Image
             src={isOpen ? "/icons/ic_toggle_up.svg" : "/icons/ic_toggle_down.svg"}
             alt=""
-            className="size-6"
+            width={24}
+            height={24}
           />
         </span>
       </button>
