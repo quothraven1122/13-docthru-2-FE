@@ -3,8 +3,8 @@ import Image from "next/image";
 import dateUtils from "@/utils/date";
 
 export default function Container({ date, maxMember, member, onViewOriginal, onChallenge }) {
-  const formateDate = dateUtils.format(date);
-  const challengeDisabled = dateUtils.isPastDeadline(formateDate);
+  const formatDate = dateUtils.format(date);
+  const challengeDisabled = dateUtils.isPastDeadline(formatDate);
   const buttonBaseClassName =
     "flex flex-1 md:flex-none items-center justify-center whitespace-nowrap rounded-[12px] border-2 px-4 py-[0.44rem] text-[0.875rem] font-bold cursor-pointer";
 
@@ -13,7 +13,7 @@ export default function Container({ date, maxMember, member, onViewOriginal, onC
       <div className="flex items-center justify-center gap-4">
         <div className="flex items-center gap-1">
           <Image src="/icons/ic_deadline_s.svg" alt="마감일" width={16} height={16} />
-          <span className="text-[13px] whitespace-nowrap font-normal text-gray-600">{formateDate} 마감</span>
+          <span className="text-[13px] whitespace-nowrap font-normal text-gray-600">{formatDate} 마감</span>
         </div>
         <div className="flex items-center gap-1">
           <Image src="/icons/ic_person_small.svg" alt="인원" width={16} height={16} />
