@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -32,12 +33,8 @@ export default function Gnb({
     <header className="h-14 w-full border-b border-[#F5F5F5] bg-white md:h-[60px]">
       <div className="mx-auto flex h-full items-center justify-between px-4 md:px-6 lg:max-w-[1200px] lg:px-0">
         <div className="flex items-center gap-4 md:gap-6">
-          <Link href="/" className="block h-[18px] w-20 shrink-0 md:h-[27px] md:w-[120px]">
-            <img
-              src="/logos/logo.svg"
-              alt="Docthru"
-              className="h-full w-full object-contain"
-            />
+          <Link href="/" className="relative block h-[18px] w-20 shrink-0 md:h-[27px] md:w-[120px]">
+            <Image src="/logos/logo.svg" alt="Docthru" fill className="object-contain" />
           </Link>
 
           {isAdmin && (
@@ -72,15 +69,16 @@ export default function Gnb({
         {isMember && (
           <div className="flex shrink-0 items-center gap-4">
             <button type="button" aria-label="알림">
-              <img
+              <Image
                 src={hasNotification ? "/icons/ic_bell_noti.svg" : "/icons/ic_bell_empty.svg"}
                 alt=""
-                className="h-6 w-6"
+                width={24}
+                height={24}
               />
             </button>
             <div ref={profileRef} className="relative">
               <button type="button" onClick={handleProfileClick} aria-label="프로필 메뉴">
-                <img src="/images/img_profile_member.svg" alt="" className="h-8 w-8" />
+                <Image src="/images/img_profile_member.svg" alt="" width={32} height={32} />
               </button>
               {isProfileOpen && (
                 <div className="absolute top-full right-0 z-10 mt-2">{profileMenu}</div>
@@ -93,7 +91,7 @@ export default function Gnb({
         {isAdmin && (
           <div ref={profileRef} className="relative shrink-0">
             <button type="button" onClick={handleProfileClick} aria-label="프로필 메뉴">
-              <img src="/images/img_profile_admin.svg" alt="" className="h-8 w-8" />
+              <Image src="/images/img_profile_admin.svg" alt="" width={32} height={32} />
             </button>
             {isProfileOpen && (
               <div className="absolute top-full right-0 z-10 mt-2">{profileMenu}</div>
