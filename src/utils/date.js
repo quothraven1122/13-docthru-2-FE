@@ -1,9 +1,11 @@
 const dateUtils = {
+  //dateFormat 함수
   format(rawDate) {
     const d = rawDate instanceof Date ? rawDate : new Date(rawDate);
     return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
   },
 
+  //데드라인 유효성 검사 함수 입니다.
   isPastDeadline(date) {
     const match = date?.match(/(\d+)년\s*(\d+)월\s*(\d+)일/);
     if (!match) return false;
