@@ -80,7 +80,7 @@ export default function Gnb({
               <button type="button" onClick={handleProfileClick} aria-label="프로필 메뉴">
                 <Image src="/images/img_profile_member.svg" alt="" width={32} height={32} />
               </button>
-              {isProfileOpen && (
+              {isProfileOpen && profileMenu && (
                 <div className="absolute top-full right-0 z-10 mt-2">{profileMenu}</div>
               )}
             </div>
@@ -93,7 +93,7 @@ export default function Gnb({
             <button type="button" onClick={handleProfileClick} aria-label="프로필 메뉴">
               <Image src="/images/img_profile_admin.svg" alt="" width={32} height={32} />
             </button>
-            {isProfileOpen && (
+            {isProfileOpen && profileMenu && (
               <div className="absolute top-full right-0 z-10 mt-2">{profileMenu}</div>
             )}
           </div>
