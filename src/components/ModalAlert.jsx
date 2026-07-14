@@ -11,7 +11,7 @@ export default function ModalAlert({ handleClose = () => {}, handleConfirm = () 
       </div>
       <div className="w-full flex lg:justify-end justify-center lg:mt-[45px] mt-[44px] mb-[28px] lg:mr-[28px]">
         <button className="w-[120px] h-[48px] border-1" onClick={handleConfirm}>
-          네
+          확인
         </button>
       </div>
     </ModalContainer>

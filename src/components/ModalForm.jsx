@@ -41,7 +41,7 @@ export default function ModalForm({
           handleConfirm(textValue);
         }}
       >
-        네
+        전송
       </button>
     </ModalContainer>
   );
