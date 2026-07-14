@@ -15,7 +15,14 @@ export default function ModalForm({
     <ModalContainer type="form" handleClose={handleClose}>
       <div className="flex justify-between gap-[24px] w-full">
         <span className="font-pretendard text-[18px] font-[700] leading-[26px] text-gray-800">{title}</span>
-        <Image src="/icons/ic_out.svg" alt="X이미지" width={20} height={20} onClick={handleClose} />
+        <Image
+          src="/icons/ic_out.svg"
+          alt="X이미지"
+          width={20}
+          height={20}
+          onClick={handleClose}
+          className="w-[20px] h-[20px]"
+        />
       </div>
 
       <form id="reasonForm" className="flex flex-col justify-center gap-[8px] w-full ">

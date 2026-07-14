@@ -74,6 +74,7 @@ export default function Page() {
               placeholder="삭제사유를 입력해주세요"
               handleConfirm={(value) => {
                 console.log(`모달 폼에서 받은 값 : ${value}`);
+                closeModal();
               }}
             />,
           )
