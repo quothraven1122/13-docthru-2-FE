@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "react-calendar/dist/Calendar.css";
 
 :root {
   --gray-900: #171717;
@@ -39,7 +40,50 @@
 }
 @theme {
   --breakpoint-lg: 1200px; /*PC*/
-  --breakpoint-md: 774px; /*태블릿*/
+  --breakpoint-md: 744px; /*태블릿*/
 
   --font-pretendard: var(--font-pretendard-variable), sans-serif;
+}
+
+.react-calendar {
+  width: 300px;
+  border: none;
+  border-radius: 16px;
+  right: 0;
+}
+.react-calendar abbr {
+  text-decoration: none;
+}
+.react-calendar__navigation {
+  margin-bottom: 16px;
+}
+.react-calendar__navigation button {
+  min-width: 40px;
+}
+.react-calendar__month-view__weekdays {
+  font-weight: 600;
+}
+.react-calendar__tile {
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.react-calendar__tile:hover {
+  background: #f3f4f6;
+}
+.react-calendar__tile--active {
+  background: #2563eb !important;
+  color: white !important;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  aspect-ratio: 1/1;
+}
+.react-calendar__tile--now {
+  background: #dbeafe;
+}
+
+.react-calendar__tile--now:hover {
+  background: #f3f4f6 !important;
 }

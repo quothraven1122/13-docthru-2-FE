@@ -22,7 +22,7 @@ export default function SearchBar({ initialValue = "", onSubmit }) {
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
         placeholder="챌린지 이름을 검색해보세요"
-        className="w-full bg-transparent text-[16px] leading-none font-normal tracking-normal text-gray-400 placeholder-gray-400 outline-none"
+        className="w-full bg-transparent text-[16px] leading-none font-normal tracking-normal text-gray-900 placeholder-gray-400 outline-none"
       />
     </form>
   );
