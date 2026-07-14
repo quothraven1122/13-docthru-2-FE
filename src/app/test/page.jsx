@@ -14,7 +14,7 @@ export default function Page() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-gray-50 p-8">
       <SearchBar onSubmit={handleSubmit} />
-      <Container date={dateUtils.format(new Date(2027, 2, 3))} maxMember={15} member={15} />
+      <Container date={new Date(2027, 2, 3)} maxMember={15} member={15} />
 
       <div className="flex flex-wrap items-center gap-2">
         <Chip variant="field" value="Next.js" />

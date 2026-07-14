@@ -3,16 +3,17 @@ import Image from "next/image";
 import dateUtils from "@/utils/date";
 
 export default function Container({ date, maxMember, member, onViewOriginal, onChallenge }) {
-  const challengeDisabled = dateUtils.isPastDeadline(date);
+  const formateDate = dateUtils.format(date);
+  const challengeDisabled = dateUtils.isPastDeadline(formateDate);
   const buttonBaseClassName =
-    "flex flex-1 md:flex-none items-center justify-center whitespace-nowrap rounded-[12px] border-2 px-4 py-[0.44rem] text-[0.875rem] font-bold";
+    "flex flex-1 md:flex-none items-center justify-center whitespace-nowrap rounded-[12px] border-2 px-4 py-[0.44rem] text-[0.875rem] font-bold cursor-pointer";
 
   return (
     <div className="flex w-full flex-col gap-4 rounded-2xl border-2 border-gray-100 bg-white p-5 md:max-w-62.75 md:pt-7 md:pb-6 md:px-4 lg:max-w-71.25">
       <div className="flex items-center justify-center gap-4">
         <div className="flex items-center gap-1">
           <Image src="/icons/ic_deadline_s.svg" alt="마감일" width={16} height={16} />
-          <span className="text-[13px] whitespace-nowrap font-normal text-gray-600">{date} 마감</span>
+          <span className="text-[13px] whitespace-nowrap font-normal text-gray-600">{formateDate} 마감</span>
         </div>
         <div className="flex items-center gap-1">
           <Image src="/icons/ic_person_small.svg" alt="인원" width={16} height={16} />
@@ -22,7 +23,7 @@ export default function Container({ date, maxMember, member, onViewOriginal, onC
         </div>
       </div>
 
-      <div className="flex items-center gap-2 md:flex-col">
+      <div className="flex items-center gap-2 md:flex-col ">
         <button
           aria-label="원문보기 버튼"
           type="button"
