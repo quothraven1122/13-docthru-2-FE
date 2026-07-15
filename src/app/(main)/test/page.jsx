@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 
 import Filter from "@/components/Filter";
@@ -10,6 +10,7 @@ import Button from "@/components/Button";
 import SearchBar from "@/components/SearchBar";
 import Container from "@/components/Container";
 import { CardView, MyCardView } from "@/components/CardView";
+import { useClickOutside } from "@/hooks/useClickOutside";
 import dateUtils from "@/utils/date";
 
 const SORT_OPTIONS = [
@@ -26,6 +27,9 @@ const SORT_OPTIONS = [
 export default function Page() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterValue, setFilterValue] = useState({ fields: [], docType: null, status: null });
+
+  const filterRef = useRef(null);
+  useClickOutside(filterRef, () => setIsFilterOpen(false));
 
   const filterCount = filterValue.fields.length + (filterValue.docType ? 1 : 0) + (filterValue.status ? 1 : 0);
 
@@ -208,7 +212,7 @@ export default function Page() {
 
       <div className="flex items-start gap-2">
         <Sort options={SORT_OPTIONS} value={sortValue} onChange={setSortValue} />
-        <div className="relative">
+        <div ref={filterRef} className="relative">
           <Sort type="filter" count={filterCount} onClick={() => setIsFilterOpen((prev) => !prev)} />
           {isFilterOpen && (
             <Filter
