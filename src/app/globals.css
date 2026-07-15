@@ -45,6 +45,23 @@
   --font-pretendard: var(--font-pretendard-variable), sans-serif;
 }
 
+/*#region 스크롤바 커스텀 부분*/
+/* 스크롤관련 CSS부분만 묶어서 보려고 region 사용했습니다.*/
+.scrollbar::-webkit-scrollbar {
+  width: 15px;
+}
+.scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: var(--gray-200);
+  border-radius: 7.5px;
+  border: 5px solid transparent;
+  background-clip: content-box;
+}
+/* #endregion*/
+
 .react-calendar {
   width: 300px;
   border: none;
