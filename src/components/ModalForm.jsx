@@ -32,7 +32,7 @@ export default function ModalForm({
         <div className="h-[219px] py-[16px] px-[20px] rounded-[6px] border-[1px] border-gray-300">
           <textarea
             id="reason"
-            className="w-full h-full resize-none"
+            className="w-full h-full resize-none outline-none"
             placeholder={placeholder}
             value={textValue}
             onChange={(e) => setTextValue(e.target.value)}
