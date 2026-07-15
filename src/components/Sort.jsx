@@ -11,15 +11,18 @@ function normalizeOptions(options) {
 }
 
 export default function Sort({
+  // 공통
   type = "sort",
+  className = "",
+  // type="sort" 전용
   options = [],
   value,
   onChange,
   placeholder = "승인 대기",
   align = "left",
+  // type="filter" 전용
   count = 0,
   onClick,
-  className = "",
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef(null);
