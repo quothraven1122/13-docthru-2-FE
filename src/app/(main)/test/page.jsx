@@ -1,0 +1,136 @@
+"use client";
+
+import Chip from "@/components/Chip";
+import SearchBar from "@/components/SearchBar";
+import Container from "@/components/Container";
+import { CardView, MyCardView } from "@/components/CardView";
+import dateUtils from "@/utils/date";
+
+// 해당 페이지는 공통 컴포넌트를 테스하기 위해 임시로 만든 페이지 입니다. 개발 완료후 삭제 예정 입니다.
+export default function Page() {
+  const handleSubmit = (value) => {
+    console.log("검색어:", value);
+  };
+
+  const adminUser = { role: "ADMIN" };
+  const normalUser = { role: "USER" };
+
+  const activeChallenge = {
+    id: 1,
+    title: "진행중인 챌린지 (마감 전 · 정원 여유)",
+    field: "Next.js",
+    doctype: "공식문서",
+    deadline: new Date(2027, 11, 13),
+    count: 3,
+    headcount: 10,
+  };
+
+  const fullChallenge = {
+    id: 2,
+    title: "모집이 완료된 챌린지",
+    field: "API",
+    doctype: "블로그",
+    deadline: new Date(2027, 11, 13),
+    count: 10,
+    headcount: 10,
+  };
+
+  const closedChallenge = {
+    id: 3,
+    title: "마감된 챌린지",
+    field: "Career",
+    doctype: "공식문서",
+    deadline: new Date(2020, 0, 1),
+    count: 4,
+    headcount: 10,
+  };
+
+  const handleEdit = (id) => console.log("수정 클릭:", id);
+  const handleDelete = (id) => console.log("삭제 클릭:", id);
+  const handleChallenge = (id) => console.log("도전 계속하기 클릭:", id);
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-gray-50 p-4">
+      <SearchBar onSubmit={handleSubmit} />
+      <Container date={new Date(2027, 2, 3)} maxMember={15} member={15} />
+
+      <div className="flex w-full max-w-249 flex-col gap-4">
+        <h2 className="text-lg font-bold text-gray-700">CardView - 관리자(ADMIN)</h2>
+        <CardView challenge={activeChallenge} user={adminUser} onEdit={handleEdit} onDelete={handleDelete} />
+        <CardView challenge={fullChallenge} user={adminUser} onEdit={handleEdit} onDelete={handleDelete} />
+        <CardView challenge={closedChallenge} user={adminUser} onEdit={handleEdit} onDelete={handleDelete} />
+
+        <h2 className="mt-4 text-lg font-bold text-gray-700">CardView - 일반 사용자</h2>
+        <CardView challenge={activeChallenge} user={normalUser} onEdit={handleEdit} onDelete={handleDelete} />
+        <CardView challenge={fullChallenge} user={normalUser} onEdit={handleEdit} onDelete={handleDelete} />
+        <CardView challenge={closedChallenge} user={normalUser} onEdit={handleEdit} onDelete={handleDelete} />
+
+        <h2 className="mt-4 text-lg font-bold text-gray-700">MyCardView - 관리자(ADMIN)</h2>
+        <MyCardView
+          challenge={activeChallenge}
+          user={adminUser}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          onChallenge={handleChallenge}
+        />
+        <MyCardView
+          challenge={fullChallenge}
+          user={adminUser}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          onChallenge={handleChallenge}
+        />
+        <MyCardView
+          challenge={closedChallenge}
+          user={adminUser}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          onChallenge={handleChallenge}
+        />
+
+        <h2 className="mt-4 text-lg font-bold text-gray-700">MyCardView - 일반 사용자</h2>
+        <MyCardView
+          challenge={activeChallenge}
+          user={normalUser}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          onChallenge={handleChallenge}
+        />
+        <MyCardView
+          challenge={fullChallenge}
+          user={normalUser}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          onChallenge={handleChallenge}
+        />
+        <MyCardView
+          challenge={closedChallenge}
+          user={normalUser}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          onChallenge={handleChallenge}
+        />
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Chip variant="field" value="Next.js" />
+        <Chip variant="field" value="API" />
+        <Chip variant="field" value="Career" />
+        <Chip variant="field" value="Modern JS" />
+        <Chip variant="field" value="Web" />
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Chip variant="docType" value="공식문서" />
+        <Chip variant="docType" value="블로그" />
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Chip variant="status" value="PENDING" />
+        <Chip variant="status" value="APPROVED" />
+        <Chip variant="status" value="REJECTED" />
+        <Chip variant="status" value="DELETED" />
+      </div>
+    </div>
+  );
+}
