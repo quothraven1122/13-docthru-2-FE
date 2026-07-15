@@ -4,51 +4,12 @@ import { useState } from "react";
 
 import Image from "next/image";
 
-const FIELD_OPTIONS = ["Next.js", "Modern JS", "API", "Web", "Career"];
-const DOC_TYPE_OPTIONS = ["공식문서", "블로그"];
-const STATUS_OPTIONS = ["진행중", "마감"];
+import Checkbox from "@/components/Checkbox";
+import Radio from "@/components/Radio";
+
+import { FIELD_OPTIONS, DOC_TYPE_OPTIONS, STATUS_OPTIONS } from "@/constants/challengeOptions";
 
 const EMPTY_VALUE = { fields: [], docType: null, status: null };
-
-function CheckIcon() {
-  return (
-    <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-      <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function CheckboxItem({ label, checked, onChange }) {
-  return (
-    <label className="flex cursor-pointer items-center gap-[4px]">
-      <input type="checkbox" checked={checked} onChange={onChange} className="sr-only" />
-      <span className="flex size-[24px] items-center justify-center">
-        <span
-          className={`flex size-[18px] items-center justify-center rounded-[2px] ${checked ? "bg-gray-800" : "border border-gray-200 bg-[#f5f5f5]"}`}
-        >
-          {checked && <CheckIcon />}
-        </span>
-      </span>
-      <span className="text-[14px] text-gray-800">{label}</span>
-    </label>
-  );
-}
-
-function RadioItem({ label, checked, onChange }) {
-  return (
-    <label className="flex cursor-pointer items-center gap-[4px]">
-      <input type="radio" checked={checked} onChange={onChange} className="sr-only" />
-      <span className="flex size-[24px] items-center justify-center">
-        <span
-          className={`flex size-[18px] items-center justify-center rounded-full border-2 ${checked ? "border-gray-800" : "border-gray-200"}`}
-        >
-          {checked && <span className="size-[8px] rounded-full bg-gray-800" />}
-        </span>
-      </span>
-      <span className="text-[14px] text-gray-800">{label}</span>
-    </label>
-  );
-}
 
 export default function Filter({ value = EMPTY_VALUE, onApply, onClose, className = "" }) {
   const [draft, setDraft] = useState(value);
@@ -73,7 +34,7 @@ export default function Filter({ value = EMPTY_VALUE, onApply, onClose, classNam
         <p className="text-[14px] font-semibold text-gray-800">분야</p>
         <div className="flex flex-col gap-[4px]">
           {FIELD_OPTIONS.map((field) => (
-            <CheckboxItem
+            <Checkbox
               key={field}
               label={field}
               checked={draft.fields.includes(field)}
@@ -87,11 +48,11 @@ export default function Filter({ value = EMPTY_VALUE, onApply, onClose, classNam
         <p className="text-[14px] font-semibold text-gray-800">문서 타입</p>
         <div className="flex flex-col gap-[4px]">
           {DOC_TYPE_OPTIONS.map((docType) => (
-            <RadioItem
+            <Radio
               key={docType}
               label={docType}
               checked={draft.docType === docType}
-              onChange={() => setDraft((prev) => ({ ...prev, docType }))}
+              onClick={() => setDraft((prev) => ({ ...prev, docType: prev.docType === docType ? null : docType }))}
             />
           ))}
         </div>
@@ -101,11 +62,11 @@ export default function Filter({ value = EMPTY_VALUE, onApply, onClose, classNam
         <p className="text-[14px] font-semibold text-gray-800">상태</p>
         <div className="flex flex-col gap-[4px]">
           {STATUS_OPTIONS.map((status) => (
-            <RadioItem
+            <Radio
               key={status}
               label={status}
               checked={draft.status === status}
-              onChange={() => setDraft((prev) => ({ ...prev, status }))}
+              onClick={() => setDraft((prev) => ({ ...prev, status: prev.status === status ? null : status }))}
             />
           ))}
         </div>
