@@ -1,9 +1,10 @@
 import localFont from "next/font/local";
-import "./globals.css";
-import ModalProvider from "@/providers/ModalProvider";
+import "../globals.css";
+import GnbWrapper from "./_components/GnbWrapper";
+import Providers from "../providers";
 
 const pretendard = localFont({
-  src: "../../public/fonts/PretendardVariable.woff2",
+  src: "../../../public/fonts/PretendardVariable.woff2",
   display: "swap",
   variable: "--font-pretendard-variable",
   weight: "45 920",
@@ -18,7 +19,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${pretendard.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <ModalProvider>{children}</ModalProvider>
+        <Providers>
+          <GnbWrapper />
+          {children}
+        </Providers>
       </body>
     </html>
   );

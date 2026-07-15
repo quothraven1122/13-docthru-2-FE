@@ -7,7 +7,7 @@ const ModalContext = createContext(null);
 export default function ModalProvider({ children }) {
   const [modal, setModal] = useState(); //어떤 모달을 열지 상태관리.
 
-  const openModal = (modal) => setModal(modal);
+  const openModal = useCallback((modal) => setModal(modal), []);
   const closeModal = useCallback(() => setModal(null), []); //닫을때는 저장해둔 모달을 날려버린다.
 
   //esc입력했을때 닫게 하기 위해서.

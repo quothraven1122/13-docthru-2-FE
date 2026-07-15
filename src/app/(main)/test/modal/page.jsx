@@ -15,14 +15,10 @@ export default function Page() {
           openModal(
             <Modal
               handleClose={closeModal}
-              buttons={[
-                <button key="yes" className="w-[100px] h-[40px] border-1" onClick={closeModal}>
-                  네
-                </button>,
-                <button key="no" className="w-[100px] h-[40px] border-1" onClick={closeModal}>
-                  아니오
-                </button>,
-              ]}
+              confirmText="네"
+              cancelText="아니오"
+              onConfirm={closeModal}
+              onCancel={closeModal}
             >
               정말 삭제하시겠어요?
             </Modal>,
@@ -35,14 +31,7 @@ export default function Page() {
         className=" h-[48px] border-2 rounded-[8px]"
         onClick={() =>
           openModal(
-            <Modal
-              handleClose={closeModal}
-              buttons={[
-                <button key="yes" className="w-[100px] h-[40px] border-1" onClick={closeModal}>
-                  네
-                </button>,
-              ]}
-            >
+            <Modal handleClose={closeModal} confirmText="네" onConfirm={closeModal}>
               로그인이 필요한 기능이에요, <br />
               로그인 하시겠어요?
             </Modal>,

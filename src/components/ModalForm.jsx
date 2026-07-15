@@ -10,7 +10,7 @@ export default function ModalForm({
   title = "거절 사유",
   placeholder = "거절사유를 입력해주세요",
 }) {
-  const [textValue, setTextValue] = useState();
+  const [textValue, setTextValue] = useState("");
   return (
     <ModalContainer type="form" handleClose={handleClose}>
       <div className="flex justify-between gap-[24px] w-full">
