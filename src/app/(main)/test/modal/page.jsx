@@ -3,12 +3,16 @@
 import Modal from "@/components/Modal";
 import ModalAlert from "@/components/ModalAlert";
 import ModalForm from "@/components/ModalForm";
+import { useClickOutside } from "@/hooks/useClickOutside";
 import { useModal } from "@/providers/ModalProvider";
+import { useRef } from "react";
 
 export default function Page() {
   const { openModal, closeModal } = useModal();
+  const modalRef = useRef(null);
+  useClickOutside(modalRef, closeModal);
   return (
-    <div className="flex justify-center items-center min-h-screen gap-[15px]">
+    <div ref={modalRef} className="flex justify-center items-center min-h-screen gap-[15px]">
       <button
         className=" h-[48px] border-2 rounded-[8px]"
         onClick={() =>

@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useState } from "react";
 
 const ModalContext = createContext(null);
 
@@ -10,22 +10,6 @@ export default function ModalProvider({ children }) {
   const openModal = useCallback((modal) => setModal(modal), []);
   const closeModal = useCallback(() => setModal(null), []); //닫을때는 저장해둔 모달을 날려버린다.
 
-  //esc입력했을때 닫게 하기 위해서.
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-        closeModal();
-      }
-    };
-
-    if (modal) {
-      window.addEventListener("keydown", handleKeyDown);
-    }
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [modal, closeModal]);
   return (
     <ModalContext.Provider value={{ openModal, closeModal }}>
       {children}

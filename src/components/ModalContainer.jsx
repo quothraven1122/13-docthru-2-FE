@@ -1,5 +1,6 @@
 "use client";
 
+import { useClickOutside } from "@/hooks/useClickOutside";
 import React from "react";
 
 const MODAL_TYPE = {
