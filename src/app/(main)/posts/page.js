@@ -14,9 +14,9 @@ export default function TranslationWritePage() {
 
   return (
     <div
-      className={`flex h-dvh px-[24px] gap-[10px] ${isOpen ? "flex-col-reverse md:flex-row" : "lg:w-[890px] lg:mx-auto"}`}
+      className={`flex h-dvh px-[24px] gap-[10px] md:min-h-fit ${isOpen ? "flex-col-reverse md:flex-row" : "lg:w-[890px] lg:mx-auto"}`}
     >
-      <div onClick={() => console.log(content)} className="flex-1">
+      <div onClick={() => console.log(content)} className="flex-1 max-h-[50%] overflow-y-auto md:overflow-y-visible">
         <header className="flex flex-wrap gap-y-[10px] justify-between items-center m-auto py-[24px] ">
           <Image width={120} height={30} src="/logos/logo.svg" alt="로고" className="cursor-pointer" />
           <div className="flex gap-[8px]">
@@ -43,7 +43,7 @@ export default function TranslationWritePage() {
           {!isOpen && (
             <button
               onClick={() => setIsOpen((prev) => !prev)}
-              className="flex gap-[4px] absolute right-0 top-0 px-[10px] py-[14px] rounded-l-[24px] border border-gray-100 text-[14px] text-gray-500 font-semibold cursor-pointer shadow-[0_4px_4px_0_rgba(88,92,130,0.05)]"
+              className="flex gap-[4px] fixed right-0 top-[25%] px-[10px] py-[14px] rounded-l-[24px] border border-gray-100 text-[14px] text-gray-500 font-semibold cursor-pointer shadow-[0_4px_4px_0_rgba(88,92,130,0.05)]"
             >
               <Image width={24} height={24} alt="원문 보기 버튼" src={"/icons/ic_list.svg"} />
               <p>원문</p>
@@ -52,7 +52,7 @@ export default function TranslationWritePage() {
         </div>
       </div>
       {isOpen && (
-        <div className="flex-1 min-w-0 h-full flex flex-col">
+        <div className="flex flex-1 min-w-0 min-h-0 flex-col">
           <header className="w-full h-[48px] bg-gray-400 flex justify-between items-center px-[16px] py-[8px]">
             <button onClick={() => setIsOpen(false)} className="cursor-pointer">
               <Image width={32} height={32} alt="iframe 나가기 버튼 아이콘" src={"/icons/ic_out_circle_m.svg"} />
