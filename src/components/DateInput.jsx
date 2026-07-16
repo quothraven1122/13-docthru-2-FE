@@ -13,9 +13,9 @@ export default function DateInput({ selectedDate, setSelectedDate, ...inputProps
           if (!selectedDate) setSelectedDate(new Date());
           setIsOpen((prev) => !prev);
         }}
-        className={`cursor-pointer px-[20px] py-[15px] rounded-[12px] flex border-1 border-gray-200`}
+        className="cursor-pointer px-[20px] py-[15px] rounded-[12px] flex border-1 border-gray-200"
       >
-        <p className={`flex-1 outline-none text-[#a1a1a1] text-[16px]`}>
+        <p className="flex-1 outline-none text-[#a1a1a1] text-[16px]">
           {selectedDate
             ? `${selectedDate.getFullYear()} / ${String(selectedDate.getMonth() + 1).padStart(2, "0")} / ${String(selectedDate.getDate()).padStart(2, "0")}`
             : "YY / MM / DD"}

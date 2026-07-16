@@ -2,6 +2,8 @@
 import { useState } from "react";
 import Image from "next/image";
 
+import cn from "@/utils/cn";
+
 export default function Pagination({ visiblePageCount, totalPageCount }) {
   const [current, setCurrent] = useState(1);
   const startPage = Math.floor((current - 1) / visiblePageCount) * visiblePageCount + 1;
@@ -33,7 +35,10 @@ export default function Pagination({ visiblePageCount, totalPageCount }) {
           <div
             key={page}
             onClick={() => setCurrent(page)}
-            className={`w-[40px] h-[40px] rounded-[8px] flex justify-center items-center cursor-pointer ${page === current ? "bg-gray-800 text-brand-yellow" : ""}`}
+            className={cn(
+              "w-[40px] h-[40px] rounded-[8px] flex justify-center items-center cursor-pointer",
+              page === current && "bg-gray-800 text-brand-yellow",
+            )}
           >
             {page}
           </div>
