@@ -79,13 +79,13 @@ export const MenuBar = ({ editor, disabledMenuButtonStyle, activeMenuButtonStyle
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           className={editorState.isCodeBlock ? activeMenuButtonStyle : disabledMenuButtonStyle}
         >
-          {"</>"}
+          <Image width={24} height={24} alt="코드 블록 아이콘" src="/icons/ic_code_block.svg" />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={editorState.isBlockquote ? activeMenuButtonStyle : disabledMenuButtonStyle}
         >
-          {'""'}
+          <Image width={24} height={24} alt="인용 아이콘" src="/icons/ic_quote.svg" />
         </button>
       </div>
 

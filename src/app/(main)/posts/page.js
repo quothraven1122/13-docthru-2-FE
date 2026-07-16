@@ -54,18 +54,16 @@ export default function TranslationWritePage() {
       {isOpen && (
         <div className="flex-1 min-w-0 h-full flex flex-col">
           <header className="w-full h-[48px] bg-gray-400 flex justify-between items-center px-[16px] py-[8px]">
-            <button
-              onClick={() => setIsOpen(false)}
-              className="w-[32px] h-[32px] bg-[#f6f8fa50] rounded-[50%] cursor-pointer"
-            >
-              x
+            <button onClick={() => setIsOpen(false)} className="cursor-pointer">
+              <Image width={32} height={32} alt="iframe 나가기 버튼 아이콘" src={"/icons/ic_out_circle_m.svg"} />
             </button>
             <Link
               href={src}
               target="_blank"
-              className="bg-[#f6f8fa50] px-[12px] py-[4px] rounded-[12px] text-[16px] text-gray-700 font-bold cursor-pointer"
+              className="flex gap-[2px] bg-[#dcdcdc] px-[12px] py-[4px] rounded-[12px] text-[16px] text-gray-700 font-bold cursor-pointer"
             >
-              링크 열기
+              <p>링크 열기</p>
+              <Image width={24} height={24} alt="링크 열기 아이콘" src="/icons/ic_click.svg" />
             </Link>
           </header>
           <iframe src={src} className="w-full h-full flex-1"></iframe>
