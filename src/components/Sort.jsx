@@ -6,6 +6,8 @@ import Image from "next/image";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
 
+import cn from "@/utils/cn";
+
 function normalizeOptions(options) {
   return options.map((option) => (typeof option === "string" ? { label: option, value: option } : option));
 }
@@ -35,7 +37,11 @@ export default function Sort({
       <button
         type="button"
         onClick={onClick}
-        className={`flex h-[40px] w-[140px] cursor-pointer items-center justify-between rounded-[32px] border border-gray-300 px-[12px] text-[14px] md:text-[16px] ${isActive ? "bg-gray-800 text-gray-50" : "bg-white text-gray-400"} ${className}`}
+        className={cn(
+          "flex h-[40px] w-[140px] cursor-pointer items-center justify-between rounded-[32px] border border-gray-300 px-[12px] text-[14px] md:text-[16px]",
+          isActive ? "bg-gray-800 text-gray-50" : "bg-white text-gray-400",
+          className,
+        )}
       >
         <span>{isActive ? `필터(${count})` : "필터"}</span>
         <Image
@@ -57,7 +63,7 @@ export default function Sort({
   };
 
   return (
-    <div ref={containerRef} className={`relative w-[140px] ${className}`}>
+    <div ref={containerRef} className={cn("relative w-[140px]", className)}>
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
@@ -76,7 +82,10 @@ export default function Sort({
               <button
                 type="button"
                 onClick={() => handleSelect(option)}
-                className={`w-full cursor-pointer bg-white py-[12px] text-[14px] text-gray-500 hover:bg-gray-50 md:text-[16px] ${align === "center" ? "text-center" : "px-[16px] text-left"}`}
+                className={cn(
+                  "w-full cursor-pointer bg-white py-[12px] text-[14px] text-gray-500 hover:bg-gray-50 md:text-[16px]",
+                  align === "center" ? "text-center" : "px-[16px] text-left",
+                )}
               >
                 {option.label}
               </button>

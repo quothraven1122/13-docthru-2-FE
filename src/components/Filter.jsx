@@ -7,6 +7,8 @@ import Image from "next/image";
 import Checkbox from "@/components/Checkbox";
 import Radio from "@/components/Radio";
 
+import cn from "@/utils/cn";
+
 import { FIELD_OPTIONS, DOC_TYPE_OPTIONS, STATUS_OPTIONS } from "@/constants/challengeOptions";
 
 const EMPTY_VALUE = { fields: [], docType: null, status: null };
@@ -22,7 +24,7 @@ export default function Filter({ value = EMPTY_VALUE, onApply, onClose, classNam
   };
 
   return (
-    <div className={`w-[343px] rounded-[8px] border-2 border-gray-200 bg-white ${className}`}>
+    <div className={cn("w-[343px] rounded-[8px] border-2 border-gray-200 bg-white", className)}>
       <div className="flex items-center justify-between border-b border-gray-200 p-[16px]">
         <p className="text-[16px] font-semibold text-gray-800">필터</p>
         <button type="button" onClick={onClose} className="cursor-pointer">
