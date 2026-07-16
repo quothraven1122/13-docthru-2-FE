@@ -10,7 +10,7 @@ export default function Radio({ checked, onClick, label, name, value, className 
         <span
           className={cn(
             "flex size-[18px] items-center justify-center rounded-full",
-            checked ? "bg-gray-800" : "border border-e-gray-200 bg-[#f5f5f5]",
+            checked ? "bg-gray-800" : "border border-gray-200 bg-[#f5f5f5]",
           )}
         >
           {checked && <span className="size-[8px] rounded-full bg-white" />}
