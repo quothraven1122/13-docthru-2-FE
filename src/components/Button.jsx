@@ -1,3 +1,5 @@
+import cn from "@/utils/cn";
+
 const VARIANT_STYLES = {
   solid: "bg-gray-800 font-semibold text-white disabled:bg-gray-200 disabled:text-gray-500",
   outline: "border border-gray-800 bg-white font-semibold text-gray-800",
@@ -30,7 +32,15 @@ export default function Button({
   return (
     <button
       type={type}
-      className={`inline-flex cursor-pointer items-center justify-center gap-[4px] disabled:cursor-default ${VARIANT_STYLES[variant]} ${SIZE_STYLES[size]} ${rounded} ${textSize} ${width} ${className}`}
+      className={cn(
+        "inline-flex cursor-pointer items-center justify-center gap-[4px] disabled:cursor-default",
+        VARIANT_STYLES[variant],
+        SIZE_STYLES[size],
+        rounded,
+        textSize,
+        width,
+        className,
+      )}
       {...rest}
     >
       {children}
