@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React from "react";
 import ModalContainer from "./ModalContainer";
+import Button from "./Button";
 
 export default function Modal({
   handleClose = () => {},
@@ -23,17 +24,17 @@ export default function Modal({
       </div>
       {isTwoButton ? (
         <div className="flex gap-[8px]">
-          <button className="w-[100px] h-[40px] border-1" onClick={onCancel}>
+          <Button className="w-[90px]" variant="outline" onClick={onCancel}>
             {cancelText}
-          </button>
-          <button className="w-[100px] h-[40px] border-1" onClick={onConfirm}>
+          </Button>
+          <Button className="w-[90px]" onClick={onConfirm}>
             {confirmText}
-          </button>
+          </Button>
         </div>
       ) : (
-        <button className="w-[100px] h-[40px] border-1" onClick={onConfirm}>
+        <Button className="w-[90px]" onClick={onConfirm}>
           {confirmText}
-        </button>
+        </Button>
       )}
     </ModalContainer>
   );

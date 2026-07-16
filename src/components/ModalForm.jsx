@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import ModalContainer from "./ModalContainer";
+import Button from "./Button";
 
 export default function ModalForm({
   handleClose = () => {},
@@ -39,7 +40,7 @@ export default function ModalForm({
           ></textarea>
         </div>
       </form>
-      <button
+      <Button
         form="reasonForm"
         type="submit"
         className="w-full h-[48px] border-1 "
@@ -49,7 +50,7 @@ export default function ModalForm({
         }}
       >
         전송
-      </button>
+      </Button>
     </ModalContainer>
   );
 }
