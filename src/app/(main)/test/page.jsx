@@ -1,6 +1,9 @@
 "use client";
 
+import Image from "next/image";
+
 import Chip from "@/components/Chip";
+import Button from "@/components/Button";
 import SearchBar from "@/components/SearchBar";
 import Container from "@/components/Container";
 import { CardView, MyCardView } from "@/components/CardView";
@@ -130,6 +133,58 @@ export default function Page() {
         <Chip variant="status" value="APPROVED" />
         <Chip variant="status" value="REJECTED" />
         <Chip variant="status" value="DELETED" />
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Button variant="solid" size="lg">
+          승인하기
+        </Button>
+        <Button variant="solid">작업 도전하기</Button>
+        <Button variant="solid" size="sm">
+          등록하기
+        </Button>
+        <Button variant="solid" disabled>
+          승인하기
+        </Button>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Button variant="outline">임시저장</Button>
+        <Button variant="outline" size="sm">
+          임시저장
+        </Button>
+        <Button variant="tonal" size="lg">
+          거절하기
+        </Button>
+        <Button variant="tonal">신청 거절</Button>
+      </div>
+      <div className="rounded-[12px] bg-gray-800 p-3">
+        <Button variant="transparent" size="sm">
+          링크 열기
+          <Image src="/icons/ic_click.svg" alt="하이퍼링크" width={24} height={24} />
+        </Button>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Button variant="filled">원문 보기</Button>
+        <Button variant="solid" pill>
+          신규 챌린지 신청
+          <Image src="/icons/ic_plus_m.svg" alt="신규 챌린지 신청" width={16} height={16} />
+        </Button>
+        <Button variant="outline" size="sm" pill>
+          도전 계속하기
+          <Image src="/icons/ic_arrow_right.svg" alt="도전 계속하기" width={24} height={24} />
+        </Button>
+        <Button variant="ghost" size="sm" pill>
+          내 작업물 보기
+        </Button>
+        <Button variant="tonal">
+          포기
+          <Image src="/icons/ic_give_up.svg" alt="포기" width={24} height={24} />
+        </Button>
+        <Button variant="tonal" iconOnly>
+          <Image src="/icons/ic_give_up.svg" alt="포기" width={24} height={24} />
+        </Button>
       </div>
     </div>
   );
