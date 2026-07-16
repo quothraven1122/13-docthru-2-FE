@@ -43,7 +43,7 @@ export default function TranslationWritePage() {
           {!isOpen && (
             <button
               onClick={() => setIsOpen((prev) => !prev)}
-              className="flex gap-[4px] fixed right-0 top-[25%] px-[10px] py-[14px] rounded-l-[24px] border border-gray-100 text-[14px] text-gray-500 font-semibold cursor-pointer shadow-[0_4px_4px_0_rgba(88,92,130,0.05)]"
+              className="flex gap-[4px] fixed right-0 top-[25%] px-[10px] py-[14px] rounded-l-[24px] border border-gray-100v z-fixed text-[14px] text-gray-500 font-semibold cursor-pointer shadow-[0_4px_4px_0_rgba(88,92,130,0.05)]"
             >
               <Image width={24} height={24} alt="원문 보기 버튼" src={"/icons/ic_list.svg"} />
               <p>원문</p>

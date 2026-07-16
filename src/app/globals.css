@@ -18,6 +18,10 @@
   --brand-light: #f1f2f5;
 
   --error-red: #eb3e3e;
+
+  --z-sticky: 100;
+  --z-fixed: 200;
+  --z-modal: 300;
 }
 
 @theme inline {
@@ -37,6 +41,10 @@
   --color-brand-light: var(--brand-light);
 
   --color-error: var(--error-red);
+
+  --z-index-sticky: var(--z-sticky);
+  --z-index-fixed: var(--z-fixed);
+  --z-index-modal: var(--z-modal);
 }
 @theme {
   --breakpoint-lg: 1200px; /*PC*/

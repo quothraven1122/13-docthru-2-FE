@@ -15,7 +15,7 @@ export const MenuBar = ({ editor, disabledMenuButtonStyle, activeMenuButtonStyle
   }
 
   return (
-    <div className="w-fit h-fit flex flex-wrap gap-[15px] my-[24px]">
+    <div className="w-full h-fit flex flex-wrap gap-[15px] sticky top-0 bg-white z-sticky py-[24px]">
       <div className="flex">
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
