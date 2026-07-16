@@ -55,6 +55,8 @@
   --background-image-landing-bg-sm: url("/landing/img_landing_bg_sm.svg");
   --background-image-landing-bg-md: url("/landing/img_landing_bg_md.svg");
   --background-image-landing-bg-lg: url("/landing/img_landing_bg_lg.svg");
+
+  --animate-spinner: spin 1.5s linear infinite;
 }
 
 /*#region 스크롤바 커스텀 부분*/

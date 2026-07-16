@@ -4,6 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import Editor from "./_components/Editor";
 
+import Spinner from "@/components/Spinner";
+
 const title = "개발자로써 자신만의 브랜드를 구축하는 방법(dailydev)";
 const buttonCommonStyle = "px-[12px] py-[8px] rounded-[12px]";
 const src = "https://en.wikipedia.org/wiki/D.Va";
@@ -11,6 +13,7 @@ const src = "https://en.wikipedia.org/wiki/D.Va";
 export default function TranslationWritePage() {
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState("");
+  const [isIframeLoading, setIsIframeLoading] = useState(true);
 
   return (
     <div
@@ -42,7 +45,10 @@ export default function TranslationWritePage() {
           <Editor content={content} setContent={setContent} />
           {!isOpen && (
             <button
-              onClick={() => setIsOpen((prev) => !prev)}
+              onClick={() => {
+                setIsOpen((prev) => !prev);
+                setIsIframeLoading(true);
+              }}
               className="flex gap-[4px] fixed right-0 top-[25%] px-[10px] py-[14px] rounded-l-[24px] border-t border-b border-l border-gray-100 z-fixed text-[14px] text-gray-500 font-semibold cursor-pointer shadow-[0_4px_4px_0_rgba(88,92,130,0.05)]"
             >
               <Image width={24} height={24} alt="원문 보기 버튼" src={"/icons/ic_list.svg"} />
@@ -66,7 +72,14 @@ export default function TranslationWritePage() {
               <Image width={24} height={24} alt="링크 열기 아이콘" src="/icons/ic_click.svg" />
             </Link>
           </header>
-          <iframe src={src} className="w-full h-full flex-1"></iframe>
+          <div className="relative w-full h-full flex justify-center items-center">
+            {isIframeLoading && (
+              <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80">
+                <Spinner />
+              </div>
+            )}
+            <iframe src={src} onLoad={() => setIsIframeLoading(false)} className="w-full h-full flex-1"></iframe>
+          </div>
         </div>
       )}
     </div>
