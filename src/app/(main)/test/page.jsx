@@ -1,16 +1,39 @@
 "use client";
 
+import { useRef, useState } from "react";
 import Image from "next/image";
 
+import Filter from "@/components/Filter";
+import Sort from "@/components/Sort";
 import Chip from "@/components/Chip";
 import Button from "@/components/Button";
 import SearchBar from "@/components/SearchBar";
 import Container from "@/components/Container";
 import { CardView, MyCardView } from "@/components/CardView";
+import { useClickOutside } from "@/hooks/useClickOutside";
 import dateUtils from "@/utils/date";
+
+const SORT_OPTIONS = [
+  { label: "승인 대기", value: "pending" },
+  { label: "신청 승인", value: "approved" },
+  { label: "신청 거절", value: "rejected" },
+  { label: "신청 시간 빠른순", value: "appliedAt_asc" },
+  { label: "신청 시간 느린순", value: "appliedAt_desc" },
+  { label: "마감 기한 빠른순", value: "deadline_asc" },
+  { label: "마감 기한 느린순", value: "deadline_desc" },
+];
 
 // 해당 페이지는 공통 컴포넌트를 테스하기 위해 임시로 만든 페이지 입니다. 개발 완료후 삭제 예정 입니다.
 export default function Page() {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filterValue, setFilterValue] = useState({ fields: [], docType: null, status: null });
+
+  const filterRef = useRef(null);
+  useClickOutside(filterRef, () => setIsFilterOpen(false));
+
+  const filterCount = filterValue.fields.length + (filterValue.docType ? 1 : 0) + (filterValue.status ? 1 : 0);
+
+  const [sortValue, setSortValue] = useState("pending");
   const handleSubmit = (value) => {
     console.log("검색어:", value);
   };
@@ -185,6 +208,25 @@ export default function Page() {
         <Button variant="tonal" iconOnly>
           <Image src="/icons/ic_give_up.svg" alt="포기" width={24} height={24} />
         </Button>
+      </div>
+
+      <div className="flex items-start gap-2">
+        <Sort options={SORT_OPTIONS} value={sortValue} onChange={setSortValue} />
+        <div ref={filterRef} className="relative">
+          <Sort type="filter" count={filterCount} onClick={() => setIsFilterOpen((prev) => !prev)} />
+          {isFilterOpen && (
+            <Filter
+              value={filterValue}
+              onClose={() => setIsFilterOpen(false)}
+              onApply={(next) => {
+                setFilterValue(next);
+                setIsFilterOpen(false);
+              }}
+              className="absolute left-0 top-[48px] z-10"
+            />
+          )}
+        </div>
+        <Sort type="filter" count={3} />
       </div>
     </div>
   );
