@@ -1,18 +1,57 @@
 "use client";
 
-import Image from "next/image";
-
+import { useState } from "react";
 import Chip from "@/components/Chip";
-import Button from "@/components/Button";
 import SearchBar from "@/components/SearchBar";
 import Container from "@/components/Container";
 import { CardView, MyCardView } from "@/components/CardView";
+import { Reply, CreateReply } from "@/components/Reply";
 import dateUtils from "@/utils/date";
 
 // 해당 페이지는 공통 컴포넌트를 테스하기 위해 임시로 만든 페이지 입니다. 개발 완료후 삭제 예정 입니다.
 export default function Page() {
   const handleSubmit = (value) => {
     console.log("검색어:", value);
+  };
+
+  const currentUser = { id: 1 };
+
+  const [replies, setReplies] = useState([
+    {
+      id: 101,
+      userId: 1,
+      createdBy: "김리뷰 (나)",
+      createdAt: "2026-07-14",
+      content: "본인이 작성한 댓글입니다. 케밥메뉴로 수정/삭제가 가능해야 합니다.",
+    },
+    {
+      id: 102,
+      userId: 2,
+      createdBy: "박작성",
+      createdAt: "2026-07-13",
+      content: "다른 사용자가 작성한 댓글입니다. 케밥메뉴가 보이면 안 됩니다.",
+    },
+  ]);
+  const [replyValue, setReplyValue] = useState("");
+
+  const handleReplyEdit = async (id, content) => {
+    console.log("댓글 수정:", id, content);
+    setReplies((prev) => prev.map((reply) => (reply.id === id ? { ...reply, content } : reply)));
+  };
+
+  const handleReplyDelete = (id) => {
+    console.log("댓글 삭제:", id);
+    setReplies((prev) => prev.filter((reply) => reply.id !== id));
+  };
+
+  const handleReplyCreate = () => {
+    if (!replyValue.trim()) return;
+    console.log("댓글 등록:", replyValue);
+    setReplies((prev) => [
+      ...prev,
+      { id: Date.now(), userId: currentUser.id, createdBy: "김리뷰 (나)", createdAt: "방금 전", content: replyValue },
+    ]);
+    setReplyValue("");
   };
 
   const adminUser = { role: "ADMIN" };
@@ -115,6 +154,25 @@ export default function Page() {
         />
       </div>
 
+      <div className="flex w-full max-w-249 flex-col gap-4 rounded-2xl border-2 border-gray-100 bg-white p-5">
+        <h2 className="text-lg font-bold text-gray-700">댓글 기능 (Reply / CreateReply)</h2>
+        {replies.map((reply) => (
+          <Reply
+            key={reply.id}
+            user={currentUser}
+            reply={reply}
+            onEdit={handleReplyEdit}
+            onDelete={handleReplyDelete}
+          />
+        ))}
+        <CreateReply
+          value={replyValue}
+          onChange={(e) => setReplyValue(e.target.value)}
+          isActive={replyValue.trim().length > 0}
+          onClick={handleReplyCreate}
+        />
+      </div>
+
       <div className="flex flex-wrap items-center gap-2">
         <Chip variant="field" value="Next.js" />
         <Chip variant="field" value="API" />
@@ -133,58 +191,6 @@ export default function Page() {
         <Chip variant="status" value="APPROVED" />
         <Chip variant="status" value="REJECTED" />
         <Chip variant="status" value="DELETED" />
-      </div>
-
-      <div className="flex flex-wrap items-center gap-2">
-        <Button variant="solid" size="lg">
-          승인하기
-        </Button>
-        <Button variant="solid">작업 도전하기</Button>
-        <Button variant="solid" size="sm">
-          등록하기
-        </Button>
-        <Button variant="solid" disabled>
-          승인하기
-        </Button>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-2">
-        <Button variant="outline">임시저장</Button>
-        <Button variant="outline" size="sm">
-          임시저장
-        </Button>
-        <Button variant="tonal" size="lg">
-          거절하기
-        </Button>
-        <Button variant="tonal">신청 거절</Button>
-      </div>
-      <div className="rounded-[12px] bg-gray-800 p-3">
-        <Button variant="transparent" size="sm">
-          링크 열기
-          <Image src="/icons/ic_click.svg" alt="하이퍼링크" width={24} height={24} />
-        </Button>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-2">
-        <Button variant="filled">원문 보기</Button>
-        <Button variant="solid" pill>
-          신규 챌린지 신청
-          <Image src="/icons/ic_plus_m.svg" alt="신규 챌린지 신청" width={16} height={16} />
-        </Button>
-        <Button variant="outline" size="sm" pill>
-          도전 계속하기
-          <Image src="/icons/ic_arrow_right.svg" alt="도전 계속하기" width={24} height={24} />
-        </Button>
-        <Button variant="ghost" size="sm" pill>
-          내 작업물 보기
-        </Button>
-        <Button variant="tonal">
-          포기
-          <Image src="/icons/ic_give_up.svg" alt="포기" width={24} height={24} />
-        </Button>
-        <Button variant="tonal" iconOnly>
-          <Image src="/icons/ic_give_up.svg" alt="포기" width={24} height={24} />
-        </Button>
       </div>
     </div>
   );

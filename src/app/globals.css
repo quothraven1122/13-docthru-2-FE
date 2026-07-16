@@ -43,6 +43,10 @@
   --breakpoint-md: 744px; /*태블릿*/
 
   --font-pretendard: var(--font-pretendard-variable), sans-serif;
+
+  --background-image-landing-bg-sm: url("/landing/img_landing_bg_sm.svg");
+  --background-image-landing-bg-md: url("/landing/img_landing_bg_md.svg");
+  --background-image-landing-bg-lg: url("/landing/img_landing_bg_lg.svg");
 }
 
 .react-calendar {

@@ -1,3 +1,5 @@
+import LandingPage from "./_components/LandingPage";
+
 export default function Home() {
-  return <div>페이지 입니다.</div>;
+  return <LandingPage />;
 }
