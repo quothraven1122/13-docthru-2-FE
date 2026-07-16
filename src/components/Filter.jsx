@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import Image from "next/image";
 
+import Button from "@/components/Button";
 import Checkbox from "@/components/Checkbox";
 import Radio from "@/components/Radio";
 
@@ -74,22 +75,13 @@ export default function Filter({ value = EMPTY_VALUE, onApply, onClose, classNam
         </div>
       </div>
 
-      {/* TODO: Button(PR #54) 머지 후 공통 Button으로 교체 */}
       <div className="flex gap-[8px] px-[14px] py-[8px]">
-        <button
-          type="button"
-          onClick={() => setDraft(EMPTY_VALUE)}
-          className="h-[40px] w-[134px] cursor-pointer rounded-[12px] border border-gray-800 bg-white text-[16px] font-semibold text-gray-800"
-        >
+        <Button variant="outline" onClick={() => setDraft(EMPTY_VALUE)} className="w-[134px]">
           초기화
-        </button>
-        <button
-          type="button"
-          onClick={() => onApply?.(draft)}
-          className="h-[40px] flex-1 cursor-pointer rounded-[12px] bg-gray-800 text-[14px] font-bold text-white"
-        >
+        </Button>
+        <Button variant="solid" onClick={() => onApply?.(draft)} className="flex-1 text-[14px] font-bold">
           적용하기
-        </button>
+        </Button>
       </div>
     </div>
   );
