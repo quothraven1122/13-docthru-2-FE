@@ -37,7 +37,7 @@ export function Reply({ user, reply, onEdit, onDelete }) {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-gray-50 p-4 rounded-xl">
       <div className="flex justify-between">
         <div className="flex items-center gap-2">
           <Image src="/images/img_profile_member.svg" width={32} height={32} alt="" />
