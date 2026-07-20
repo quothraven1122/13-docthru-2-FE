@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
-export default function SearchBar({ initialValue = "", onSubmit }) {
+import cn from "@/utils/cn";
+
+export default function SearchBar({ initialValue = "", onSubmit, className = "" }) {
   const [keyword, setKeyword] = useState(initialValue);
 
   const handleSubmit = (e) => {
@@ -14,7 +16,10 @@ export default function SearchBar({ initialValue = "", onSubmit }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex w-full max-w-md items-center gap-2 rounded-[20px] border border-gray-200 bg-white px-5 py-3"
+      className={cn(
+        "flex w-full max-w-md items-center gap-2 rounded-[20px] border border-gray-200 bg-white px-5 py-3",
+        className,
+      )}
     >
       <Image src="/icons/ic_search.svg" alt="검색" width={24} height={24} className="shrink-0" />
       <input
