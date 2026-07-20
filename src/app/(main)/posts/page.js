@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -20,18 +20,9 @@ export default function TranslationWritePage() {
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [isIframeOpen, setIsIframeOpen] = useState(false);
   const [isIframeLoading, setIsIframeLoading] = useState(true);
-  const [isDraftSavedToastOpen, setIsDraftSavedToastOpen] = useState(false);
   const [content, setContent] = useState("");
-  const saveToastRef = useRef(null);
+  const [reveal, setReveal] = useState(false);
 
-  const showSaveToast = () => {
-    const el = saveToastRef.current;
-    if (!el) return;
-    el.style.animation = "animate-reveal";
-    // reflow를 발생시켜 애니메이션 초기화
-    void el.offsetWidth;
-    el.style.animation = "";
-  };
   const getDrafts = () => {
     const allDrafts = Object.entries({ ...localStorage }).reduce((prev, [key, value]) => {
       prev[key] = JSON.parse(value);
@@ -43,7 +34,7 @@ export default function TranslationWritePage() {
     const allDrafts = { ...localStorage };
     const currentIndex = Object.keys(allDrafts).length;
     localStorage.setItem(currentIndex + 1, JSON.stringify({ title, content, createdAt: new Date() }));
-    showSaveToast();
+    setReveal(true);
   };
 
   useEffect(() => {
@@ -83,11 +74,16 @@ export default function TranslationWritePage() {
         </header>
 
         <h1 className="text-[20px] text-gray-800 font-semibold pb-[24px] border-b border-b-gray-200">{title}</h1>
-        <div
-          ref={saveToastRef}
-          className="h-[45px] max-h-0 overflow-hidden flex justify-center items-center text-[12px] text-center text-error bg-gray-50"
-        >
-          작성 중인 글이 저장되었습니다
+        <div className="overflow-hidden">
+          <div
+            className={cn(
+              "flex items-center justify-center text-error",
+              reveal ? "h-[45px] animate-reveal" : "h-0 opacity-0 -translate-y-2 pointer-events-none",
+            )}
+            onAnimationEnd={() => setReveal(false)}
+          >
+            작성 중인 글이 저장되었습니다
+          </div>
         </div>
 
         <div className="relative">

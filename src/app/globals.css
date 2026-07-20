@@ -57,33 +57,22 @@
   --background-image-landing-bg-lg: url("/landing/img_landing_bg_lg.svg");
 
   --animate-spinner: spin 1.5s linear infinite;
-  --animate-reveal: reveal 1.5s ease forwards;
+  --animate-reveal: reveal 2s ease-in-out forwards;
 }
 
 @keyframes reveal {
   0% {
     opacity: 0;
-    max-height: 0;
-    transform: scaleY(0);
-    transform-origin: top;
+    transform: translateY(-10px);
   }
-  10% {
-    opacity: 1;
-    max-height: fit-content;
-    transform: scaleY(1);
-    transform-origin: top;
-  }
+  10%,
   90% {
     opacity: 1;
-    max-height: fit-content;
-    transform: scaleY(1);
-    transform-origin: top;
+    transform: translateY(0);
   }
   100% {
     opacity: 0;
-    max-height: 0;
-    transform: scaleY(0);
-    transform-origin: top;
+    transform: translateY(-10px);
   }
 }
 
