@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useEffect } from "react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
@@ -73,6 +73,11 @@ export default function Editor({ content, setContent }) {
       setContent(editor.getJSON());
     },
   });
+  useEffect(() => {
+    if (!editor) return;
+    editor.commands.setContent(content);
+  }, [content, editor]);
+
   if (!editor) {
     return null;
   }

@@ -24,11 +24,13 @@ export default function TranslationWritePage() {
   const [reveal, setReveal] = useState(false);
 
   const getDrafts = () => {
-    const allDrafts = Object.entries({ ...localStorage }).reduce((prev, [key, value]) => {
-      prev[key] = JSON.parse(value);
-      return prev;
-    }, {});
-    return allDrafts;
+    const allRelatedDrafts = Object.entries({ ...localStorage })
+      .filter(([key, value]) => JSON.parse(value).title === title)
+      .reduce((prev, [key, value]) => {
+        prev[key] = JSON.parse(value);
+        return prev;
+      }, {});
+    return allRelatedDrafts;
   };
   const saveDraft = () => {
     const allDrafts = { ...localStorage };
@@ -51,7 +53,7 @@ export default function TranslationWritePage() {
         isIframeOpen ? "flex-col-reverse md:flex-row" : "lg:w-[890px] lg:mx-auto",
       )}
     >
-      <div className="flex-1 max-h-[50%] overflow-y-auto md:overflow-y-visible">
+      <div className="flex-1 overflow-y-auto md:overflow-y-visible">
         <header className="flex flex-wrap gap-y-[10px] justify-between items-center m-auto py-[24px] ">
           <Image width={120} height={30} src="/logos/logo.svg" alt="로고" className="cursor-pointer" />
           <div className="flex gap-[8px]">
@@ -94,7 +96,7 @@ export default function TranslationWritePage() {
                 setIsIframeOpen((prev) => !prev);
                 setIsIframeLoading(true);
               }}
-              className="flex gap-[4px] fixed right-0 top-[25%] px-[10px] py-[14px] rounded-l-[24px] border-t border-b border-l border-gray-100 z-fixed text-[14px] text-gray-500 font-semibold cursor-pointer shadow-[0_4px_4px_0_rgba(88,92,130,0.05)]"
+              className="flex gap-[4px] fixed right-0 top-[25%] px-[10px] py-[14px] rounded-l-[24px] border-t border-b border-l border-gray-100 z-fixed text-[14px] text-gray-500 font-semibold cursor-pointer shadow-[0_4px_4px_0_rgba(88,92,130,0.05)] bg-white"
             >
               <Image width={24} height={24} alt="원문 보기 버튼" src={"/icons/ic_list.svg"} />
               <p>원문</p>
@@ -129,16 +131,16 @@ export default function TranslationWritePage() {
       )}
       {isToastOpen && (
         <DraftToast
-          content="임시 저장된 작업물이 있어요. 저장된 작업물을 불러오시겠어요??"
+          content="임시 저장된 작업물이 있어요. 저장된 작업물을 불러오시겠어요?"
           closeToast={() => setIsToastOpen(false)}
           onConfirm={() =>
             openModal(
               <DraftListModal
                 draftList={getDrafts()}
-                onConfirm={() => {
+                onConfirm={(savedContent) => {
+                  setContent(savedContent);
                   closeModal();
                   setIsToastOpen(false);
-                  setIsDraftSavedToastOpen(true);
                 }}
                 handleClose={closeModal}
               />,
