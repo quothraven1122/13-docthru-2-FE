@@ -2,7 +2,6 @@
 
 import Button from "@/components/Button";
 import { MyCardView } from "@/components/CardView";
-import Chip from "@/components/Chip";
 import Pagination from "@/components/Pagination";
 import SearchBar from "@/components/SearchBar";
 import Sort from "@/components/Sort";
@@ -229,7 +228,7 @@ const USER = {
   createdAt: "2026-07-20T09:00:00.000Z",
   updatedAt: "2026-07-20T09:00:00.000Z",
 };
-export default function page() {
+export default function Page() {
   const [activeType, setActive] = useState("PARTICIPATING"); //현재 활성화된 탭
   const [sortValue, setSortValue] = useState(""); //정렬
   const [Keyword, setKeyword] = useState(""); //챌린지 검색 키워드
