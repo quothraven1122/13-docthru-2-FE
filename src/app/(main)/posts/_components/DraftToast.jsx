@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function DraftToast({ content, closeToast = () => {}, onConfirm = () => {} }) {
   return (
-    <div className="absolute left-[5px] right-[5px] bottom-[15px] h-fit flex justify-between gap-[14px] p-[8px] border border-gray-800 rounded-[8px] bg-gray-50 z-sticky">
+    <div className="absolute left-[15px] right-[15px] bottom-[15px] h-fit flex justify-between gap-[14px] p-[8px] border border-gray-800 rounded-[8px] bg-gray-50 z-sticky">
       <div className="flex items-center">
         <Image
           width={24}
