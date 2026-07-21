@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 
@@ -66,7 +68,7 @@ function ListItem({ rank, name, role, likeCount, liked = true, onViewWork }) {
 
 export default function List({ items, onItemClick }) {
   return (
-    <div className="flex w-[842px] flex-col items-start gap-3">
+    <div className="flex w-full flex-col items-start gap-3">
       {items.map((item) => (
         <ListItem
           key={item.id}
