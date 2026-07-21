@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import ModalContainer from "@/components/ModalContainer";
 import dateUtils from "@/utils/date";
+import textUtils from "@/utils/text";
 
 export default function DraftListModal({ draftList, onConfirm = () => {}, handleClose = () => {} }) {
   return (
@@ -33,8 +34,10 @@ export default function DraftListModal({ draftList, onConfirm = () => {}, handle
                 className="mr-[10px]"
               />
               <div>
-                <h2 className="text-[14px] text-gray-800 font-medium">{value.title}</h2>
-                <p className="text-[12px] text-gray-400 font-normal">{value.content.text}</p>
+                <h2 className="text-[14px] text-gray-800 font-medium">{textUtils.truncateText(value.title, 35)}</h2>
+                <p className="text-[12px] text-gray-400 font-normal">
+                  {textUtils.truncateText(value.content.text, 30)}
+                </p>
                 <p className="text-[12px] text-gray-400 font-normal">{dateUtils.format(value.createdAt, "dot")}</p>
               </div>
             </div>
