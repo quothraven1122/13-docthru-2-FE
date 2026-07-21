@@ -1,11 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { nanoid } from "nanoid";
 
 import { useModal } from "@/providers/ModalProvider";
-import Spinner from "@/components/Spinner";
 import Editor from "./_components/Editor";
 import DraftToast from "./_components/DraftToast";
 import DraftListModal from "./_components/DraftListModal";
