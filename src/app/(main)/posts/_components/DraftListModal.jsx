@@ -4,12 +4,12 @@ import ModalContainer from "@/components/ModalContainer";
 import dateUtils from "@/utils/date";
 import textUtils from "@/utils/text";
 
-export default function DraftListModal({ draftList, onConfirm = () => {}, handleClose = () => {} }) {
+export default function DraftListModal({ draftList, onConfirm = () => {}, onDelete = () => {}, onClose = () => {} }) {
   return (
-    <ModalContainer handleClose={handleClose} className="w-[450px] gap-0">
+    <ModalContainer handleClose={onClose} className="w-[450px] gap-0">
       <header className="w-full flex justify-between">
         <h1 className="text-[16px] font-semibold">임시저장 글</h1>
-        <Image width={24} height={24} alt="취소 버튼 아이콘" src="/icons/ic_out_circle_m.svg" onClick={handleClose} />
+        <Image width={24} height={24} alt="취소 버튼 아이콘" src="/icons/ic_out_circle_m.svg" onClick={onClose} />
       </header>
       <p className="w-full text-[12px] font-normal mt-[28px] mb-[16px]">총 {Object.keys(draftList).length}개</p>
       <div className="w-full h-[280px] overflow-auto divide-y divide-gray-200">
@@ -29,7 +29,8 @@ export default function DraftListModal({ draftList, onConfirm = () => {}, handle
                 src="/icons/ic_out_circle_m.svg"
                 onClick={(e) => {
                   e.stopPropagation();
-                  localStorage.removeItem(key);
+                  onDelete(key);
+                  onClose();
                 }}
                 className="mr-[10px]"
               />

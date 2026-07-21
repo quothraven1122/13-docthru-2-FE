@@ -21,6 +21,7 @@ export default function TranslationWritePage() {
   const [isIframeOpen, setIsIframeOpen] = useState(false);
   const [isIframeLoading, setIsIframeLoading] = useState(true);
   const [content, setContent] = useState({ json: null, text: "" });
+  const [draftList, setDraftList] = useState({});
   const [reveal, setReveal] = useState(false);
 
   const getDrafts = () => {
@@ -30,19 +31,32 @@ export default function TranslationWritePage() {
         prev[key] = JSON.parse(value);
         return prev;
       }, {});
+    setDraftList(allRelatedDrafts);
     return allRelatedDrafts;
   };
   const saveDraft = () => {
     const allDrafts = { ...localStorage };
     const currentIndex = Object.keys(allDrafts).length;
-    localStorage.setItem(currentIndex + 1, JSON.stringify({ title, content, createdAt: new Date() }));
+    const draft = JSON.stringify({ title, content, createdAt: new Date() });
+    localStorage.setItem(currentIndex + 1, draft);
+    setDraftList((prev) => ({ ...prev, [currentIndex + 1]: JSON.parse(draft) }));
     setReveal(true);
+  };
+  const deleteDraft = (key) => {
+    localStorage.removeItem(key);
+
+    setDraftList((prev) => {
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
   };
 
   useEffect(() => {
-    const allDrafts = getDrafts();
-    if (Object.keys(allDrafts).length === 0) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
+    const allDrafts = getDrafts();
+
+    if (Object.keys(allDrafts).length === 0) return;
     setIsToastOpen(true);
   }, []);
 
@@ -136,13 +150,14 @@ export default function TranslationWritePage() {
           onConfirm={() =>
             openModal(
               <DraftListModal
-                draftList={getDrafts()}
+                draftList={draftList}
                 onConfirm={(savedContent) => {
                   setContent(savedContent);
                   closeModal();
                   setIsToastOpen(false);
                 }}
-                handleClose={closeModal}
+                onDelete={(key) => deleteDraft(key)}
+                onClose={closeModal}
               />,
             )
           }
