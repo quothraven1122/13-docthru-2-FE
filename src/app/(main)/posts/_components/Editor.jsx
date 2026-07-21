@@ -6,7 +6,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Typography from "@tiptap/extension-typography";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { EditorContent, useEditor, ReactNodeViewRenderer } from "@tiptap/react";
-import { TextStyleKit } from "@tiptap/extension-text-style";
+import { BackgroundColor, TextStyleKit } from "@tiptap/extension-text-style";
 import { createLowlight } from "lowlight";
 
 import { MenuBar } from "./EditorMenuBar.jsx";
@@ -44,6 +44,7 @@ const extensions = [
   TextStyleKit,
   StarterKit,
   Underline,
+  BackgroundColor,
   Typography,
   TextAlign.configure({
     types: ["heading", "paragraph"],

@@ -23,6 +23,10 @@ export function menuBarStateSelector(ctx) {
     isAlignRight: ctx.editor.isActive({ textAlign: "right" }) ?? false,
     isAlignJustify: ctx.editor.isActive({ textAlign: "justify" }) ?? false,
 
+    // Background Color
+    color: ctx.editor.getAttributes("textStyle").backgroundColor,
+    isYellow: ctx.editor.isActive("textStyle", { backgroundColor: "#FAF594" }),
+
     // Block types
     isParagraph: ctx.editor.isActive("paragraph") ?? false,
     isHeading1: ctx.editor.isActive("heading", { level: 1 }) ?? false,

@@ -19,24 +19,31 @@ export const MenuBar = ({ editor, disabledMenuButtonStyle, activeMenuButtonStyle
       <div className="flex">
         <button
           onClick={() => editor.chain().focus().toggleBold().run()}
-          disabled={!editorState.canBold}
           className={editorState.isBold ? activeMenuButtonStyle : disabledMenuButtonStyle}
         >
           <Image width={24} height={24} alt="볼드 아이콘" src="/icons/ic_bold.svg" />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          disabled={!editorState.canItalic}
           className={editorState.isItalic ? activeMenuButtonStyle : disabledMenuButtonStyle}
         >
           <Image width={24} height={24} alt="이탈릭스 아이콘" src="/icons/ic_italic.svg" />
         </button>
         <button
           onClick={() => editor.chain().focus().toggleUnderline().run()}
-          disabled={!editorState.canUnderline}
           className={editorState.isUnderline ? activeMenuButtonStyle : disabledMenuButtonStyle}
         >
           <Image width={24} height={24} alt="밑줄 아이콘" src="/icons/ic_underline.svg" />
+        </button>
+        <button
+          onClick={() => {
+            editorState.isYellow
+              ? editor.chain().focus().unsetBackgroundColor().run()
+              : editor.chain().focus().setBackgroundColor("#FAF594").run();
+          }}
+          className={editorState.isYellow ? activeMenuButtonStyle : disabledMenuButtonStyle}
+        >
+          <Image width={24} height={24} alt="배경색 아이콘" src="/icons/ic_coloring.svg" />
         </button>
       </div>
       <div className="flex">
