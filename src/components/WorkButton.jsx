@@ -8,7 +8,7 @@ export default function WorkButton({ isExpired, onClick }) {
 
   if (isExpired) {
     return (
-      <button type="button" onClick={onClick} disabled className={`${baseClassName} bg-gray-50 hover:bg-gray-200`}>
+      <button type="button" onClick={onClick} className={`${baseClassName} bg-gray-50 hover:bg-gray-200`}>
         내 작업물 보기
         <Image src="/icons/ic_document.svg" width={24} height={24} alt="" />
       </button>
