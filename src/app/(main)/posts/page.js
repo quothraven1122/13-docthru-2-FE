@@ -17,7 +17,7 @@ const src = "https://en.wikipedia.org/wiki/D.Va";
 
 export default function TranslationWritePage() {
   const { openModal, closeModal } = useModal();
-  const { draftList, saveDraft, deleteDraft } = useDraft(title);
+  const { isDraftLoaded, draftList, saveDraft, deleteDraft } = useDraft(title);
 
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [isIframeOpen, setIsIframeOpen] = useState(false);
@@ -26,11 +26,11 @@ export default function TranslationWritePage() {
   const [reveal, setReveal] = useState(false);
 
   useEffect(() => {
-    if (draftList.length > 0) {
+    if (isDraftLoaded && draftList.length > 0) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsToastOpen(true);
     }
-  }, [draftList.length]);
+  }, [isDraftLoaded]);
 
   return (
     <div

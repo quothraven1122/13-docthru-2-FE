@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 
 export default function useDraft(title) {
+  const [isDraftLoaded, setIsDraftLoaded] = useState(false);
   const [draftList, setDraftList] = useState([]);
 
   const getDrafts = () => {
@@ -41,9 +42,11 @@ export default function useDraft(title) {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     getDrafts();
+    setIsDraftLoaded(true);
   }, []);
 
   return {
+    isDraftLoaded,
     draftList,
     saveDraft,
     deleteDraft,
