@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { nanoid } from "nanoid";
 
 import { useModal } from "@/providers/ModalProvider";
+import useDraft from "./_hooks/useDraft";
 import Editor from "./_components/Editor";
 import DraftToast from "./_components/DraftToast";
 import DraftListModal from "./_components/DraftListModal";
@@ -17,55 +17,20 @@ const src = "https://en.wikipedia.org/wiki/D.Va";
 
 export default function TranslationWritePage() {
   const { openModal, closeModal } = useModal();
+  const { draftList, saveDraft, deleteDraft } = useDraft(title);
 
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [isIframeOpen, setIsIframeOpen] = useState(false);
   const [isIframeLoading, setIsIframeLoading] = useState(true);
   const [content, setContent] = useState({ json: null, text: "" });
-  const [draftList, setDraftList] = useState([]);
   const [reveal, setReveal] = useState(false);
 
-  //임시 저장 관련 함수들
-  const getDrafts = () => {
-    const allRelatedDrafts = Object.entries({ ...localStorage })
-      .map(([id, value]) => ({
-        id,
-        ...JSON.parse(value),
-      }))
-      .filter((draft) => draft && draft.title === title)
-      .sort((draft1, draft2) => new Date(draft2.createdAt) - new Date(draft1.createdAt));
-
-    setDraftList(allRelatedDrafts);
-
-    return allRelatedDrafts;
-  };
-  const saveDraft = () => {
-    const id = nanoid();
-    const draft = {
-      id,
-      title,
-      content,
-      createdAt: new Date().toISOString(),
-    };
-
-    localStorage.setItem(id, JSON.stringify(draft));
-    setDraftList((prev) => [draft, ...prev]);
-
-    setReveal(true);
-  };
-  const deleteDraft = (id) => {
-    localStorage.removeItem(id);
-
-    setDraftList((prev) => prev.filter((draft) => draft.id !== id));
-  };
-
-  // 최초 렌더링 시 임시저장 목록 확인
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    const allDrafts = getDrafts();
-    if (allDrafts.length === 0) return;
-    setIsToastOpen(true);
-  }, []);
+    if (draftList.length > 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsToastOpen(true);
+    }
+  }, [draftList.length]);
 
   return (
     <div
@@ -87,7 +52,10 @@ export default function TranslationWritePage() {
             </button>
 
             <button
-              onClick={saveDraft}
+              onClick={() => {
+                saveDraft(content);
+                setReveal(true);
+              }}
               className={cn("border border-gray-800 cursor-pointer whitespace-nowrap", buttonCommonStyle)}
             >
               임시저장
