@@ -70,12 +70,12 @@ export default function Editor({ content, setContent }) {
     extensions,
     content,
     onUpdate({ editor }) {
-      setContent(editor.getJSON());
+      setContent({ json: editor.getJSON(), text: editor.getText() });
     },
   });
   useEffect(() => {
     if (!editor) return;
-    editor.commands.setContent(content);
+    editor.commands.setContent(content, false);
   }, [content, editor]);
 
   if (!editor) {

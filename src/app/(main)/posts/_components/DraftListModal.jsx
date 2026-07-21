@@ -19,7 +19,7 @@ export default function DraftListModal({ draftList, onConfirm = () => {}, handle
               onClick={() => {
                 onConfirm(value.content);
               }}
-              className="h-[60px] flex items-start px-[10px] py-[12px] cursor-pointer"
+              className="h-[80px] flex items-start px-[10px] py-[12px] cursor-pointer"
             >
               <Image
                 width={20}
@@ -27,16 +27,14 @@ export default function DraftListModal({ draftList, onConfirm = () => {}, handle
                 alt="임시저장 글 지우기 아이콘"
                 src="/icons/ic_out_circle_m.svg"
                 onClick={(e) => {
-                  if (e.target !== e.currentTarget) return;
-                  const result = confirm("임시저장 글을 정말 삭제하시겠습니까?");
-                  if (result) {
-                    localStorage.removeItem(key);
-                  }
+                  e.stopPropagation();
+                  localStorage.removeItem(key);
                 }}
                 className="mr-[10px]"
               />
               <div>
                 <h2 className="text-[14px] text-gray-800 font-medium">{value.title}</h2>
+                <p className="text-[12px] text-gray-400 font-normal">{value.content.text}</p>
                 <p className="text-[12px] text-gray-400 font-normal">{dateUtils.format(value.createdAt, "dot")}</p>
               </div>
             </div>

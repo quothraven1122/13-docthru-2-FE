@@ -20,7 +20,7 @@ export default function TranslationWritePage() {
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [isIframeOpen, setIsIframeOpen] = useState(false);
   const [isIframeLoading, setIsIframeLoading] = useState(true);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState({ json: null, text: "" });
   const [reveal, setReveal] = useState(false);
 
   const getDrafts = () => {
@@ -89,7 +89,7 @@ export default function TranslationWritePage() {
         </div>
 
         <div className="relative">
-          <Editor content={content} setContent={setContent} />
+          <Editor content={content.json} setContent={setContent} />
           {!isIframeOpen && (
             <button
               onClick={() => {
