@@ -9,6 +9,7 @@ import dateUtils from "@/utils/date";
 import KebabMenu from "@/components/KebabMenu";
 import { useModal } from "@/providers/ModalProvider";
 import Modal from "@/components/Modal";
+import Link from "next/link";
 
 //임시데이터
 const CALLENGE = {
@@ -23,12 +24,12 @@ const CALLENGE = {
   headcount: 4,
   createdAt: "2026-07-12T13:00:00.000Z",
   updatedAt: "2026-07-15T09:00:00.000Z",
-  status: "WAITING",
+  status: "REJECTED",
   rejectReason: "번역 대상 분량이 챌린지 기준에 맞지 않습니다.",
   deletedAt: "2026-07-15T09:00:00.000Z",
   deletionReason: "관리자 판단으로 챌린지가 삭제되었습니다.",
 };
-export default function page() {
+export default function Page() {
   const { openModal, closeModal } = useModal();
 
   return (
@@ -73,18 +74,17 @@ export default function page() {
         </div>
         <div className="border-[1px] border-gray-200" />
         <p className="text-gray-800 text-[18px] font-[600]">원문링크</p>
-        <div className="w-full bg-black h-[490px] flex justify-end py-[8px] px-[16px]">
-          <Button
-            variant="transparent"
-            onClick={() => {
-              window.open(CALLENGE.link, "_blanck");
-            }}
-          >
+        {/* 일단 이미지로 생각하고 이렇게 작업. */}
+        <Link
+          href={CALLENGE.link}
+          target="_blank"
+          className="w-full bg-black h-[490px] flex justify-end py-[8px] px-[16px]"
+        >
+          <Button variant="transparent">
             링크 열기
-            {/* 일단 이미지로 생각하고 이렇게 작업. */}
             <Image src="/icons/ic_click.svg" alt="하이퍼링크" width={24} height={24} />
           </Button>
-        </div>
+        </Link>
       </div>
     </div>
   );
