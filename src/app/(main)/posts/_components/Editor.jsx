@@ -11,6 +11,8 @@ import { createLowlight } from "lowlight";
 
 import { MenuBar } from "./EditorMenuBar.jsx";
 import CodeBlockComponent from "./CodeBlockComponent.jsx";
+
+import cn from "@/utils/cn.js";
 import { contentStyle, disabledMenuButtonStyle, activeMenuButtonStyle, codeBlockStyle } from "./styles.js";
 
 import xml from "highlight.js/lib/languages/xml";
@@ -88,7 +90,7 @@ export default function Editor({ content, setContent }) {
         disabledMenuButtonStyle={disabledMenuButtonStyle}
         activeMenuButtonStyle={activeMenuButtonStyle}
       />
-      <EditorContent editor={editor} className={`${contentStyle} ${codeBlockStyle}`} />
+      <EditorContent editor={editor} className={cn(contentStyle, codeBlockStyle)} />
     </>
   );
 }

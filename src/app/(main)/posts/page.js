@@ -95,7 +95,7 @@ export default function TranslationWritePage() {
               임시저장
             </button>
 
-            <button className={`text-white bg-brand-dark cursor-pointer whitespace-nowrap ${buttonCommonStyle}`}>
+            <button className={cn("text-white bg-brand-dark cursor-pointer whitespace-nowrap", buttonCommonStyle)}>
               제출하기
             </button>
           </div>
