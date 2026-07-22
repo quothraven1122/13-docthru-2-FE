@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import Image from "next/image";
 
 import Input from "@/components/Input";
 import cn from "@/utils/cn";
 
-export default function PasswordField({ id, label, className, ...inputProps }) {
+const PasswordField = forwardRef(function PasswordField({ id, label, className, ...inputProps }, ref) {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -16,6 +16,7 @@ export default function PasswordField({ id, label, className, ...inputProps }) {
       </label>
       <Input
         id={id}
+        ref={ref}
         type={visible ? "text" : "password"}
         suffix={
           <button
@@ -36,4 +37,6 @@ export default function PasswordField({ id, label, className, ...inputProps }) {
       />
     </div>
   );
-}
+});
+
+export default PasswordField;
