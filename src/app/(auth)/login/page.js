@@ -11,8 +11,15 @@ export default function LoginPage() {
     <div className="flex flex-1 items-start justify-center bg-white px-6 py-16 mt-[7.78rem]">
       <div className="w-full max-w-100">
         <Link href="/" className="mb-10 flex items-center justify-center gap-2">
-          <Image src="/logos/logo_mark.svg" alt="로고 이미지" width={35} height={41} priority />
-          <span className="font-bold text-gray-600" style={{ fontSize: "43.2px", lineHeight: "100%" }}>
+          <Image
+            src="/logos/logo_mark.svg"
+            alt="로고 이미지"
+            width={35}
+            height={41}
+            priority
+            style={{ width: "auto", height: "auto" }}
+          />
+          <span className="font-bold text-gray-600" style={{ fontSize: "3.6rem", lineHeight: "100%" }}>
             Docthru
           </span>
         </Link>
