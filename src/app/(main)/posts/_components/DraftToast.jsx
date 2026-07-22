@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Button from "@/components/Button";
 
 export default function DraftToast({ content, closeToast = () => {}, onConfirm = () => {} }) {
   return (
@@ -14,13 +15,9 @@ export default function DraftToast({ content, closeToast = () => {}, onConfirm =
         />
         <p>{content}</p>
       </div>
-      <button
-        type="button"
-        onClick={onConfirm}
-        className="px-[20px] py-[8px] rounded-[10px] whitespace-nowrap text-white bg-brand-dark cursor-pointer"
-      >
+      <Button type="button" onClick={onConfirm} className="px-[20px] rounded-[10px] bg-brand-dark whitespace-nowrap">
         불러오기
-      </button>
+      </Button>
     </div>
   );
 }

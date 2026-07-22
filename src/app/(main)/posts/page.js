@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 import { useModal } from "@/providers/ModalProvider";
+import Button from "@/components/Button";
 import useDraft from "./_hooks/useDraft";
 import Editor from "./_components/Editor";
 import DraftToast from "./_components/DraftToast";
@@ -12,7 +13,6 @@ import Iframe from "./_components/Iframe";
 import cn from "@/utils/cn";
 
 const title = "개발자로써 자신만의 브랜드를 구축하는 방법(dailydev)";
-const buttonCommonStyle = "px-[12px] py-[8px] rounded-[12px]";
 const src = "https://en.wikipedia.org/wiki/D.Va";
 
 export default function TranslationWritePage() {
@@ -45,26 +45,22 @@ export default function TranslationWritePage() {
           <Image width={120} height={30} src="/logos/logo.svg" alt="로고" className="cursor-pointer" />
 
           <div className="flex gap-[8px]">
-            <button
-              className={cn("bg-[#ffe7e7] text-[#f24744] flex cursor-pointer whitespace-nowrap", buttonCommonStyle)}
-            >
+            <Button variant="tonal">
               <p className="hidden md:block">포기</p>
               <Image width={20} height={20} src="/icons/ic_exit.svg" alt="나가기 아이콘" />
-            </button>
+            </Button>
 
-            <button
+            <Button
+              variant="outline"
               onClick={() => {
                 saveDraft(content);
                 setReveal(true);
               }}
-              className={cn("border border-gray-800 cursor-pointer whitespace-nowrap", buttonCommonStyle)}
             >
               임시저장
-            </button>
+            </Button>
 
-            <button className={cn("text-white bg-brand-dark cursor-pointer whitespace-nowrap", buttonCommonStyle)}>
-              제출하기
-            </button>
+            <Button variant="solid">제출하기</Button>
           </div>
         </header>
 
