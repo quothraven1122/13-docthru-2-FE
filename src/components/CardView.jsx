@@ -6,6 +6,7 @@ import KebabMenu from "./KebabMenu.jsx";
 import StatusBadge from "./StatusBadge.jsx";
 import WorkButton from "./WorkButton.jsx";
 import dateUtils from "@/utils/date.js";
+import cn from "@/utils/cn.js";
 
 export function CardView({ challenge, user, onEdit, onDelete }) {
   const formattedDeadline = dateUtils.format(challenge.deadline);
@@ -50,7 +51,7 @@ export function CardView({ challenge, user, onEdit, onDelete }) {
   );
 }
 
-export function MyCardView({ challenge, user, onEdit, onDelete, onChallenge }) {
+export function MyCardView({ challenge, user, onEdit, onDelete, onChallenge, className }) {
   const formattedDeadline = dateUtils.format(challenge.deadline);
   const isExpired = dateUtils.isPastDeadline(formattedDeadline);
 
@@ -61,8 +62,8 @@ export function MyCardView({ challenge, user, onEdit, onDelete, onChallenge }) {
   const badgeType = isExpired ? "closed" : isFull ? "full" : null;
 
   return (
-    <div className="w-full max-w-249 p-6 border-2 border-gray-800 rounded-xl">
-      <div className="flex justify-between items-start">
+    <div className={cn("w-full max-w-249 p-6 border-2 border-gray-800 rounded-xl", className)}>
+      <div className="flex justify-between items-start ">
         <div>
           {badgeType ? <StatusBadge type={badgeType} className="mb-3 md:mb-3.5 lg:mb-4" /> : <span />}
           <div className=" text-xl/normal font-semibold text-gray-700 md:text-[22px]/[normal]">{challenge.title}</div>
