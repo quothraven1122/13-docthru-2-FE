@@ -7,10 +7,17 @@ export default function useDraft(title) {
 
   const getDrafts = () => {
     const allRelatedDrafts = Object.entries({ ...localStorage })
-      .map(([id, value]) => ({
-        id,
-        ...JSON.parse(value),
-      }))
+      .filter(([id, _]) => id.startsWith("draft_"))
+      .map(([id, value]) => {
+        try {
+          return {
+            id,
+            ...JSON.parse(value),
+          };
+        } catch {
+          return null;
+        }
+      })
       .filter((draft) => draft && draft.title === title)
       .sort((draft1, draft2) => new Date(draft2.createdAt) - new Date(draft1.createdAt));
 
@@ -20,7 +27,7 @@ export default function useDraft(title) {
   };
 
   const saveDraft = (content) => {
-    const id = nanoid();
+    const id = `draft_${nanoid()}`;
 
     const draft = {
       id,
