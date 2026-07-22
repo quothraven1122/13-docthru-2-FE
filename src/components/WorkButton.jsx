@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function WorkButton({ isExpired, onClick }) {
   const baseClassName =
-    "flex items-center justify-center gap-1.5 rounded-[30.5px] text-sm/normal font-bold whitespace-nowrap px-4 py-2";
+    "flex items-center justify-center gap-1.5 rounded-[30.5px] text-sm/normal font-bold whitespace-nowrap px-4 py-2 cursor-pointer";
 
   if (isExpired) {
     return (

@@ -258,8 +258,8 @@ export default function Page() {
   };
 
   return (
-    <div className="bg-gray-50">
-      <div className="lg:w-[996px] md:w-[696px] w-[375px] mx-auto ">
+    <div className="bg-gray-50 min-h-screen pb-[24px]">
+      <div className="w-full max-w-[996px] mx-auto px-[24px]">
         <div className="flex justify-between mt-[24px]">
           <h2 className="text-gray-800 text-[20px] font-[600]">나의 챌린지</h2>
           <Link href={"challenge/create"}>
@@ -275,10 +275,13 @@ export default function Page() {
               <button
                 key={button.label}
                 onClick={() => setActive(button.label)}
-                className={cn("pt-[16px] md:px-[24px] px-[10px] text-nowrap md:text-[18px] text-[16px] font-[600]", {
-                  "pb-[13px] text-gray-800 border-b-[3px] border-brand-dark": activeType === button.label,
-                  "pb-[16px] text-gray-500": activeType !== button.label,
-                })}
+                className={cn(
+                  "cursor-pointer pt-[16px] md:px-[24px] px-[10px] text-nowrap md:text-[18px] text-[16px] font-[600]",
+                  {
+                    "pb-[13px] text-gray-800 border-b-[3px] border-brand-dark": activeType === button.label,
+                    "pb-[16px] text-gray-500": activeType !== button.label,
+                  },
+                )}
               >
                 {button.value}
               </button>
@@ -304,6 +307,7 @@ export default function Page() {
           ) : activeType !== "APPLIED" ? (
             challenges.map((challenge) => (
               <MyCardView
+                className="bg-white"
                 key={challenge.id}
                 challenge={challenge}
                 user={USER}
