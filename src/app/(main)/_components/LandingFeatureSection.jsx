@@ -4,7 +4,7 @@ export default function LandingFeatureSection({ icon, title, description, imgSm,
   return (
     <section className="mx-auto flex max-w-93.75 flex-col gap-8 px-4 py-12 md:max-w-186 lg:max-w-300 lg:flex-row lg:items-center lg:justify-center lg:gap-16 lg:px-0 lg:py-20">
       <div className="md:ml-[1.94rem] lg:ml-0 lg:w-72 lg:shrink-0">
-        <Image src={icon} alt="" property width={28} height={28} aria-hidden="true" />
+        <Image src={icon} alt="" width={28} height={28} aria-hidden="true" priority className="h-7 w-7" />
         <h2 className="mt-3 text-[1.5rem] font-bold whitespace-pre-line text-gray-900">{title}</h2>
         <p className="mt-3 text-sm whitespace-pre text-gray-500">{description}</p>
       </div>
@@ -15,12 +15,14 @@ export default function LandingFeatureSection({ icon, title, description, imgSm,
         width={imgSize.lg.width}
         height={imgSize.lg.height}
         className="hidden md:mx-auto md:block lg:mx-0 lg:block"
+        loading="eager"
       />
       <Image
         src={imgSm}
         alt={imgAlt}
         width={imgSize.sm.width}
         height={imgSize.sm.height}
+        loading="eager"
         className="h-auto w-full md:hidden lg:hidden"
       />
     </section>
