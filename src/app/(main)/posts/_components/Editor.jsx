@@ -68,7 +68,7 @@ const extensions = [
   }).configure({ lowlight }),
 ];
 
-export default function Editor({ content, setContent }) {
+export default function Editor({ content, loadedDraft, setContent }) {
   const editor = useEditor({
     extensions,
     content,
@@ -77,9 +77,12 @@ export default function Editor({ content, setContent }) {
     },
   });
   useEffect(() => {
-    if (!editor) return;
-    editor.commands.setContent(content, false);
-  }, [content, editor]);
+    if (!editor || !loadedDraft) return;
+    const frameId = requestAnimationFrame(() => {
+      editor.commands.setContent(loadedDraft.json, false);
+    });
+    return () => cancelAnimationFrame(frameId);
+  }, [loadedDraft, editor]);
 
   if (!editor) {
     return null;

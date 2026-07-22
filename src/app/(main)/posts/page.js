@@ -23,6 +23,7 @@ export default function TranslationWritePage() {
   const [isIframeOpen, setIsIframeOpen] = useState(false);
   const [isIframeLoading, setIsIframeLoading] = useState(true);
   const [content, setContent] = useState({ json: null, text: "" });
+  const [loadedDraft, setLoadedDraft] = useState(null);
   const [reveal, setReveal] = useState(false);
 
   useEffect(() => {
@@ -82,7 +83,7 @@ export default function TranslationWritePage() {
         </div>
 
         <div className="relative">
-          <Editor content={content.json} setContent={setContent} />
+          <Editor content={content.json} loadedDraft={loadedDraft} setContent={setContent} />
 
           {!isIframeOpen && (
             <button
@@ -116,9 +117,10 @@ export default function TranslationWritePage() {
               <DraftListModal
                 draftList={draftList}
                 onConfirm={(savedContent) => {
-                  setContent(savedContent);
+                  setLoadedDraft(savedContent);
                   closeModal();
                   setIsToastOpen(false);
+                  setReveal(false);
                 }}
                 onDelete={deleteDraft}
                 onClose={closeModal}

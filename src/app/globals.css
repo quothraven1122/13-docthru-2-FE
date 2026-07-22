@@ -20,6 +20,7 @@
   --error-red: #eb3e3e;
 
   --z-sticky: 100;
+  --z-editor-menu: 150;
   --z-fixed: 200;
   --z-modal: 300;
 }
@@ -45,6 +46,7 @@
   --z-index-sticky: var(--z-sticky);
   --z-index-fixed: var(--z-fixed);
   --z-index-modal: var(--z-modal);
+  --z-index-editor-menu: var(--z-editor-menu);
 }
 @theme {
   --breakpoint-lg: 1200px; /*PC*/
