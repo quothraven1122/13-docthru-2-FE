@@ -9,7 +9,7 @@ import PasswordField from "../_components/PasswordField";
 export default function LoginPage() {
   return (
     <div className="flex flex-1 items-start justify-center bg-white px-6 py-16 mt-[7.78rem]">
-      <div className="w-full max-w-100">
+      <div className="w-full md:max-w-129.5">
         <Link href="/" className="mb-10 flex items-center justify-center gap-2">
           <Image
             src="/logos/logo_mark.svg"
