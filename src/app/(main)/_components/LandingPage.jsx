@@ -39,7 +39,7 @@ export default function LandingPage() {
     <main>
       <div className="bg-brand-dark">
         <section className="h-69.5 md:h-69.5 max-w-93.75 md:max-w-186 lg:max-w-[1920px] mx-auto flex flex-col items-center justify-center gap-6 bg-landing-bg-sm md:bg-landing-bg-md lg:bg-landing-bg-lg bg-cover bg-center bg-no-repeat">
-          <Image alt="로고 이미지" src="/logos/logo.svg" width={126} height={28.35} />
+          <Image alt="로고 이미지" src="/logos/logo.svg" width={126} height={28} className="h-7 w-31.5" />
 
           <p className="text-center text-lg font-bold text-white md:text-xl">
             함께 번역하며 성장하는
