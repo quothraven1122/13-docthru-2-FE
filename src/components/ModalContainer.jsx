@@ -11,20 +11,23 @@ const MODAL_TYPE = {
     "w-[327px] border-[2px] border-gray-800 rounded-[12px] shadow-[0_4px_16px_0_rgba(17,34,17,0.05)] p-[24px] gap-[32px]",
 };
 
-export default function ModalContainer({ handleClose = () => {}, children, type = "default" }) {
+export default function ModalContainer({ handleClose = () => {}, children, type = "default", className }) {
   const modalRef = useRef(null);
   useClickOutside(modalRef, handleClose);
 
   return (
     <div
-      className="fixed flex justify-center items-center bg-black/50 w-screen h-screen"
+      className="fixed flex justify-center items-center bg-black/50 w-screen h-screen z-modal"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) {
           handleClose();
         }
       }} //백드롭을 눌렀을 때만 닫히게 수정.
     >
-      <div ref={modalRef} className={cn("flex flex-col justify-center items-center bg-white", MODAL_TYPE[type])}>
+      <div
+        ref={modalRef}
+        className={cn("flex flex-col justify-center items-center bg-white", MODAL_TYPE[type], className)}
+      >
         {children}
       </div>
     </div>
