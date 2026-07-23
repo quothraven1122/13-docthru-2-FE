@@ -233,6 +233,7 @@ export default function Page() {
   const [sortValue, setSortValue] = useState(""); //정렬
   const [Keyword, setKeyword] = useState(""); //챌린지 검색 키워드
   const [challenges, setChallenges] = useState(CHALLENGES); //챌린지 검색 키워드
+  const [page, setPage] = useState(1);
 
   const router = useRouter();
 
@@ -321,7 +322,7 @@ export default function Page() {
             <div>
               <MyApplied challenges={CHALLENGES} />
               <div className="flex justify-center mt-[40px]">
-                <Pagination visiblePageCount={1} totalPageCount={1}></Pagination>
+                <Pagination current={page} setCurrent={setPage} visiblePageCount={1} totalPageCount={1} />
               </div>
             </div>
           )}

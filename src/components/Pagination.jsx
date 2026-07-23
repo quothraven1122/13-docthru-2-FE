@@ -1,11 +1,8 @@
-"use client";
-import { useState } from "react";
 import Image from "next/image";
 
 import cn from "@/utils/cn";
 
-export default function Pagination({ visiblePageCount, totalPageCount }) {
-  const [current, setCurrent] = useState(1);
+export default function Pagination({ current, setCurrent, visiblePageCount, totalPageCount }) {
   const startPage = Math.floor((current - 1) / visiblePageCount) * visiblePageCount + 1;
   const visiblePages = Array.from({ length: visiblePageCount }, (_, i) => startPage + i).filter(
     (page) => page <= totalPageCount,
