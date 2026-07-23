@@ -10,12 +10,11 @@ import { CardView } from "@/components/CardView";
 import Filter from "@/components/Filter";
 import Pagination from "@/components/Pagination";
 import SearchBar from "@/components/SearchBar";
+import Sort from "@/components/Sort";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
 
-import cn from "@/utils/cn";
-
-const EMPTY_FILTER = { fields: [], docType: null, status: null };
+import { EMPTY_FILTER } from "@/constants/challengeOptions";
 
 // TODO: #29 기능 작업에서 실제 API 응답으로 교체 예정
 const MOCK_CHALLENGES = [
@@ -56,8 +55,8 @@ export default function ChallengeListView({ role = "USER" }) {
   const filterRef = useRef(null);
   useClickOutside(filterRef, () => setIsFilterOpen(false));
 
-  const isFilterActive =
-    filterValue.fields.length > 0 || filterValue.docType !== null || filterValue.status !== null;
+  const filterCount =
+    filterValue.fields.length + (filterValue.docType ? 1 : 0) + (filterValue.status ? 1 : 0);
 
   // TODO: #29 기능 작업에서 실제 로그인 사용자 정보로 교체 예정
   const currentUser = { role };
@@ -94,22 +93,7 @@ export default function ChallengeListView({ role = "USER" }) {
 
       <div className="flex items-center gap-3">
         <div ref={filterRef} className="relative shrink-0">
-          <button
-            type="button"
-            onClick={() => setIsFilterOpen((prev) => !prev)}
-            className={cn(
-              "flex items-center gap-1 rounded-full border px-3 py-2 text-[16px]",
-              isFilterActive ? "border-gray-800 text-gray-800" : "border-gray-300 text-gray-400",
-            )}
-          >
-            필터
-            <Image
-              src={isFilterActive ? "/icons/ic_filter_active.svg" : "/icons/ic_filter_inactive.svg"}
-              alt=""
-              width={16}
-              height={16}
-            />
-          </button>
+          <Sort type="filter" count={filterCount} onClick={() => setIsFilterOpen((prev) => !prev)} />
           {isFilterOpen && (
             <div className="absolute top-full left-0 z-10 mt-2">
               <Filter value={filterValue} onApply={handleFilterApply} onClose={() => setIsFilterOpen(false)} />
