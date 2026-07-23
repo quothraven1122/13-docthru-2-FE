@@ -9,19 +9,45 @@ import Input from "@/components/Input";
 
 import { DOC_TYPE_OPTIONS, FIELD_OPTIONS } from "@/constants/challengeOptions";
 
+const INITIAL_TEXT_FORM = { title: "", link: "", headcount: "", content: "" };
+const INITIAL_SELECT_FORM = { field: null, docType: null, deadline: null };
+
 export default function ChallengeCreatePage() {
-  const [title, setTitle] = useState("");
-  const [link, setLink] = useState("");
-  const [field, setField] = useState(null);
-  const [docType, setDocType] = useState(null);
-  const [deadline, setDeadline] = useState(null);
-  const [headcount, setHeadcount] = useState("");
-  const [content, setContent] = useState("");
+  const [textForm, setTextForm] = useState(INITIAL_TEXT_FORM);
+  const [selectForm, setSelectForm] = useState(INITIAL_SELECT_FORM);
+  const [errors, setErrors] = useState({});
+
+  const handleTextChange = (key) => (e) => {
+    setTextForm((prev) => ({ ...prev, [key]: e.target.value }));
+  };
+
+  const handleSelectChange = (key) => (value) => {
+    setSelectForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const validate = () => {
+    const nextErrors = {};
+
+    if (!textForm.title.trim()) nextErrors.title = "제목을 입력해주세요.";
+    if (!textForm.link.trim()) nextErrors.link = "원문 링크를 입력해주세요.";
+    if (!selectForm.field) nextErrors.field = "분야를 선택해주세요.";
+    if (!selectForm.docType) nextErrors.docType = "문서 타입을 선택해주세요.";
+    if (!selectForm.deadline) nextErrors.deadline = "마감일을 선택해주세요.";
+    if (!textForm.headcount || Number(textForm.headcount) < 1) {
+      nextErrors.headcount = "참여 인원을 1명 이상 입력해주세요.";
+    }
+    if (!textForm.content.trim()) nextErrors.content = "내용을 입력해주세요.";
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validate()) return;
+
     // TODO: #29 기능 작업에서 실제 API 연동 예정
-    console.log({ title, link, field, docType, deadline, headcount, content });
+    console.log({ ...textForm, ...selectForm });
   };
 
   return (
@@ -35,8 +61,9 @@ export default function ChallengeCreatePage() {
         <Input
           id="title"
           placeholder="제목을 입력해주세요"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={textForm.title}
+          onChange={handleTextChange("title")}
+          errorMessage={errors.title}
         />
       </div>
 
@@ -47,24 +74,28 @@ export default function ChallengeCreatePage() {
         <Input
           id="link"
           placeholder="원문 링크를 입력해주세요"
-          value={link}
-          onChange={(e) => setLink(e.target.value)}
+          value={textForm.link}
+          onChange={handleTextChange("link")}
+          errorMessage={errors.link}
         />
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="text-[14px] font-medium text-gray-900">분야</p>
-        <Dropdown options={FIELD_OPTIONS} value={field} onChange={setField} />
+        <label className="text-[14px] font-medium text-gray-900">분야</label>
+        <Dropdown options={FIELD_OPTIONS} value={selectForm.field} onChange={handleSelectChange("field")} />
+        {errors.field && <p className="mt-1 text-[12px] text-error">{errors.field}</p>}
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="text-[14px] font-medium text-gray-900">문서 타입</p>
-        <Dropdown options={DOC_TYPE_OPTIONS} value={docType} onChange={setDocType} />
+        <label className="text-[14px] font-medium text-gray-900">문서 타입</label>
+        <Dropdown options={DOC_TYPE_OPTIONS} value={selectForm.docType} onChange={handleSelectChange("docType")} />
+        {errors.docType && <p className="mt-1 text-[12px] text-error">{errors.docType}</p>}
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="text-[14px] font-medium text-gray-900">마감일</p>
-        <DateInput selectedDate={deadline} setSelectedDate={setDeadline} />
+        <label className="text-[14px] font-medium text-gray-900">마감일</label>
+        <DateInput selectedDate={selectForm.deadline} setSelectedDate={handleSelectChange("deadline")} />
+        {errors.deadline && <p className="mt-1 text-[12px] text-error">{errors.deadline}</p>}
       </div>
 
       <div className="flex flex-col gap-2">
@@ -76,8 +107,9 @@ export default function ChallengeCreatePage() {
           type="number"
           min="1"
           placeholder="인원을 입력해주세요"
-          value={headcount}
-          onChange={(e) => setHeadcount(e.target.value)}
+          value={textForm.headcount}
+          onChange={handleTextChange("headcount")}
+          errorMessage={errors.headcount}
         />
       </div>
 
@@ -88,10 +120,11 @@ export default function ChallengeCreatePage() {
         <textarea
           id="content"
           placeholder="내용을 입력해주세요"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          value={textForm.content}
+          onChange={handleTextChange("content")}
           className="h-[219px] resize-none rounded-[6px] border border-gray-300 px-5 py-4 text-[16px] text-gray-900 outline-none placeholder:text-gray-400"
         />
+        {errors.content && <p className="mt-1 text-[12px] text-error">{errors.content}</p>}
       </div>
 
       <Button type="submit" variant="solid" size="lg" className="w-full rounded-[8px]">
