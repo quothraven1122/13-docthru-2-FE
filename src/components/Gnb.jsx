@@ -40,7 +40,7 @@ export default function Gnb({
           {isAdmin && (
             <nav className="flex items-start">
               {ADMIN_NAV_TABS.map((tab) => {
-                const isActive = pathname?.startsWith(tab.href);
+                const isActive = pathname === tab.href;
                 return (
                   <Link
                     key={tab.href}
@@ -80,9 +80,7 @@ export default function Gnb({
               <button type="button" onClick={handleProfileClick} aria-label="프로필 메뉴">
                 <Image src="/images/img_profile_member.svg" alt="" width={32} height={32} />
               </button>
-              {isProfileOpen && profileMenu && (
-                <div className="absolute top-full right-0 z-10 mt-2">{profileMenu}</div>
-              )}
+              {isProfileOpen && profileMenu && <div className="absolute top-full right-0 z-10 mt-2">{profileMenu}</div>}
             </div>
           </div>
         )}
@@ -93,9 +91,7 @@ export default function Gnb({
             <button type="button" onClick={handleProfileClick} aria-label="프로필 메뉴">
               <Image src="/images/img_profile_admin.svg" alt="" width={32} height={32} />
             </button>
-            {isProfileOpen && profileMenu && (
-              <div className="absolute top-full right-0 z-10 mt-2">{profileMenu}</div>
-            )}
+            {isProfileOpen && profileMenu && <div className="absolute top-full right-0 z-10 mt-2">{profileMenu}</div>}
           </div>
         )}
       </div>
