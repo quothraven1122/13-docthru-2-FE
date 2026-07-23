@@ -82,7 +82,7 @@ export default function ChallengeListView({ role = "USER" }) {
     <div className="mx-auto flex w-full max-w-249 flex-col gap-5 px-4 py-10 md:px-6 lg:px-0">
       <div className="flex items-center justify-between">
         <h1 className="text-[20px] font-semibold text-gray-800">챌린지 목록</h1>
-        <Link href="/challenge/create">
+        <Link href="/challenges/create">
           <Button variant="solid" pill>
             신규 챌린지 신청
             <Image src="/icons/ic_plus_m.svg" alt="" width={16} height={16} />

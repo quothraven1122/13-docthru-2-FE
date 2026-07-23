@@ -262,7 +262,7 @@ export default function Page() {
       <div className="w-full max-w-[996px] mx-auto px-[24px]">
         <div className="flex justify-between mt-[24px]">
           <h2 className="text-gray-800 text-[20px] font-[600]">나의 챌린지</h2>
-          <Link href={"challenge/create"}>
+          <Link href={"challenges/create"}>
             <Button variant="solid" pill>
               신규 챌린지 신청
               <Image src="/icons/ic_plus_m.svg" alt="신규 챌린지 신청" width={16} height={16} />
