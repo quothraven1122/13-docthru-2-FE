@@ -40,7 +40,7 @@ export default function Gnb({
           {isAdmin && (
             <nav className="flex items-start">
               {ADMIN_NAV_TABS.map((tab) => {
-                const isActive = pathname === tab.href;
+                const isActive = pathname?.startsWith(tab.href);
                 return (
                   <Link
                     key={tab.href}
