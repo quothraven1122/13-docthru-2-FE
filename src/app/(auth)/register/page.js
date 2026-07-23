@@ -2,29 +2,41 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import Button from "@/components/Button";
 
 import { registerSchema } from "@/app/schemas/registerSchema";
+import { useAuth } from "@/providers/AuthProvider";
 import AuthField from "../_components/AuthField";
 import PasswordField from "../_components/PasswordField";
 
 const INITIAL_VALUES = { email: "", nickname: "", password: "", passwordConfirm: "" };
 
 export default function RegisterPage() {
+  const router = useRouter();
+  const { register: registerUser } = useAuth();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    setError,
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(registerSchema),
     mode: "onChange",
     defaultValues: INITIAL_VALUES,
   });
 
-  const onSubmit = () => {};
+  const onSubmit = async (values) => {
+    try {
+      await registerUser(values);
+      router.push("/challenges");
+    } catch (error) {
+      setError("root", { message: error.message });
+    }
+  };
 
   return (
     <div className="flex flex-1 items-start justify-center bg-white px-6 py-16 mt-30">
@@ -78,7 +90,9 @@ export default function RegisterPage() {
             {...register("passwordConfirm")}
           />
 
-          <Button type="submit" variant="solid" size="lg" className="mt-2 w-full">
+          {errors.root?.message && <p className="text-error text-center text-sm">{errors.root.message}</p>}
+
+          <Button type="submit" variant="solid" size="lg" className="mt-2 w-full" disabled={isSubmitting}>
             회원가입
           </Button>
         </form>
