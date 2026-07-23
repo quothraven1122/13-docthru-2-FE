@@ -52,7 +52,7 @@ async function authRequest(endpoint, { method, body, headers, cache } = {}) {
   }
 
   // 3. refreshToken으로 갱신 시도
-  const refreshResponse = await fetch("/auth/token/refresh", { method: "POST" });
+  const refreshResponse = await fetch(`${BASE_URL}/auth/token/refresh`, { method: "POST", credentials: "include" });
 
   // 4. 갱신 실패 시 원래 401 에러 반환
   if (!refreshResponse.ok) {
@@ -60,7 +60,7 @@ async function authRequest(endpoint, { method, body, headers, cache } = {}) {
   }
 
   // 5. 갱신 성공 시 원래 요청 재시도
-  const retryResponse = await fetch(endpoint, requestOptions);
+  const retryResponse = await fetch(`${BASE_URL}${endpoint}`, requestOptions);
   return handleResponse(retryResponse, endpoint);
 }
 
