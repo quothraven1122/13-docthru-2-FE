@@ -18,6 +18,11 @@
   --brand-light: #f1f2f5;
 
   --error-red: #eb3e3e;
+
+  --z-sticky: 100;
+  --z-editor-menu: 150;
+  --z-fixed: 200;
+  --z-modal: 300;
 }
 
 @theme inline {
@@ -37,6 +42,11 @@
   --color-brand-light: var(--brand-light);
 
   --color-error: var(--error-red);
+
+  --z-index-sticky: var(--z-sticky);
+  --z-index-fixed: var(--z-fixed);
+  --z-index-modal: var(--z-modal);
+  --z-index-editor-menu: var(--z-editor-menu);
 }
 @theme {
   --breakpoint-lg: 1200px; /*PC*/
@@ -47,6 +57,25 @@
   --background-image-landing-bg-sm: url("/landing/img_landing_bg_sm.svg");
   --background-image-landing-bg-md: url("/landing/img_landing_bg_md.svg");
   --background-image-landing-bg-lg: url("/landing/img_landing_bg_lg.svg");
+
+  --animate-spinner: spin 1.5s linear infinite;
+  --animate-reveal: reveal 2s ease-in-out forwards;
+}
+
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  10%,
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
 }
 
 /*#region 스크롤바 커스텀 부분*/
