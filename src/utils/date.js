@@ -1,8 +1,15 @@
 const dateUtils = {
   //dateFormat 함수
-  format(rawDate) {
+  format(rawDate, type = "ko") {
     const d = rawDate instanceof Date ? rawDate : new Date(rawDate);
-    return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
+
+    switch (type) {
+      case "dot":
+        return `${d.getFullYear()}. ${String(d.getMonth() + 1).padStart(2, "0")}. ${String(d.getDate()).padStart(2, "0")}. ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}:${String(d.getSeconds()).padStart(2, "0")}`;
+      case "ko":
+      default:
+        return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
+    }
   },
 
   //데드라인 유효성 검사 함수 입니다.
