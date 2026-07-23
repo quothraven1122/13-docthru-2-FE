@@ -2,11 +2,13 @@
 
 import { usePathname } from "next/navigation";
 import Gnb from "@/components/Gnb";
+import { useAuth } from "@/providers/AuthProvider";
 
 export default function GnbWrapper() {
   const pathname = usePathname();
+  const { user } = useAuth();
   const hideGNB = pathname.startsWith("/posts");
 
   if (hideGNB) return null;
-  return <Gnb />;
+  return <Gnb isLoggedIn={!!user} role={user?.role?.toLowerCase()} />;
 }
