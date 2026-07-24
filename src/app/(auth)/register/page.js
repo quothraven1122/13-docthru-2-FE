@@ -32,7 +32,7 @@ export default function RegisterPage() {
   const onSubmit = async (values) => {
     try {
       await registerUser(values);
-      router.push("/test");
+      router.push("/challenges");
     } catch (error) {
       setError("root", { message: error.message });
     }
