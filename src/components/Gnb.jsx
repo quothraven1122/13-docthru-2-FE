@@ -33,7 +33,10 @@ export default function Gnb({
     <header className="h-14 w-full border-b border-[#F5F5F5] bg-white md:h-[60px]">
       <div className="mx-auto flex h-full items-center justify-between px-4 md:px-6 lg:max-w-[1200px] lg:px-0">
         <div className="flex items-center gap-4 md:gap-6">
-          <Link href="/" className="relative block h-[18px] w-20 shrink-0 md:h-[27px] md:w-[120px]">
+          <Link
+            href={isLoggedIn ? "/challenges" : "/"}
+            className="relative block h-[18px] w-20 shrink-0 md:h-[27px] md:w-[120px]"
+          >
             <Image src="/logos/logo.svg" alt="Docthru" fill priority className="object-contain" />
           </Link>
 
