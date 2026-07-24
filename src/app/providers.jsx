@@ -1,5 +1,6 @@
 "use client";
 
+import AuthProvider from "@/providers/AuthProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import React, { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -9,8 +10,10 @@ export default function Providers({ children }) {
   const [queryClient] = useState(() => new QueryClient());
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <ModalProvider>{children}</ModalProvider>;
+      <AuthProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <ModalProvider>{children}</ModalProvider>;
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
