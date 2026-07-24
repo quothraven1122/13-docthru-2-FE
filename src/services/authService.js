@@ -6,4 +6,7 @@ export const authService = {
   register: async ({ email, nickname, password, passwordConfirm }) => {
     return publicApi.post(`${defaultEndpoint}/register`, { email, nickname, password, passwordConfirm });
   },
+  login: async ({ email, password }) => {
+    return publicApi.post(`${defaultEndpoint}/login`, { email, password });
+  },
 };

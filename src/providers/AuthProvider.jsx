@@ -7,6 +7,7 @@ import { authService } from "@/services/authService";
 const AuthContext = createContext({
   user: null,
   register: () => {},
+  login: () => {},
   saveAuth: () => {},
 });
 
@@ -30,5 +31,11 @@ export default function AuthProvider({ children }) {
     return data;
   };
 
-  return <AuthContext.Provider value={{ user, register }}>{children}</AuthContext.Provider>;
+  const login = async (values) => {
+    const data = await authService.login(values);
+    saveAuth(data);
+    return data;
+  };
+
+  return <AuthContext.Provider value={{ user, register, login }}>{children}</AuthContext.Provider>;
 }
