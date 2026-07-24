@@ -127,6 +127,7 @@ const MOCK_APPLICATIONS = [
 export default function AdminChallengesPage() {
   const [keyword, setKeyword] = useState("");
   const [sort, setSort] = useState(null);
+  const [page, setPage] = useState(1);
 
   return (
     <main className="mx-auto w-full max-w-[996px] px-4 pb-[60px] md:px-6 lg:px-0">
@@ -142,7 +143,7 @@ export default function AdminChallengesPage() {
       </div>
 
       <div className="mt-[40px] flex justify-center">
-        <Pagination visiblePageCount={5} totalPageCount={5} />
+        <Pagination current={page} setCurrent={setPage} visiblePageCount={5} totalPageCount={5} />
       </div>
     </main>
   );
