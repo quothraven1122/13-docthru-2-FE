@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 
@@ -18,6 +18,19 @@ import cn from "@/utils/cn";
 
 export default function TranslationWritePage() {
   const { translationId } = useParams();
+  const { openModal, closeModal } = useModal();
+  const { isDraftLoaded, draftList, saveDraft, deleteDraft } = useDraft(translationId);
+
+  const [isToastOpen, setIsToastOpen] = useState(false);
+  const [isIframeOpen, setIsIframeOpen] = useState(false);
+  const [isIframeLoading, setIsIframeLoading] = useState(true);
+  const [initialDraft, setInitialDraft] = useState(null);
+  const [loadedDraft, setLoadedDraft] = useState(null);
+  const [draft, setDraft] = useState({
+    json: null,
+    text: "",
+  });
+  const [reveal, setReveal] = useState(false);
 
   const { data } = useQuery({
     queryKey: ["translation", translationId],
@@ -31,20 +44,6 @@ export default function TranslationWritePage() {
     mutationKey: ["translation", translationId],
     mutationFn: () => translationService.quitTranslation(translationId),
   });
-
-  const { openModal, closeModal } = useModal();
-  const { isDraftLoaded, draftList, saveDraft, deleteDraft } = useDraft(data?.title);
-
-  const [isToastOpen, setIsToastOpen] = useState(false);
-  const [isIframeOpen, setIsIframeOpen] = useState(false);
-  const [isIframeLoading, setIsIframeLoading] = useState(true);
-  const [initialDraft, setInitialDraft] = useState(null);
-  const [loadedDraft, setLoadedDraft] = useState(null);
-  const [draft, setDraft] = useState({
-    json: null,
-    text: "",
-  });
-  const [reveal, setReveal] = useState(false);
 
   useEffect(() => {
     if (!data?.content) return;
