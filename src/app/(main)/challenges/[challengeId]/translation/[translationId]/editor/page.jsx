@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 
 import { useModal } from "@/providers/ModalProvider";
@@ -10,22 +12,48 @@ import DraftToast from "./_components/DraftToast";
 import DraftListModal from "./_components/DraftListModal";
 import Iframe from "./_components/Iframe";
 
+import translationService from "@/services/translationService";
+
 import cn from "@/utils/cn";
 
-const title = "개발자로써 자신만의 브랜드를 구축하는 방법(dailydev)";
-const src = "https://en.wikipedia.org/wiki/D.Va";
-
 export default function TranslationWritePage() {
+  const { translationId } = useParams();
+
+  const { data } = useQuery({
+    queryKey: ["translation", translationId],
+    queryFn: () => translationService.getTranslationDetail(translationId),
+  });
+  const { mutate: edit } = useMutation({
+    mutationKey: ["translation", translationId],
+    mutationFn: (stringifiedContent) => translationService.updateTranslation(translationId, stringifiedContent),
+  });
+  const { mutate: quit } = useMutation({
+    mutationKey: ["translation", translationId],
+    mutationFn: () => translationService.quitTranslation(translationId),
+  });
+
   const { openModal, closeModal } = useModal();
-  const { isDraftLoaded, draftList, saveDraft, deleteDraft } = useDraft(title);
+  const { isDraftLoaded, draftList, saveDraft, deleteDraft } = useDraft(data?.title);
 
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [isIframeOpen, setIsIframeOpen] = useState(false);
   const [isIframeLoading, setIsIframeLoading] = useState(true);
-  const [content, setContent] = useState({ json: null, text: "" });
+  const [initialDraft, setInitialDraft] = useState(null);
   const [loadedDraft, setLoadedDraft] = useState(null);
+  const [draft, setDraft] = useState({
+    json: null,
+    text: "",
+  });
   const [reveal, setReveal] = useState(false);
 
+  useEffect(() => {
+    if (!data?.content) return;
+    const parsedContent = JSON.parse(data.content);
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setInitialDraft(parsedContent.json);
+    setDraft(parsedContent);
+  }, [data?.content]);
   useEffect(() => {
     if (isDraftLoaded && draftList.length > 0) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -45,7 +73,13 @@ export default function TranslationWritePage() {
           <Image width={120} height={30} src="/logos/logo.svg" alt="로고" className="cursor-pointer" />
 
           <div className="flex gap-[8px]">
-            <Button variant="tonal">
+            <Button
+              variant="tonal"
+              onClick={() => {
+                const quitConfirmation = confirm("정말로 포기하시겠습니까?");
+                if (quitConfirmation) quit();
+              }}
+            >
               <p className="hidden md:block">포기</p>
               <Image width={20} height={20} src="/icons/ic_exit.svg" alt="나가기 아이콘" />
             </Button>
@@ -53,18 +87,25 @@ export default function TranslationWritePage() {
             <Button
               variant="outline"
               onClick={() => {
-                saveDraft(content);
+                saveDraft(draft);
                 setReveal(true);
               }}
             >
               임시저장
             </Button>
 
-            <Button variant="solid">제출하기</Button>
+            <Button
+              variant="solid"
+              onClick={() => {
+                edit(JSON.stringify(draft));
+              }}
+            >
+              제출하기
+            </Button>
           </div>
         </header>
 
-        <h1 className="text-[20px] text-gray-800 font-semibold pb-[24px] border-b border-b-gray-200">{title}</h1>
+        <h1 className="text-[20px] text-gray-800 font-semibold pb-[24px] border-b border-b-gray-200">{data?.title}</h1>
 
         <div className="overflow-hidden">
           <div
@@ -79,7 +120,7 @@ export default function TranslationWritePage() {
         </div>
 
         <div className="relative">
-          <Editor content={content.json} loadedDraft={loadedDraft} setContent={setContent} />
+          <Editor content={initialDraft} loadedDraft={loadedDraft} setContent={setDraft} />
 
           {!isIframeOpen && (
             <button
@@ -97,7 +138,7 @@ export default function TranslationWritePage() {
       </div>
 
       <Iframe
-        src={src}
+        src={data?.link}
         isIframeOpen={isIframeOpen}
         isIframeLoading={isIframeLoading}
         setIsIframeOpen={setIsIframeOpen}
