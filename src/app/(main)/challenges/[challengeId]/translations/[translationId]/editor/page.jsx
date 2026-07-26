@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, usePathname } from "next/navigation";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 
@@ -18,6 +18,10 @@ import cn from "@/utils/cn";
 
 export default function TranslationWritePage() {
   const { translationId } = useParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const previousPath = pathname.replace(/\/[^/]+$/, "");
+  const errorPath = pathname.replace(/\/[^/]+\/[^/]+\/[^/]+$/, "");
   const { openModal, closeModal } = useModal();
   const { isDraftLoaded, draftList, saveDraft, deleteDraft } = useDraft(translationId);
 
@@ -32,17 +36,23 @@ export default function TranslationWritePage() {
   });
   const [reveal, setReveal] = useState(false);
 
-  const { data } = useQuery({
+  const { data, isError } = useQuery({
     queryKey: ["translation", translationId],
     queryFn: () => translationService.getTranslationDetail(translationId),
   });
   const { mutate: edit } = useMutation({
     mutationKey: ["translation", translationId],
     mutationFn: (stringifiedContent) => translationService.updateTranslation(translationId, stringifiedContent),
+    onSuccess: () => {
+      router.push(previousPath);
+    },
   });
   const { mutate: quit } = useMutation({
     mutationKey: ["translation", translationId],
     mutationFn: () => translationService.quitTranslation(translationId),
+    onSuccess: () => {
+      router.replace(errorPath);
+    },
   });
 
   useEffect(() => {
@@ -53,6 +63,12 @@ export default function TranslationWritePage() {
     setInitialDraft(parsedContent.json);
     setDraft(parsedContent);
   }, [data?.content]);
+  useEffect(() => {
+    if (isError) {
+      alert("존재하지 않는 페이지입니다.");
+      router.replace(errorPath);
+    }
+  }, [isError]);
   useEffect(() => {
     if (isDraftLoaded && draftList.length > 0) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -69,7 +85,14 @@ export default function TranslationWritePage() {
     >
       <div className="flex-1 overflow-y-auto md:overflow-y-visible">
         <header className="flex flex-wrap gap-y-[10px] justify-between items-center m-auto py-[24px]">
-          <Image width={120} height={30} src="/logos/logo.svg" alt="로고" className="cursor-pointer" />
+          <Image
+            width={120}
+            height={30}
+            src="/logos/logo.svg"
+            alt="로고"
+            className="cursor-pointer"
+            onClick={() => router.push("/")}
+          />
 
           <div className="flex gap-[8px]">
             <Button
