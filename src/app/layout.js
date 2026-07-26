@@ -17,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${pretendard.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col font-pretendard">
+      <body className="h-dvh min-h-full flex flex-col font-pretendard">
         <Providers>{children}</Providers>
       </body>
     </html>

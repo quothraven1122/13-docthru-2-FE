@@ -79,7 +79,7 @@ export default function TranslationWritePage() {
   return (
     <div
       className={cn(
-        "relative flex h-dvh px-[24px] gap-[10px] md:min-h-fit",
+        "relative flex h-full px-[24px] gap-[10px] md:min-h-fit",
         isIframeOpen ? "flex-col-reverse md:flex-row" : "lg:w-[890px] lg:mx-auto",
       )}
     >
