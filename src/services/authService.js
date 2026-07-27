@@ -12,4 +12,7 @@ export const authService = {
   getMe: async () => {
     return authApi.get("/users/me");
   },
+  logout: async () => {
+    return authApi.post("/auth/logout");
+  },
 };

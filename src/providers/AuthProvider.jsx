@@ -12,6 +12,7 @@ const AuthContext = createContext({
   isLoading: true,
   register: () => {},
   login: () => {},
+  logout: () => {},
 });
 
 export function useAuth() {
@@ -31,7 +32,7 @@ export default function AuthProvider({ children }) {
       return data ?? null;
     },
     retry: false,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 5 * 60 * 1000, //5분이내에 새로고침시 캐시된 데이터 사용
   });
 
   // 회원가입/로그인 등 인증 성공 응답 처리 공통 로직
@@ -51,8 +52,14 @@ export default function AuthProvider({ children }) {
     return data;
   };
 
+  const logout = async () => {
+    queryClient.setQueryData(AUTH_ME_QUERY_KEY, null);
+
+    await authService.logout();
+  };
+
   return (
-    <AuthContext.Provider value={{ user: user ?? null, isLoading, register, login }}>
+    <AuthContext.Provider value={{ user: user ?? null, isLoading, register, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
