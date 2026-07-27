@@ -3,7 +3,7 @@ import Chip from "@/components/Chip";
 import cn from "@/utils/cn";
 
 const headerCellClassName = "bg-gray-800 px-[8px] py-[10px] font-medium lg:px-[16px]";
-const cellClassName = "border-b border-gray-300 px-[8px] py-[15px] text-gray-500 lg:px-[16px]";
+const cellClassName = "whitespace-nowrap border-b border-gray-300 px-[8px] py-[15px] text-gray-500 lg:px-[16px]";
 
 export default function ApplicationTable({ applications = [] }) {
   return (
@@ -40,7 +40,7 @@ export default function ApplicationTable({ applications = [] }) {
               <td className={cellClassName}>{application.no}</td>
               <td className={cellClassName}>{application.field}</td>
               <td className={cellClassName}>{application.docType}</td>
-              <td className={cn(cellClassName, "font-medium text-gray-700")}>
+              <td className={cn(cellClassName, "whitespace-normal font-medium text-gray-700")}>
                 <p className="line-clamp-2 lg:line-clamp-1">{application.title}</p>
               </td>
               <td className={cellClassName}>{application.maxMember}</td>
