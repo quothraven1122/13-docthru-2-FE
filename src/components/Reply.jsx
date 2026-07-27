@@ -10,7 +10,7 @@ export function Reply({ user, reply, onEdit, onDelete }) {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
 
-  const isAuthor = String(reply.userId) === String(user.id);
+  const isAuthor = !!user && String(reply.userId) === String(user.id);
 
   const handleSave = async () => {
     if (!content.trim() || content === reply.content) {
