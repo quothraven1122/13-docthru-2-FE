@@ -5,7 +5,7 @@ import { NO_GNB } from "@/constants/navigation";
 
 export default function MainLayout({ children }) {
   const pathname = usePathname();
-  const hasGNB = !NO_GNB.some(({ href }) => (href instanceof RegExp ? href.test(pathname) : href === path));
+  const hasGNB = !NO_GNB.some(({ href }) => (href instanceof RegExp ? href.test(pathname) : href === pathname));
   return (
     <>
       {hasGNB && <GnbWrapper />}

@@ -39,6 +39,7 @@ export default function TranslationWritePage() {
   const { data, isError } = useQuery({
     queryKey: ["translation", translationId],
     queryFn: () => translationService.getTranslationDetail(translationId),
+    refetchOnMount: "always",
   });
   const { mutate: edit } = useMutation({
     mutationKey: ["translation", translationId],
@@ -57,11 +58,26 @@ export default function TranslationWritePage() {
 
   useEffect(() => {
     if (!data?.content) return;
-    const parsedContent = JSON.parse(data.content);
 
+    let content;
+    try {
+      content = JSON.parse(data.content);
+      if (!content?.json || content.json.type !== "doc") {
+        throw new Error("Invalid content structure");
+      }
+    } catch (e) {
+      alert("잘못된 content 형식입니다.");
+      content = {
+        json: {
+          type: "doc",
+          content: [],
+        },
+        text: "",
+      };
+    }
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setInitialDraft(parsedContent.json);
-    setDraft(parsedContent);
+    setInitialDraft(content.json);
+    setDraft(content);
   }, [data?.content]);
   useEffect(() => {
     if (isError) {
