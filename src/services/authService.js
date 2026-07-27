@@ -1,4 +1,4 @@
-import { publicApi } from "@/services/fetchClient";
+import { authApi, publicApi } from "@/services/fetchClient";
 
 const defaultEndpoint = "/auth";
 
@@ -8,5 +8,11 @@ export const authService = {
   },
   login: async ({ email, password }) => {
     return publicApi.post(`${defaultEndpoint}/login`, { email, password });
+  },
+  getMe: async () => {
+    return authApi.get("/users/me");
+  },
+  logout: async () => {
+    return authApi.post("/auth/logout");
   },
 };

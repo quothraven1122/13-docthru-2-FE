@@ -1,14 +1,18 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { authService } from "@/services/authService";
 
+const AUTH_ME_QUERY_KEY = ["auth", "me"];
+
 const AuthContext = createContext({
   user: null,
+  isLoading: true,
   register: () => {},
   login: () => {},
-  saveAuth: () => {},
+  logout: () => {},
 });
 
 export function useAuth() {
@@ -18,11 +22,22 @@ export function useAuth() {
 }
 
 export default function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const queryClient = useQueryClient();
+
+  // 새로고침 시에도 로그인 상태를 유지하기 위해 마운트 시 현재 사용자 조회
+  const { data: user, isLoading } = useQuery({
+    queryKey: AUTH_ME_QUERY_KEY,
+    queryFn: async () => {
+      const data = await authService.getMe();
+      return data ?? null;
+    },
+    retry: false,
+    staleTime: 5 * 60 * 1000, //5분이내에 새로고침시 캐시된 데이터 사용
+  });
 
   // 회원가입/로그인 등 인증 성공 응답 처리 공통 로직
   const saveAuth = (data) => {
-    setUser(data.user);
+    queryClient.setQueryData(AUTH_ME_QUERY_KEY, data.user);
   };
 
   const register = async (values) => {
@@ -37,5 +52,15 @@ export default function AuthProvider({ children }) {
     return data;
   };
 
-  return <AuthContext.Provider value={{ user, register, login }}>{children}</AuthContext.Provider>;
+  const logout = async () => {
+    queryClient.setQueryData(AUTH_ME_QUERY_KEY, null);
+
+    await authService.logout();
+  };
+
+  return (
+    <AuthContext.Provider value={{ user: user ?? null, isLoading, register, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
