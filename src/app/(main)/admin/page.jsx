@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import Pagination from "@/components/Pagination";
 import SearchBar from "@/components/SearchBar";
@@ -40,6 +41,7 @@ export default function AdminChallengesPage() {
   const [keyword, setKeyword] = useState("");
   const [sort, setSort] = useState(null);
   const [page, setPage] = useState(1);
+  const router = useRouter();
 
   const { data, isLoading, isError } = useApplications({ keyword, sort, page, pageSize: PAGE_SIZE });
 
@@ -73,7 +75,7 @@ export default function AdminChallengesPage() {
         ) : rows.length === 0 ? (
           <p className="py-10 text-center text-gray-400">신청 내역이 없습니다.</p>
         ) : (
-          <ApplicationTable applications={rows} />
+          <ApplicationTable applications={rows} onRowClick={(id) => router.push(`/admin/applications/${id}`)} />
         )}
       </div>
 
