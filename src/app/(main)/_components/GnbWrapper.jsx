@@ -6,9 +6,9 @@ import { useAuth } from "@/providers/AuthProvider";
 
 export default function GnbWrapper() {
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
   const hideGNB = pathname.startsWith("/posts");
 
   if (hideGNB) return null;
-  return <Gnb isLoggedIn={!!user} role={user?.role?.toLowerCase()} />;
+  return <Gnb isLoggedIn={!!user} role={user?.role?.toLowerCase()} isLoading={isLoading} />;
 }

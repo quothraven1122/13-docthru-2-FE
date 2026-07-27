@@ -15,6 +15,7 @@ export default function Gnb({
   hasNotification = false,
   profileMenu = null,
   onProfileClick,
+  isLoading = false,
 }) {
   const pathname = usePathname();
   const isAdmin = isLoggedIn && role === "admin";
@@ -60,7 +61,7 @@ export default function Gnb({
           )}
         </div>
 
-        {!isLoggedIn && (
+        {!isLoading && !isLoggedIn && (
           <Link
             href="/login"
             className="flex h-8 shrink-0 items-center justify-center rounded-[10px] border border-gray-800 px-4 text-sm font-semibold text-gray-800 md:h-10 md:rounded-xl md:text-base"
@@ -69,7 +70,7 @@ export default function Gnb({
           </Link>
         )}
 
-        {isMember && (
+        {!isLoading && isMember && (
           <div className="flex shrink-0 items-center gap-4">
             <button type="button" aria-label="알림">
               <Image
@@ -89,7 +90,7 @@ export default function Gnb({
         )}
 
         {/* 어드민은 벨 아이콘 없음(디자인 의도) */}
-        {isAdmin && (
+        {!isLoading && isAdmin && (
           <div ref={profileRef} className="relative shrink-0">
             <button type="button" onClick={handleProfileClick} aria-label="프로필 메뉴">
               <Image src="/images/img_profile_admin.svg" alt="" width={32} height={32} />
