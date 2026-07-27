@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { challengeService } from "@/services/challengeService";
 import { SORT_VALUE_TO_STATUS } from "@/constants/challengeOptions";
@@ -26,4 +26,34 @@ export function useApplications({ keyword, sort, page, pageSize = 10 }) {
     queryFn: () => challengeService.getApplications(params),
     placeholderData: (prev) => prev, // 페이지 전환 시 이전 데이터 유지 (깜빡임 방지)
   });
+}
+
+export function useApplicationDetail(challengeId) {
+  return useQuery({
+    queryKey: ["application", challengeId],
+    queryFn: () => challengeService.getApplicationDetail(challengeId),
+    enabled: !!challengeId,
+  });
+}
+
+// 승인/거절 (성공 시 상세•목록 캐시 무효화 -> 제자리 갱신)
+export function useApplicationMutations(challengeId) {
+  const queryClient = useQueryClient();
+
+  const invalidate = () => {
+    queryClient.invalidateQueries({ queryKey: ["application", challengeId] });
+    queryClient.invalidateQueries({ queryKey: ["applications"] });
+  };
+
+  const approve = useMutation({
+    mutationFn: () => challengeService.approveApplication(challengeId),
+    onSuccess: invalidate,
+  });
+
+  const reject = useMutation({
+    mutationFn: (reason) => challengeService.rejectApplication(challengeId, reason),
+    onSuccess: invalidate,
+  });
+
+  return { approve, reject };
 }

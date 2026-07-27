@@ -13,6 +13,11 @@ export const challengeService = {
     return authApi.get(`${BASE}/applications${qs ? `?${qs}` : ""}`);
   },
 
+  // 신청 상세 조회 (어드민)
+  getApplicationDetail: async (challengeId) => {
+    return authApi.get(`${BASE}/applications/${challengeId}`);
+  },
+
   // 신청 승인
   approveApplication: async (challengeId) => {
     return authApi.patch(`${BASE}/${challengeId}/approve`);
