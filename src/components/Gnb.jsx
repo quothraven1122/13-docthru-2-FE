@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { ADMIN_NAV_TABS } from "@/constants/navigation";
+import { PROFILE_AVATAR_SRC } from "@/constants/profile";
 import { useClickOutside } from "@/hooks/useClickOutside";
 
 export default function Gnb({
@@ -82,9 +83,13 @@ export default function Gnb({
             </button>
             <div ref={profileRef} className="relative">
               <button type="button" onClick={handleProfileClick} aria-label="프로필 메뉴">
-                <Image src="/images/img_profile_member.svg" alt="" width={32} height={32} />
+                <Image src={PROFILE_AVATAR_SRC.MEMBER} alt="" width={32} height={32} />
               </button>
-              {isProfileOpen && profileMenu && <div className="absolute top-full right-0 z-10 mt-2">{profileMenu}</div>}
+              {isProfileOpen && profileMenu && (
+                <div className="absolute top-full right-0 z-10 mt-2" onClick={() => setIsProfileOpen(false)}>
+                  {profileMenu}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -93,9 +98,13 @@ export default function Gnb({
         {!isLoading && isAdmin && (
           <div ref={profileRef} className="relative shrink-0">
             <button type="button" onClick={handleProfileClick} aria-label="프로필 메뉴">
-              <Image src="/images/img_profile_admin.svg" alt="" width={32} height={32} />
+              <Image src={PROFILE_AVATAR_SRC.ADMIN} alt="" width={32} height={32} />
             </button>
-            {isProfileOpen && profileMenu && <div className="absolute top-full right-0 z-10 mt-2">{profileMenu}</div>}
+            {isProfileOpen && profileMenu && (
+              <div className="absolute top-full right-0 z-10 mt-2" onClick={() => setIsProfileOpen(false)}>
+                {profileMenu}
+              </div>
+            )}
           </div>
         )}
       </div>
