@@ -47,7 +47,7 @@ export default function LandingPage() {
             개발자의 새로운 영어 습관
           </p>
 
-          <Link href="/challenges" className="rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-gray-900">
+          <Link href="/login" className="rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-gray-900">
             번역 시작하기
           </Link>
         </section>
@@ -63,7 +63,7 @@ export default function LandingPage() {
         <p className="text-[1.125rem] font-semibold text-gray-900">함께 번역하고 성장하세요!</p>
 
         <Link
-          href="/challenges"
+          href="/login"
           className="mt-6 inline-block rounded-xl bg-gray-900 px-6 py-2.5 font-semibold text-[1rem] text-white"
         >
           번역 시작하기
