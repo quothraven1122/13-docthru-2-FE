@@ -5,7 +5,7 @@ import Chip from "@/components/Chip";
 import dateUtils from "@/utils/date";
 
 export default function ApplicationDetail({ application }) {
-  const { no, title, field, docType, description, deadline, maxMember } = application;
+  const { no, title, field, docType, description, deadline, maxMember, link } = application;
 
   return (
     <div className="flex flex-col gap-3">
@@ -53,13 +53,15 @@ export default function ApplicationDetail({ application }) {
         <p className="text-[16px] font-semibold text-gray-900">원문 링크</p>
         <div className="relative mt-4 h-[206px] w-full overflow-hidden rounded-[12px] bg-gray-800 md:h-[490px]">
           {/* 실제 원문 임베드는 API 연동 시 iframe 또는 링크로 교체 */}
-          <button
-            type="button"
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
             className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-[8px] bg-[#f6f8fa]/50 px-3 py-1.5 text-[13px] font-bold text-gray-700"
           >
             링크 열기
-            <Image src="/icons/ic_out.svg" alt="" width={16} height={16} aria-hidden="true" />
-          </button>
+            <Image src="/icons/ic_out.svg" alt="링크열기" width={16} height={16} aria-hidden="true" />
+          </a>
         </div>
       </div>
     </div>
