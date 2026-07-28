@@ -29,13 +29,13 @@ function toDetail(item) {
 
 export default function AdminApplicationDetailPage() {
   const { challengeId } = useParams();
-  const { data, isLoading, isError } = useApplicationDetail(challengeId);
+  const { data, isPending, error } = useApplicationDetail(challengeId);
   const { approve, reject } = useApplicationMutations(challengeId);
 
-  if (isLoading) {
+  if (isPending) {
     return <p className="py-20 text-center text-gray-400">불러오는 중...</p>;
   }
-  if (isError || !data) {
+  if (error || !data) {
     return <p className="py-20 text-center text-gray-400">신청 정보를 불러오지 못했습니다.</p>;
   }
 

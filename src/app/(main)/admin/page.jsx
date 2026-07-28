@@ -43,7 +43,7 @@ export default function AdminChallengesPage() {
   const [page, setPage] = useState(1);
   const router = useRouter();
 
-  const { data, isLoading, isError } = useApplications({ keyword, sort, page, pageSize: PAGE_SIZE });
+  const { data, isPending, error } = useApplications({ keyword, sort, page, pageSize: PAGE_SIZE });
 
   const rows = (data?.list ?? []).map(toRow);
   const totalPageCount = Math.max(1, Math.ceil((data?.totalCount ?? 0) / PAGE_SIZE));
@@ -68,9 +68,9 @@ export default function AdminChallengesPage() {
       </div>
 
       <div className="mt-[24px]">
-        {isLoading ? (
+        {isPending ? (
           <p className="py-10 text-center text-gray-400">불러오는 중...</p>
-        ) : isError ? (
+        ) : error ? (
           <p className="py-10 text-center text-gray-400">목록을 불러오지 못했습니다.</p>
         ) : rows.length === 0 ? (
           <p className="py-10 text-center text-gray-400">신청 내역이 없습니다.</p>
