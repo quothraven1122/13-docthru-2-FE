@@ -18,31 +18,17 @@ export const contentStyle = `
   [&_ol]:pl-4
   [&_li_p]:my-1
 
-  [&_h1]:mt-14
-  [&_h1]:mb-6
-  [&_h1]:text-[1.4rem]
+  [&_h1]:my-[20px]
+  [&_h1]:text-[36px]
   [&_h1]:leading-tight
 
-  [&_h2]:mt-14
-  [&_h2]:mb-6
-  [&_h2]:text-[1.2rem]
+  [&_h2]:my-[15px]
+  [&_h2]:text-[28px]
   [&_h2]:leading-tight
 
-  [&_h3]:mt-10
-  [&_h3]:text-[1.1rem]
+  [&_h3]:my-[10px]
+  [&_h3]:text-[20px]
   [&_h3]:leading-tight
-
-  [&_h4]:mt-10
-  [&_h4]:text-base
-  [&_h4]:leading-tight
-
-  [&_h5]:mt-10
-  [&_h5]:text-base
-  [&_h5]:leading-tight
-
-  [&_h6]:mt-10
-  [&_h6]:text-base
-  [&_h6]:leading-tight
 
   [&_blockquote]:my-6
   [&_blockquote]:border-l-[3px]
