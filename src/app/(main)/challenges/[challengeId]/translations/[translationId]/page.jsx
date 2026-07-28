@@ -1,11 +1,15 @@
 "use client";
 import Button from "@/components/Button";
 import Chip from "@/components/Chip";
+import KebabMenu from "@/components/KebabMenu";
 import { CreateReply, Reply } from "@/components/Reply";
+import TranslationViewer from "@/components/TranslaionViewer";
 import { useLikeCount, useLikeStatus, useToggleLike } from "@/hooks/useLike";
 import { useCreateReview, useDeleteReview, useReviews, useUpdateReview } from "@/hooks/useReview";
 import { useTranslationDetail } from "@/hooks/useTranslationDetail";
 import { useAuth } from "@/providers/AuthProvider";
+import translationService from "@/services/translationService";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -19,10 +23,26 @@ const TestData = {
 };
 
 export default function Page() {
-  const { translationId } = useParams();
+  const { challengeId, translationId } = useParams();
   const router = useRouter();
   const { user } = useAuth();
   const { data: translation, isPending, isError } = useTranslationDetail(translationId);
+
+  const { mutate: deleteTranslation } = useMutation({
+    mutationFn: () => translationService.quitTranslation(translationId),
+    onSuccess: () => {
+      router.replace(`/challenges/${challengeId}`);
+    },
+  });
+
+  const handleEditTranslation = () => {
+    router.push(`/challenges/${challengeId}/translations/${translationId}/editor`);
+  };
+
+  const handleDeleteTranslation = () => {
+    if (!confirm("정말로 삭제하시겠습니까?")) return;
+    deleteTranslation();
+  };
   const { data: likeCountData } = useLikeCount(translationId);
   const { data: likeStatusData } = useLikeStatus(translationId, !!user);
   const { mutate: toggleLike } = useToggleLike(translationId);
@@ -82,7 +102,12 @@ export default function Page() {
     <div className="mx-auto w-full max-w-222.5">
       <div className="px-4 py-6">
         <div>
-          <div className="text-gray-800 text-xl/normal font-semibold">{translation.title}</div>
+          <div className="flex justify-between">
+            <div className="text-gray-800 text-xl/normal font-semibold">{translation.title}</div>
+            {translation.participation?.participatorId === user?.id && user ? (
+              <KebabMenu onEdit={handleEditTranslation} onDelete={handleDeleteTranslation} />
+            ) : null}
+          </div>
           <div className="flex gap-2 my-4">
             <Chip variant="field" value={translation.field} />
             <Chip variant="docType" value={translation.docType} />
@@ -113,8 +138,7 @@ export default function Page() {
               <div>아직 아무런 번역을 진행하지 않았어요!</div>
             </div>
           ) : (
-            // TODO: tiptap 뷰어가 따로 있을텐데 ---> 그걸로 수정
-            <div>{translation.content}</div>
+            <TranslationViewer content={translation.content} />
           )}
         </div>
 
