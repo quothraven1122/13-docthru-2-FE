@@ -1,24 +1,10 @@
-import { authApi, publicApi } from "@/services/fetchClient";
+import likeService from "@/services/likeService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
-const defaultEndpoint = "/like";
-
-async function getLikeCount(translationId) {
-  return publicApi.get(`${defaultEndpoint}/${translationId}/count`);
-}
-
-async function getLikeStatus(translationId) {
-  return authApi.get(`${defaultEndpoint}/${translationId}/status`);
-}
-
-async function toggleLike(translationId) {
-  return authApi.post(defaultEndpoint, { translationId });
-}
 
 export function useLikeCount(translationId) {
   return useQuery({
     queryKey: ["likeCount", translationId],
-    queryFn: () => getLikeCount(translationId),
+    queryFn: () => likeService.getLikeCount(translationId),
     enabled: !!translationId,
   });
 }
@@ -26,7 +12,7 @@ export function useLikeCount(translationId) {
 export function useLikeStatus(translationId, enabled) {
   return useQuery({
     queryKey: ["likeStatus", translationId],
-    queryFn: () => getLikeStatus(translationId),
+    queryFn: () => likeService.getLikeStatus(translationId),
     enabled: !!translationId && enabled,
   });
 }
@@ -35,7 +21,7 @@ export function useToggleLike(translationId) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => toggleLike(translationId),
+    mutationFn: () => likeService.toggleLike(translationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["likeCount", translationId] });
       queryClient.invalidateQueries({ queryKey: ["likeStatus", translationId] });
