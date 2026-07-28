@@ -6,34 +6,19 @@ import { CreateReply, Reply } from "@/components/Reply";
 import TranslationViewer from "@/components/TranslaionViewer";
 import { useLikeCount, useLikeStatus, useToggleLike } from "@/hooks/useLike";
 import { useCreateReview, useDeleteReview, useReviews, useUpdateReview } from "@/hooks/useReview";
-import { useTranslationDetail } from "@/hooks/useTranslationDetail";
+import { useDeleteTranslation, useTranslationDetail } from "@/hooks/useTranslationDetail";
 import { useAuth } from "@/providers/AuthProvider";
-import translationService from "@/services/translationService";
-import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-// TODO: 제목/분야/문서유형/작성자명은 이제 실데이터 사용, 남은 항목 없음
-const TestData = {
-  title: "테스트 챌린지 데이터 입니다.",
-  createdBy: "사용자",
-  field: "API",
-  doctype: "공식문서",
-};
-
-export default function Page() {
+export default function TranslationDetailPage() {
   const { challengeId, translationId } = useParams();
   const router = useRouter();
   const { user } = useAuth();
   const { data: translation, isPending, isError } = useTranslationDetail(translationId);
 
-  const { mutate: deleteTranslation } = useMutation({
-    mutationFn: () => translationService.quitTranslation(translationId),
-    onSuccess: () => {
-      router.replace(`/challenges/${challengeId}`);
-    },
-  });
+  const { mutate: deleteTranslation } = useDeleteTranslation(translationId, challengeId);
 
   const handleEditTranslation = () => {
     router.push(`/challenges/${challengeId}/translations/${translationId}/editor`);
@@ -88,7 +73,6 @@ export default function Page() {
 
   const createdAt = translation?.createdAt ? new Date(translation.createdAt).toISOString().slice(0, 10) : "";
 
-  // review -> Reply 컴포넌트가 기대하는 형태로 매핑
   const replies = (reviewPages?.pages.flat() ?? []).map((review) => ({
     id: review.id,
     userId: review.reviewerId,
