@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useParams, useRouter, usePathname } from "next/navigation";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 
 import { useModal } from "@/providers/ModalProvider";
@@ -20,6 +20,7 @@ export default function TranslationWritePage() {
   const { translationId } = useParams();
   const router = useRouter();
   const pathname = usePathname();
+  const queryClient = useQueryClient();
   const previousPath = pathname.replace(/\/[^/]+$/, "");
   const errorPath = pathname.replace(/\/[^/]+\/[^/]+\/[^/]+$/, "");
   const { openModal, closeModal } = useModal();
@@ -39,12 +40,12 @@ export default function TranslationWritePage() {
   const { data, isError } = useQuery({
     queryKey: ["translation", translationId],
     queryFn: () => translationService.getTranslationDetail(translationId),
-    refetchOnMount: "always",
   });
   const { mutate: edit } = useMutation({
     mutationKey: ["translation", translationId],
     mutationFn: (stringifiedContent) => translationService.updateTranslation(translationId, stringifiedContent),
     onSuccess: () => {
+      queryClient.invalidateQueries(["translation", translationId]);
       router.push(previousPath);
     },
   });
@@ -52,6 +53,7 @@ export default function TranslationWritePage() {
     mutationKey: ["translation", translationId],
     mutationFn: () => translationService.quitTranslation(translationId),
     onSuccess: () => {
+      queryClient.invalidateQueries(["translation", translationId]);
       router.replace(errorPath);
     },
   });
