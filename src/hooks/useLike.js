@@ -4,11 +4,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 const defaultEndpoint = "/like";
 
 async function getLikeCount(translationId) {
-  return publicApi.get(`${defaultEndpoint}/count?translationId=${translationId}`);
+  return publicApi.get(`${defaultEndpoint}/${translationId}/count`);
 }
 
 async function getLikeStatus(translationId) {
-  return authApi.get(`${defaultEndpoint}/status?translationId=${translationId}`);
+  return authApi.get(`${defaultEndpoint}/${translationId}/status`);
 }
 
 async function toggleLike(translationId) {
