@@ -8,15 +8,29 @@ export const contentStyle = `
 
   [&>:first-child]:mt-0
 
-  [&_ul]:my-5
-  [&_ol]:my-5
+  [&_li_p]:my-2
+
+  [&_ul]:my-2
   [&_ul]:mr-4
-  [&_ol]:mr-4
-  [&_ul]:list-disc
-  [&_ol]:list-decimal
   [&_ul]:pl-4
+  [&_ul]:list-disc
+
+  [&_ul_ul]:[list-style-type:square]
+  [&_ul_ul_ul]:list-disc
+  [&_ul_ul_ul_ul]:[list-style-type:square]
+  [&_ul_ul_ul_ul_ul]:list-disc
+  [&_ul_ul_ul_ul_ul_ul]:[list-style-type:square]
+
+  [&_ol]:my-2
+  [&_ol]:mr-4
   [&_ol]:pl-4
-  [&_li_p]:my-1
+  [&_ol]:list-decimal
+
+  [&_ol_ol]:[list-style-type:lower-alpha]
+  [&_ol_ol_ol]:[list-style-type:lower-roman]
+  [&_ol_ol_ol_ol]:list-decimal
+  [&_ol_ol_ol_ol_ol]:[list-style-type:lower-alpha]
+  [&_ol_ol_ol_ol_ol_ol]:[list-style-type:lower-roman]
 
   [&_h1]:my-[20px]
   [&_h1]:text-[36px]
