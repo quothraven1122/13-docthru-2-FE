@@ -77,6 +77,11 @@ export default function Editor({ content, loadedDraft, setContent }) {
     },
   });
   useEffect(() => {
+    if (!editor || !content) return;
+
+    editor.commands.setContent(content, false);
+  }, [editor, content]);
+  useEffect(() => {
     if (!editor || !loadedDraft) return;
     const frameId = requestAnimationFrame(() => {
       editor.commands.setContent(loadedDraft.json, false);

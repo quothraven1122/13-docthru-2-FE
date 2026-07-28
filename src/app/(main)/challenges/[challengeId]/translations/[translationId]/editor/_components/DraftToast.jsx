@@ -3,7 +3,7 @@ import Button from "@/components/Button";
 
 export default function DraftToast({ content, closeToast = () => {}, onConfirm = () => {} }) {
   return (
-    <div className="max-w-[890px] fixed left-[15px] right-[15px] bottom-[15px] m-auto h-fit flex justify-between gap-[14px] p-[8px] border border-gray-800 rounded-[8px] bg-gray-50 z-sticky">
+    <div className="max-w-[890px] fixed left-[15px] right-[15px] bottom-[15px] m-auto h-fit flex justify-between gap-[14px] p-[8px] border border-gray-800 rounded-[8px] bg-gray-50 z-fixed">
       <div className="flex items-center">
         <Image
           width={24}

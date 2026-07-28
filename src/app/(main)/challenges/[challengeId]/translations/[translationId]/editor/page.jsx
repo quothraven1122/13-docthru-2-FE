@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useParams, useRouter, usePathname } from "next/navigation";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 
 import { useModal } from "@/providers/ModalProvider";
@@ -10,22 +12,79 @@ import DraftToast from "./_components/DraftToast";
 import DraftListModal from "./_components/DraftListModal";
 import Iframe from "./_components/Iframe";
 
+import translationService from "@/services/translationService";
+
 import cn from "@/utils/cn";
 
-const title = "개발자로써 자신만의 브랜드를 구축하는 방법(dailydev)";
-const src = "https://en.wikipedia.org/wiki/D.Va";
-
 export default function TranslationWritePage() {
+  const { translationId } = useParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const previousPath = pathname.replace(/\/[^/]+$/, "");
+  const errorPath = pathname.replace(/\/[^/]+\/[^/]+\/[^/]+$/, "");
   const { openModal, closeModal } = useModal();
-  const { isDraftLoaded, draftList, saveDraft, deleteDraft } = useDraft(title);
+  const { isDraftLoaded, draftList, saveDraft, deleteDraft } = useDraft(translationId);
 
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [isIframeOpen, setIsIframeOpen] = useState(false);
   const [isIframeLoading, setIsIframeLoading] = useState(true);
-  const [content, setContent] = useState({ json: null, text: "" });
+  const [initialDraft, setInitialDraft] = useState(null);
   const [loadedDraft, setLoadedDraft] = useState(null);
+  const [draft, setDraft] = useState({
+    json: null,
+    text: "",
+  });
   const [reveal, setReveal] = useState(false);
 
+  const { data, isError } = useQuery({
+    queryKey: ["translation", translationId],
+    queryFn: () => translationService.getTranslationDetail(translationId),
+    refetchOnMount: "always",
+  });
+  const { mutate: edit } = useMutation({
+    mutationKey: ["translation", translationId],
+    mutationFn: (stringifiedContent) => translationService.updateTranslation(translationId, stringifiedContent),
+    onSuccess: () => {
+      router.push(previousPath);
+    },
+  });
+  const { mutate: quit } = useMutation({
+    mutationKey: ["translation", translationId],
+    mutationFn: () => translationService.quitTranslation(translationId),
+    onSuccess: () => {
+      router.replace(errorPath);
+    },
+  });
+
+  useEffect(() => {
+    if (!data?.content) return;
+
+    let content;
+    try {
+      content = JSON.parse(data.content);
+      if (!content?.json || content.json.type !== "doc") {
+        throw new Error("Invalid content structure");
+      }
+    } catch (e) {
+      alert("잘못된 content 형식입니다.");
+      content = {
+        json: {
+          type: "doc",
+          content: [],
+        },
+        text: "",
+      };
+    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setInitialDraft(content.json);
+    setDraft(content);
+  }, [data?.content]);
+  useEffect(() => {
+    if (isError) {
+      alert("존재하지 않는 페이지입니다.");
+      router.replace(errorPath);
+    }
+  }, [isError]);
   useEffect(() => {
     if (isDraftLoaded && draftList.length > 0) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -36,16 +95,29 @@ export default function TranslationWritePage() {
   return (
     <div
       className={cn(
-        "relative flex h-dvh px-[24px] gap-[10px] md:min-h-fit",
+        "relative flex h-full px-[24px] gap-[10px] md:min-h-fit",
         isIframeOpen ? "flex-col-reverse md:flex-row" : "lg:w-[890px] lg:mx-auto",
       )}
     >
       <div className="flex-1 overflow-y-auto md:overflow-y-visible">
         <header className="flex flex-wrap gap-y-[10px] justify-between items-center m-auto py-[24px]">
-          <Image width={120} height={30} src="/logos/logo.svg" alt="로고" className="cursor-pointer" />
+          <Image
+            width={120}
+            height={30}
+            src="/logos/logo.svg"
+            alt="로고"
+            className="cursor-pointer"
+            onClick={() => router.push("/")}
+          />
 
           <div className="flex gap-[8px]">
-            <Button variant="tonal">
+            <Button
+              variant="tonal"
+              onClick={() => {
+                const quitConfirmation = confirm("정말로 포기하시겠습니까?");
+                if (quitConfirmation) quit();
+              }}
+            >
               <p className="hidden md:block">포기</p>
               <Image width={20} height={20} src="/icons/ic_exit.svg" alt="나가기 아이콘" />
             </Button>
@@ -53,18 +125,25 @@ export default function TranslationWritePage() {
             <Button
               variant="outline"
               onClick={() => {
-                saveDraft(content);
+                saveDraft(draft);
                 setReveal(true);
               }}
             >
               임시저장
             </Button>
 
-            <Button variant="solid">제출하기</Button>
+            <Button
+              variant="solid"
+              onClick={() => {
+                edit(JSON.stringify(draft));
+              }}
+            >
+              제출하기
+            </Button>
           </div>
         </header>
 
-        <h1 className="text-[20px] text-gray-800 font-semibold pb-[24px] border-b border-b-gray-200">{title}</h1>
+        <h1 className="text-[20px] text-gray-800 font-semibold pb-[24px] border-b border-b-gray-200">{data?.title}</h1>
 
         <div className="overflow-hidden">
           <div
@@ -79,7 +158,7 @@ export default function TranslationWritePage() {
         </div>
 
         <div className="relative">
-          <Editor content={content.json} loadedDraft={loadedDraft} setContent={setContent} />
+          <Editor content={initialDraft} loadedDraft={loadedDraft} setContent={setDraft} />
 
           {!isIframeOpen && (
             <button
@@ -97,7 +176,7 @@ export default function TranslationWritePage() {
       </div>
 
       <Iframe
-        src={src}
+        src={data?.link}
         isIframeOpen={isIframeOpen}
         isIframeLoading={isIframeLoading}
         setIsIframeOpen={setIsIframeOpen}

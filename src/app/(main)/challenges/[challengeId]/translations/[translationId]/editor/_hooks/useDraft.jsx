@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 
-export default function useDraft(title) {
+export default function useDraft(translationId) {
   const [isDraftLoaded, setIsDraftLoaded] = useState(false);
   const [draftList, setDraftList] = useState([]);
 
@@ -18,7 +18,7 @@ export default function useDraft(title) {
           return null;
         }
       })
-      .filter((draft) => draft && draft.title === title)
+      .filter((draft) => draft && draft.translationId === translationId)
       .sort((draft1, draft2) => new Date(draft2.createdAt) - new Date(draft1.createdAt));
 
     setDraftList(allRelatedDrafts);
@@ -31,7 +31,7 @@ export default function useDraft(title) {
 
     const draft = {
       id,
-      title,
+      translationId,
       content,
       createdAt: new Date().toISOString(),
     };
@@ -50,7 +50,7 @@ export default function useDraft(title) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     getDrafts();
     setIsDraftLoaded(true);
-  }, []);
+  }, [translationId]);
 
   return {
     isDraftLoaded,
