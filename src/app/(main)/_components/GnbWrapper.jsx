@@ -8,7 +8,7 @@ import { NO_GNB } from "@/constants/navigation";
 import { GRADE_LABEL, PROFILE_AVATAR_SRC } from "@/constants/profile";
 
 export default function GnbWrapper() {
-  const { user, isLoading, logout } = useAuth();
+  const { user, isPending, logout } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -25,7 +25,7 @@ export default function GnbWrapper() {
     <Gnb
       isLoggedIn={!!user}
       role={user?.role?.toLowerCase()}
-      isLoading={isLoading}
+      isLoading={isPending}
       profileMenu={
         user && (
           <ProfileDropdown

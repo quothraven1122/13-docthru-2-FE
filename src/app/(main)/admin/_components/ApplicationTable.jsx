@@ -3,9 +3,9 @@ import Chip from "@/components/Chip";
 import cn from "@/utils/cn";
 
 const headerCellClassName = "bg-gray-800 px-[8px] py-[10px] font-medium lg:px-[16px]";
-const cellClassName = "border-b border-gray-300 px-[8px] py-[15px] text-gray-500 lg:px-[16px]";
+const cellClassName = "whitespace-nowrap border-b border-gray-300 px-[8px] py-[15px] text-gray-500 lg:px-[16px]";
 
-export default function ApplicationTable({ applications = [] }) {
+export default function ApplicationTable({ applications = [], onRowClick }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full min-w-[640px] table-fixed border-separate border-spacing-0 text-left text-[13px]">
@@ -36,11 +36,15 @@ export default function ApplicationTable({ applications = [] }) {
         </thead>
         <tbody>
           {applications.map((application) => (
-            <tr key={application.id} className={cn(application.status === "DELETED" && "bg-gray-50")}>
+            <tr
+              key={application.id}
+              onClick={() => onRowClick?.(application.id)}
+              className={cn("cursor-pointer hover:bg-gray-50", application.status === "DELETED" && "bg-gray-50")}
+            >
               <td className={cellClassName}>{application.no}</td>
               <td className={cellClassName}>{application.field}</td>
               <td className={cellClassName}>{application.docType}</td>
-              <td className={cn(cellClassName, "font-medium text-gray-700")}>
+              <td className={cn(cellClassName, "whitespace-normal font-medium text-gray-700")}>
                 <p className="line-clamp-2 lg:line-clamp-1">{application.title}</p>
               </td>
               <td className={cellClassName}>{application.maxMember}</td>
