@@ -16,6 +16,11 @@ function buildQueryString(params) {
 }
 
 const challengeService = {
+  // 챌린지 생성
+  createChallenges: async (body) => {
+    return authApi.post(`${BASE}/create`, body);
+  },
+
   // 챌린지 목록 조회
   getChallenges: async (params = {}) => {
     return authApi.get(`${BASE}${buildQueryString(params)}`);
