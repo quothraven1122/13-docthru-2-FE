@@ -40,6 +40,16 @@ const challengeService = {
   rejectApplication: async (challengeId, reason) => {
     return authApi.patch(`${BASE}/${challengeId}/reject`, { reason });
   },
+
+  // 챌린지 수정 (어드민, 전달한 필드만 부분 수정)
+  updateChallenge: async (challengeId, data) => {
+    return authApi.patch(`${BASE}/${challengeId}`, data);
+  },
+
+  // 챌린지 삭제 (어드민, 사유 필수 soft delete)
+  deleteChallenge: async (challengeId, reason) => {
+    return authApi.delete(`${BASE}/${challengeId}`, { body: { reason } });
+  },
 };
 
 export default challengeService;
