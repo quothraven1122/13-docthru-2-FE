@@ -4,6 +4,9 @@ const translationService = {
   async getTranslationDetail(translationId) {
     return await authApi.get(`/translation/${translationId}`);
   },
+  async createTranslation(challengeId) {
+    return await authApi.post(`/translation`, { challengeId });
+  },
   async updateTranslation(translationId, editorContent) {
     return await authApi.patch(`/translation/${translationId}`, { content: editorContent });
   },
