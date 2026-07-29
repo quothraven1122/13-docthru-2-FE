@@ -8,41 +8,41 @@ export const contentStyle = `
 
   [&>:first-child]:mt-0
 
-  [&_ul]:my-5
-  [&_ol]:my-5
-  [&_ul]:mr-4
-  [&_ol]:mr-4
-  [&_ul]:list-disc
-  [&_ol]:list-decimal
-  [&_ul]:pl-4
-  [&_ol]:pl-4
-  [&_li_p]:my-1
+  [&_li_p]:my-2
 
-  [&_h1]:mt-14
-  [&_h1]:mb-6
-  [&_h1]:text-[1.4rem]
+  [&_ul]:my-2
+  [&_ul]:mr-4
+  [&_ul]:pl-4
+  [&_ul]:list-disc
+
+  [&_ul_ul]:[list-style-type:square]
+  [&_ul_ul_ul]:list-disc
+  [&_ul_ul_ul_ul]:[list-style-type:square]
+  [&_ul_ul_ul_ul_ul]:list-disc
+  [&_ul_ul_ul_ul_ul_ul]:[list-style-type:square]
+
+  [&_ol]:my-2
+  [&_ol]:mr-4
+  [&_ol]:pl-4
+  [&_ol]:list-decimal
+
+  [&_ol_ol]:[list-style-type:lower-alpha]
+  [&_ol_ol_ol]:[list-style-type:lower-roman]
+  [&_ol_ol_ol_ol]:list-decimal
+  [&_ol_ol_ol_ol_ol]:[list-style-type:lower-alpha]
+  [&_ol_ol_ol_ol_ol_ol]:[list-style-type:lower-roman]
+
+  [&_h1]:my-[20px]
+  [&_h1]:text-[36px]
   [&_h1]:leading-tight
 
-  [&_h2]:mt-14
-  [&_h2]:mb-6
-  [&_h2]:text-[1.2rem]
+  [&_h2]:my-[15px]
+  [&_h2]:text-[28px]
   [&_h2]:leading-tight
 
-  [&_h3]:mt-10
-  [&_h3]:text-[1.1rem]
+  [&_h3]:my-[10px]
+  [&_h3]:text-[20px]
   [&_h3]:leading-tight
-
-  [&_h4]:mt-10
-  [&_h4]:text-base
-  [&_h4]:leading-tight
-
-  [&_h5]:mt-10
-  [&_h5]:text-base
-  [&_h5]:leading-tight
-
-  [&_h6]:mt-10
-  [&_h6]:text-base
-  [&_h6]:leading-tight
 
   [&_blockquote]:my-6
   [&_blockquote]:border-l-[3px]

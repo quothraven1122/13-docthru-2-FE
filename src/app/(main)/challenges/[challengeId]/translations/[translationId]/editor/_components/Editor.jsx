@@ -1,3 +1,4 @@
+"use client";
 import { React, useEffect } from "react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
@@ -79,7 +80,11 @@ export default function Editor({ content, loadedDraft, setContent }) {
   useEffect(() => {
     if (!editor || !content) return;
 
-    editor.commands.setContent(content, false);
+    const frameId = requestAnimationFrame(() => {
+      editor.commands.setContent(content, false);
+    });
+
+    return () => cancelAnimationFrame(frameId);
   }, [editor, content]);
   useEffect(() => {
     if (!editor || !loadedDraft) return;
@@ -89,7 +94,7 @@ export default function Editor({ content, loadedDraft, setContent }) {
     return () => cancelAnimationFrame(frameId);
   }, [loadedDraft, editor]);
 
-  if (!editor) {
+  if (!editor || !content) {
     return null;
   }
   return (
