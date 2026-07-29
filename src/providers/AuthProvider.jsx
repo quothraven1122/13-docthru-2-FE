@@ -9,7 +9,7 @@ const AUTH_ME_QUERY_KEY = ["auth", "me"];
 
 const AuthContext = createContext({
   user: null,
-  isLoading: true,
+  isPending: true,
   register: () => {},
   login: () => {},
   logout: () => {},
@@ -24,15 +24,14 @@ export function useAuth() {
 export default function AuthProvider({ children }) {
   const queryClient = useQueryClient();
 
-  // 새로고침 시에도 로그인 상태를 유지하기 위해 마운트 시 현재 사용자 조회
-  const { data: user, isLoading } = useQuery({
+  const { data: user, isPending } = useQuery({
     queryKey: AUTH_ME_QUERY_KEY,
     queryFn: async () => {
       const data = await authService.getMe();
       return data ?? null;
     },
     retry: false,
-    staleTime: 5 * 60 * 1000, //5분이내에 새로고침시 캐시된 데이터 사용
+    staleTime: 0,
   });
 
   // 회원가입/로그인 등 인증 성공 응답 처리 공통 로직
@@ -59,7 +58,7 @@ export default function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user: user ?? null, isLoading, register, login, logout }}>
+    <AuthContext.Provider value={{ user: user ?? null, isPending, register, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
