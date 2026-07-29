@@ -1,36 +1,106 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Chip from "@/components/Chip";
 import Container from "@/components/Container";
 import List from "@/components/List";
 import KebabMenu from "@/components/KebabMenu";
 import ParticipantPagination from "./_components/ParticipantPagination";
+import { useAuth } from "@/providers/AuthProvider";
 
-// 더미 데이터
-const dummyChallenge = {
-  title: "Next.js - App Router : Routing Fundamentals",
-  category: "Next.js",
-  docType: "공식문서",
-  description:
-    "Next.js App Router 공식 문서 중 Routing Fundamentals 내용입니다! 라우팅에 따른 폴더와 파일이 구성되는 법칙과 컨벤션 등에 대해 공부할 수 있을 것 같아요~! 다들 챌린지 많이 참여해 주세요 :)",
-  deadlineDate: "2026-08-30",
-  member: 14,
-  maxMember: 15,
-  authorName: "럽윈즈울",
-};
-
-// 더미 데이터
-const dummyParticipants = [
-  { id: 1, rank: 1, name: "개발life", role: "전문가", likeCount: 9999, liked: true },
-  { id: 2, rank: 2, name: "라우터장인", role: "전문가", likeCount: 1800, liked: true },
-  { id: 3, rank: 3, name: "DevCat99", role: "일반", likeCount: 700, liked: true },
-  { id: 4, rank: 4, name: "ts_master", role: "전문가", likeCount: 600, liked: true },
-  { id: 5, rank: 5, name: "사피엔스", role: "일반", likeCount: 500, liked: true },
-];
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const PARTICIPANTS_PAGE_SIZE = 5;
 
 export default function ChallengeDetailPage() {
-  const challenge = dummyChallenge;
+  const { challengeId } = useParams();
+  const router = useRouter();
+  const { user } = useAuth();
+
+  const [challenge, setChallenge] = useState(null);
+  const [isChallengeLoading, setIsChallengeLoading] = useState(true);
+  const [challengeError, setChallengeError] = useState(null);
+
+  const [participants, setParticipants] = useState([]);
+  const [totalPageCount, setTotalPageCount] = useState(1);
+  const [participantsPage, setParticipantsPage] = useState(1);
+  const [isParticipantsLoading, setIsParticipantsLoading] = useState(true);
+
+  // 챌린지 상세 조회
+  useEffect(() => {
+    if (!challengeId) return;
+
+    const fetchChallenge = async () => {
+      setIsChallengeLoading(true);
+      setChallengeError(null);
+      try {
+        const res = await fetch(`${API_URL}challenges/${challengeId}`, {
+          credentials: "include",
+        });
+
+        if (!res.ok) {
+          throw new Error(`챌린지 조회 실패 (${res.status})`);
+        }
+
+        const data = await res.json();
+        setChallenge(data);
+      } catch (err) {
+        setChallengeError(err.message);
+      } finally {
+        setIsChallengeLoading(false);
+      }
+    };
+
+    fetchChallenge();
+  }, [challengeId]);
+
+  // 참여자 목록 조회 (페이지 바뀔 때마다 재조회)
+  useEffect(() => {
+    if (!challengeId) return;
+
+    const fetchParticipants = async () => {
+      setIsParticipantsLoading(true);
+      try {
+        const res = await fetch(
+          `${API_URL}challenges/${challengeId}/participants?page=${participantsPage}&pageSize=${PARTICIPANTS_PAGE_SIZE}`,
+          { credentials: "include" },
+        );
+
+        if (!res.ok) {
+          throw new Error(`참여자 목록 조회 실패 (${res.status})`);
+        }
+
+        const data = await res.json();
+        setParticipants(data.list);
+        setTotalPageCount(data.totalPageCount);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsParticipantsLoading(false);
+      }
+    };
+
+    fetchParticipants();
+  }, [challengeId, participantsPage]);
+
+  if (isChallengeLoading) {
+    return <div className="mx-auto max-w-3xl px-6 py-10">불러오는 중...</div>;
+  }
+
+  if (challengeError || !challenge) {
+    return <div className="mx-auto max-w-3xl px-6 py-10">챌린지를 불러오지 못했어요.</div>;
+  }
+
+  const isAdmin = user?.role === "ADMIN";
+
+  const handleViewOriginal = () => {
+    window.open(challenge.link, "_blank", "noopener,noreferrer");
+  };
+
+  const handleChallenge = () => {
+    router.push(`/challenges/${challengeId}/translations/create`);
+  };
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-10">
@@ -39,15 +109,17 @@ export default function ChallengeDetailPage() {
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <h1 className="text-2xl font-bold text-neutral-900">{challenge.title}</h1>
-              {/* 작성자 본인일 때만 노출되도록 조건 처리 예정  */}
-              <KebabMenu
-                onEdit={() => {
-                  // 수정 페이지 이동 로직 연결 예정
-                }}
-                onDelete={() => {
-                  // 삭제 확인 모달/API 연결 예정
-                }}
-              />
+              {/* 어드민일 때만 노출 */}
+              {isAdmin && (
+                <KebabMenu
+                  onEdit={() => {
+                    // 수정 페이지 이동 로직 연결 예정
+                  }}
+                  onDelete={() => {
+                    // 삭제 확인 모달/API 연결 예정
+                  }}
+                />
+              )}
             </div>
 
             <div className="mt-3 flex items-center gap-2">
@@ -69,19 +141,32 @@ export default function ChallengeDetailPage() {
             </div>
           </div>
 
-          <Container date={challenge.deadlineDate} member={challenge.member} maxMember={challenge.maxMember} />
+          <Container
+            date={challenge.deadlineDate}
+            member={challenge.member}
+            maxMember={challenge.headcount}
+            onViewOriginal={handleViewOriginal}
+            onChallenge={handleChallenge}
+          />
         </div>
       </section>
 
       <section className="mt-6 rounded-xl border border-neutral-200 p-5">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-neutral-900">참여 현황</h2>
-          {/* totalPageCount는 실제 참여자 수 기반으로 API 연동 시 계산해서 넣어야 함 */}
-          <ParticipantPagination totalPageCount={3} />
+          <ParticipantPagination
+            currentPage={participantsPage}
+            totalPageCount={totalPageCount}
+            onPageChange={setParticipantsPage}
+          />
         </div>
 
         <div className="mt-4">
-          <List items={dummyParticipants} />
+          {isParticipantsLoading ? (
+            <p className="text-sm text-neutral-400">불러오는 중...</p>
+          ) : (
+            <List items={participants} />
+          )}
         </div>
       </section>
     </div>
