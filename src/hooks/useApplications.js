@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { challengeService } from "@/services/challengeService";
+import challengeService from "@/services/challengeService";
 import { SORT_VALUE_TO_STATUS } from "@/constants/challengeOptions";
 
 // 드롭다운 sort 값을 BE 파라미터(status/sort)로 분기

@@ -2,7 +2,7 @@ import { authApi } from "@/services/fetchClient";
 
 const BASE = "/challenges";
 
-export const challengeService = {
+const challengeService = {
   // 신청 목록 조회 (어드민)
   getApplications: async (params = {}) => {
     const query = new URLSearchParams();
@@ -28,3 +28,5 @@ export const challengeService = {
     return authApi.patch(`${BASE}/${challengeId}/reject`, { reason });
   },
 };
+
+export default challengeService;
