@@ -2,36 +2,59 @@
 
 import { useState } from "react";
 
+import { useParams, useRouter } from "next/navigation";
+
 import Button from "@/components/Button";
 import DateInput from "@/components/DateInput";
 import Dropdown from "@/components/Dropdown";
 import Input from "@/components/Input";
 
-import { DOC_TYPE_OPTIONS, FIELD_OPTIONS } from "@/constants/challengeOptions";
+import { useApplicationDetail, useUpdateChallenge } from "@/hooks/useApplications";
 
-// TODO: API 연동 단계에서 GET /challenges/applications/:challengeId 응답으로 교체
-const MOCK_CHALLENGE = {
-  title: "Next.js - App Router: Routing Fundamentals",
-  link: "https://nextjs.org/docs/app/building-your-application/routing",
-  field: "Next.js",
-  docType: "블로그",
-  deadline: new Date("2026-04-01"),
-  headcount: "5",
-  content:
-    "Next.js App Router 공식 문서 중 Routing Fundamentals 내용입니다! 라우팅에 따른 폴더와 파일이 구성되는 법칙과 컨벤션 등에 대해 공부할 수 있을 것 같아요~! 다들 챌린지 많이 참여해 주세요 :)",
-};
+import {
+  DOC_TYPE_OPTIONS,
+  FIELD_OPTIONS,
+  FIELD_LABELS,
+  DOC_TYPE_LABELS,
+  FIELD_LABEL_TO_VALUE,
+  DOC_TYPE_LABEL_TO_VALUE,
+} from "@/constants/challengeOptions";
 
 export default function AdminChallengeEditPage() {
+  const { challengeId } = useParams();
+  const router = useRouter();
+
+  const { data, isPending, error } = useApplicationDetail(challengeId);
+  const update = useUpdateChallenge(challengeId);
+
+  if (isPending) {
+    return <p className="py-20 text-center text-gray-400">불러오는 중...</p>;
+  }
+  if (error || !data) {
+    return <p className="py-20 text-center text-gray-400">챌린지 정보를 불러오지 못했습니다.</p>;
+  }
+
+  function handleSubmit(payload) {
+    update.mutate(payload, {
+      onSuccess: () => router.back(),
+      onError: (err) => alert(err.message),
+    });
+  }
+
+  return <ChallengeEditForm challenge={data} isSaving={update.isPending} onSubmit={handleSubmit} />;
+}
+
+function ChallengeEditForm({ challenge, isSaving, onSubmit }) {
   const [textForm, setTextForm] = useState({
-    title: MOCK_CHALLENGE.title,
-    link: MOCK_CHALLENGE.link,
-    headcount: MOCK_CHALLENGE.headcount,
-    content: MOCK_CHALLENGE.content,
+    title: challenge.title ?? "",
+    link: challenge.link ?? "",
+    headcount: String(challenge.headcount ?? ""),
+    content: challenge.content ?? "",
   });
   const [selectForm, setSelectForm] = useState({
-    field: MOCK_CHALLENGE.field,
-    docType: MOCK_CHALLENGE.docType,
-    deadline: MOCK_CHALLENGE.deadline,
+    field: FIELD_LABELS[challenge.field] ?? null,
+    docType: DOC_TYPE_LABELS[challenge.docType] ?? null,
+    deadline: challenge.deadline ? new Date(challenge.deadline) : null,
   });
   const [errors, setErrors] = useState({});
 
@@ -64,8 +87,15 @@ export default function AdminChallengeEditPage() {
     e.preventDefault();
     if (!validate()) return;
 
-    // TODO: API 연동 단계에서 PATCH /challenges/:challengeId 연결
-    console.log({ ...textForm, ...selectForm });
+    onSubmit({
+      title: textForm.title.trim(),
+      link: textForm.link.trim(),
+      content: textForm.content.trim(),
+      field: FIELD_LABEL_TO_VALUE[selectForm.field],
+      docType: DOC_TYPE_LABEL_TO_VALUE[selectForm.docType],
+      deadline: selectForm.deadline,
+      headcount: Number(textForm.headcount),
+    });
   };
 
   return (
@@ -145,8 +175,8 @@ export default function AdminChallengeEditPage() {
         {errors.content && <p className="mt-1 text-[12px] text-error">{errors.content}</p>}
       </div>
 
-      <Button type="submit" variant="solid" size="lg" className="w-full rounded-[8px]">
-        수정하기
+      <Button type="submit" variant="solid" size="lg" className="w-full rounded-[8px]" disabled={isSaving}>
+        {isSaving ? "수정 중..." : "수정하기"}
       </Button>
     </form>
   );
