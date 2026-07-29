@@ -9,8 +9,8 @@ import List from "@/components/List";
 import KebabMenu from "@/components/KebabMenu";
 import ParticipantPagination from "./_components/ParticipantPagination";
 import { useAuth } from "@/providers/AuthProvider";
+import challengeService from "@/services/challengeService";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const PARTICIPANTS_PAGE_SIZE = 5;
 
 export default function ChallengeDetailPage() {
@@ -35,15 +35,7 @@ export default function ChallengeDetailPage() {
       setIsChallengeLoading(true);
       setChallengeError(null);
       try {
-        const res = await fetch(`${API_URL}challenges/${challengeId}`, {
-          credentials: "include",
-        });
-
-        if (!res.ok) {
-          throw new Error(`챌린지 조회 실패 (${res.status})`);
-        }
-
-        const data = await res.json();
+        const data = await challengeService.getChallengeDetail(challengeId);
         setChallenge(data);
       } catch (err) {
         setChallengeError(err.message);
@@ -55,23 +47,17 @@ export default function ChallengeDetailPage() {
     fetchChallenge();
   }, [challengeId]);
 
-  // 참여자 목록 조회 (페이지 바뀔 때마다 재조회)
+  // 참여자 목록 조회
   useEffect(() => {
     if (!challengeId) return;
 
     const fetchParticipants = async () => {
       setIsParticipantsLoading(true);
       try {
-        const res = await fetch(
-          `${API_URL}challenges/${challengeId}/participants?page=${participantsPage}&pageSize=${PARTICIPANTS_PAGE_SIZE}`,
-          { credentials: "include" },
-        );
-
-        if (!res.ok) {
-          throw new Error(`참여자 목록 조회 실패 (${res.status})`);
-        }
-
-        const data = await res.json();
+        const data = await challengeService.getParticipants(challengeId, {
+          page: participantsPage,
+          pageSize: PARTICIPANTS_PAGE_SIZE,
+        });
         setParticipants(data.list);
         setTotalPageCount(data.totalPageCount);
       } catch (err) {

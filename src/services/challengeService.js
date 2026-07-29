@@ -40,6 +40,16 @@ const challengeService = {
   rejectApplication: async (challengeId, reason) => {
     return authApi.patch(`${BASE}/${challengeId}/reject`, { reason });
   },
+
+  // 챌린지 상세 조회
+  getChallengeDetail: async (challengeId) => {
+    return authApi.get(`${BASE}/${challengeId}`);
+  },
+
+  // 참여자 목록 조회
+  getParticipants: async (challengeId, params = {}) => {
+    return authApi.get(`${BASE}/${challengeId}/participants${buildQueryString(params)}`);
+  },
 };
 
 export default challengeService;
