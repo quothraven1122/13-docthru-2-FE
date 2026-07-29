@@ -22,9 +22,9 @@ import challengeService from "@/services/challengeService";
 import {
   EMPTY_FILTER,
   FIELD_LABEL_TO_VALUE,
-  FIELD_VALUE_TO_LABEL,
+  FIELD_LABELS,
   DOC_TYPE_LABEL_TO_VALUE,
-  DOC_TYPE_VALUE_TO_LABEL,
+  DOC_TYPE_LABELS,
   STATUS_LABEL_TO_PROGRESS,
 } from "@/constants/challengeOptions";
 
@@ -55,7 +55,7 @@ export default function ChallengeListView({ role = "USER" }) {
     [page, keyword, filterValue],
   );
 
-  const { data, isLoading } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["challenges", queryParams],
     queryFn: () => challengeService.getChallenges(queryParams),
     placeholderData: (previousData) => previousData,
@@ -67,8 +67,8 @@ export default function ChallengeListView({ role = "USER" }) {
       (data?.list ?? []).map((challenge) => ({
         id: challenge.id,
         title: challenge.title,
-        field: FIELD_VALUE_TO_LABEL[challenge.field] ?? challenge.field,
-        doctype: DOC_TYPE_VALUE_TO_LABEL[challenge.docType] ?? challenge.docType,
+        field: FIELD_LABELS[challenge.field] ?? challenge.field,
+        doctype: DOC_TYPE_LABELS[challenge.docType] ?? challenge.docType,
         deadline: challenge.deadline,
         count: challenge.count,
         headcount: challenge.headcount,
@@ -125,7 +125,7 @@ export default function ChallengeListView({ role = "USER" }) {
         <SearchBar onSubmit={handleSearchSubmit} />
       </div>
 
-      {!isLoading && challenges.length === 0 ? (
+      {!isPending && challenges.length === 0 ? (
         <div className="flex min-h-100 items-center justify-center text-center text-[14px] text-gray-400">
           등록된 챌린지가 없어요,
           <br />
