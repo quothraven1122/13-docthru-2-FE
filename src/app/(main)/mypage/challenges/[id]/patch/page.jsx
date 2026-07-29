@@ -20,7 +20,7 @@ const FIELD_LABEL_REVERSE = { Web: "WEB", API: "API", Career: "CAREER", "Next.js
 const INITIAL_TEXT_FORM = { title: "", link: "", headcount: "", content: "" };
 const INITIAL_SELECT_FORM = { field: null, docType: null, deadline: null };
 
-export default function ChallengeCreatePage() {
+export default function ChallengeUpdatePage() {
   const [textForm, setTextForm] = useState(INITIAL_TEXT_FORM);
   const [selectForm, setSelectForm] = useState(INITIAL_SELECT_FORM);
   const [errors, setErrors] = useState({});
