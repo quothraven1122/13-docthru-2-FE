@@ -12,7 +12,7 @@ export default function Providers({ children }) {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ReactQueryDevtools initialIsOpen={false} />
-        <ModalProvider>{children}</ModalProvider>;
+        <ModalProvider>{children}</ModalProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
