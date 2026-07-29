@@ -1,18 +1,20 @@
 "use client";
-
 import { usePathname, useRouter } from "next/navigation";
+
+import { useAuth } from "@/providers/AuthProvider";
 import Gnb from "@/components/Gnb";
 import ProfileDropdown from "@/components/ProfileDropdown";
+import { NO_GNB } from "@/constants/navigation";
 import { GRADE_LABEL, PROFILE_AVATAR_SRC } from "@/constants/profile";
-import { useAuth } from "@/providers/AuthProvider";
 
 export default function GnbWrapper() {
+  const { user, isLoading, logout } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
-  const { user, isLoading, logout } = useAuth();
-  const hideGNB = pathname.startsWith("/posts");
 
-  if (hideGNB) return null;
+  const hasGNB = !NO_GNB.some(({ href }) => (href instanceof RegExp ? href.test(pathname) : href === pathname));
+
+  if (!hasGNB) return null;
 
   const handleLogout = async () => {
     await logout();
