@@ -1,9 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
+
+import { useQuery } from "@tanstack/react-query";
 
 import Button from "@/components/Button";
 import { CardView } from "@/components/CardView";
@@ -13,42 +15,26 @@ import SearchBar from "@/components/SearchBar";
 import Sort from "@/components/Sort";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
+import { useAuth } from "@/providers/AuthProvider";
 
-import { EMPTY_FILTER } from "@/constants/challengeOptions";
+import challengeService from "@/services/challengeService";
 
-// TODO: #29 기능 작업에서 실제 API 응답으로 교체 예정
-const MOCK_CHALLENGES = [
-  {
-    id: 1,
-    title: "개발자로써 자신만의 브랜드를 구축하는 방법(dailydev)",
-    field: "Career",
-    doctype: "블로그",
-    deadline: new Date(2027, 1, 28),
-    count: 2,
-    headcount: 5,
-  },
-  {
-    id: 2,
-    title: "TanStack Query - Optimistic Updates",
-    field: "Modern JS",
-    doctype: "공식문서",
-    deadline: new Date(2027, 2, 1),
-    count: 3,
-    headcount: 8,
-  },
-  {
-    id: 3,
-    title: "Next.js - App Router: Routing Fundamentals",
-    field: "Next.js",
-    doctype: "블로그",
-    deadline: new Date(2027, 2, 3),
-    count: 5,
-    headcount: 5,
-  },
-];
+import {
+  EMPTY_FILTER,
+  FIELD_LABEL_TO_VALUE,
+  FIELD_VALUE_TO_LABEL,
+  DOC_TYPE_LABEL_TO_VALUE,
+  DOC_TYPE_VALUE_TO_LABEL,
+  STATUS_LABEL_TO_PROGRESS,
+} from "@/constants/challengeOptions";
+
+const PAGE_SIZE = 10;
 
 export default function ChallengeListView({ role = "USER" }) {
-  const [challenges] = useState(MOCK_CHALLENGES);
+  const { user } = useAuth();
+
+  const [page, setPage] = useState(1);
+  const [keyword, setKeyword] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterValue, setFilterValue] = useState(EMPTY_FILTER);
 
@@ -57,17 +43,54 @@ export default function ChallengeListView({ role = "USER" }) {
 
   const filterCount = filterValue.fields.length + (filterValue.docType ? 1 : 0) + (filterValue.status ? 1 : 0);
 
-  // TODO: #29 기능 작업에서 실제 로그인 사용자 정보로 교체 예정
-  const currentUser = { role };
+  const queryParams = useMemo(
+    () => ({
+      page,
+      pageSize: PAGE_SIZE,
+      keyword: keyword || undefined,
+      field: filterValue.fields.map((label) => FIELD_LABEL_TO_VALUE[label]),
+      docType: filterValue.docType ? DOC_TYPE_LABEL_TO_VALUE[filterValue.docType] : undefined,
+      progress: filterValue.status ? STATUS_LABEL_TO_PROGRESS[filterValue.status] : undefined,
+    }),
+    [page, keyword, filterValue],
+  );
 
-  const handleSearchSubmit = (keyword) => {
-    console.log("검색어:", keyword);
+  const { data, isLoading } = useQuery({
+    queryKey: ["challenges", queryParams],
+    queryFn: () => challengeService.getChallenges(queryParams),
+    placeholderData: (previousData) => previousData,
+  });
+
+  // BE는 field/docType을 raw enum(NEXTJS, OFFICIAL 등)으로 응답 -> 화면 표시용 라벨로 변환
+  const challenges = useMemo(
+    () =>
+      (data?.list ?? []).map((challenge) => ({
+        id: challenge.id,
+        title: challenge.title,
+        field: FIELD_VALUE_TO_LABEL[challenge.field] ?? challenge.field,
+        doctype: DOC_TYPE_VALUE_TO_LABEL[challenge.docType] ?? challenge.docType,
+        deadline: challenge.deadline,
+        count: challenge.count,
+        headcount: challenge.headcount,
+      })),
+    [data],
+  );
+
+  const totalCount = data?.totalCount ?? 0;
+  const totalPageCount = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+
+  // 실제 로그인 사용자 정보 우선 사용, 로딩 전에는 페이지가 넘겨준 role로 대체
+  const currentUser = { role: user?.role ?? role };
+
+  const handleSearchSubmit = (value) => {
+    setKeyword(value);
+    setPage(1);
   };
 
   const handleFilterApply = (draft) => {
-    // TODO: #29 기능 작업에서 실제 목록 필터링 로직 연결 예정
     setFilterValue(draft);
     setIsFilterOpen(false);
+    setPage(1);
   };
 
   const handleEdit = (id) => {
@@ -102,7 +125,7 @@ export default function ChallengeListView({ role = "USER" }) {
         <SearchBar onSubmit={handleSearchSubmit} />
       </div>
 
-      {challenges.length === 0 ? (
+      {!isLoading && challenges.length === 0 ? (
         <div className="flex min-h-100 items-center justify-center text-center text-[14px] text-gray-400">
           등록된 챌린지가 없어요,
           <br />
@@ -123,7 +146,7 @@ export default function ChallengeListView({ role = "USER" }) {
       )}
 
       <div className="flex justify-center pt-6">
-        <Pagination visiblePageCount={5} totalPageCount={5} />
+        <Pagination current={page} setCurrent={setPage} visiblePageCount={5} totalPageCount={totalPageCount} />
       </div>
     </div>
   );
