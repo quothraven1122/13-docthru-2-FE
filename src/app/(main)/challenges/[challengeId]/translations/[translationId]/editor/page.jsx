@@ -35,8 +35,7 @@ export default function TranslationWritePage() {
 
   // DB에서 받은 stringified된 content data를 parsing해서 state 초기화
   useEffect(() => {
-    if (!translationData?.content) return;
-    const content = parseTranslation(translationData.content);
+    const content = parseTranslation(translationData?.content);
     setInitialDraft(content.json);
     setDraft(content);
   }, [translationData?.content]);
