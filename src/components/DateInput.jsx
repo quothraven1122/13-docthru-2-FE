@@ -32,6 +32,7 @@ export default function DateInput({ selectedDate, setSelectedDate, ...inputProps
           formatDay={(_, day) => day.getDate().toString()}
           prev2Label={null} //100년 단위 이동 막기
           next2Label={null}
+          minDate={new Date(new Date().setHours(0, 0, 0, 0))}
           className="absolute right-0 mt-[10px]"
           {...inputProps}
         />
