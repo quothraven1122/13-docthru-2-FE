@@ -30,6 +30,8 @@ export async function checkAuth() {
 export async function checkRole() {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
+  if (!accessToken) return null;
+
   const accessTokenData = jwtDecode(accessToken);
   return accessTokenData.role;
 }
