@@ -12,6 +12,7 @@ import Modal from "@/components/Modal";
 import ParticipantPagination from "./_components/ParticipantPagination";
 import { useAuth } from "@/providers/AuthProvider";
 import challengeService from "@/services/challengeService";
+import translationService from "@/services/translationService";
 
 const PARTICIPANTS_PAGE_SIZE = 5;
 
@@ -108,9 +109,20 @@ export default function ChallengeDetailPage() {
   const handleViewOriginal = () => {
     window.open("https://www.wikipedia.org/", "_blank", "noopener,noreferrer");
   };
-
-  const handleChallenge = () => {
-    router.push(`/challenges/${challengeId}/translations/new/editor`);
+  const handleChallenge = async () => {
+    try {
+      const translation = await translationService.createTranslation(challengeId);
+      router.push(`/challenges/${challengeId}/translations/${translation.id}/editor`);
+    } catch (err) {
+      alert(err.message || "작업을 시작할 수 없습니다.");
+    }
+  };
+  const handleViewWork = (item) => {
+    if (!item.translationId) {
+      alert("아직 제출된 작업물이 없습니다.");
+      return;
+    }
+    router.push(`/challenges/${challengeId}/translations/${item.translationId}`);
   };
 
   const handleEdit = () => {
@@ -191,7 +203,7 @@ export default function ChallengeDetailPage() {
           {isParticipantsLoading ? (
             <p className="text-sm text-neutral-400">불러오는 중...</p>
           ) : (
-            <List items={participants} />
+            <List items={participants} onItemClick={handleViewWork} />
           )}
         </div>
       </section>
