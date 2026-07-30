@@ -2,7 +2,9 @@ import { authApi } from "./fetchClient";
 
 const translationService = {
   async getTranslationDetail(translationId) {
-    return await authApi.get(`/translation/${translationId}`);
+    return await authApi.get(`/translation/${translationId}`, {
+      cache: "no-store",
+    });
   },
   async createTranslation(challengeId) {
     return await authApi.post(`/translation`, { challengeId });

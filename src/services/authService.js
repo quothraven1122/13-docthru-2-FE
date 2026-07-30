@@ -13,6 +13,6 @@ export const authService = {
     return authApi.get("/users/me");
   },
   logout: async () => {
-    return authApi.post("/auth/logout");
+    return authApi.post(`${defaultEndpoint}/logout`);
   },
 };

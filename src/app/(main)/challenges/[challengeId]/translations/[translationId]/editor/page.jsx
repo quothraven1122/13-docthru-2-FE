@@ -1,29 +1,26 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 import { useState, useEffect } from "react";
-import { useParams, useRouter, usePathname } from "next/navigation";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 
 import { useModal } from "@/providers/ModalProvider";
 import Button from "@/components/Button";
 import useDraft from "./_hooks/useDraft";
+import useTranslationEditor from "./_hooks/useTranslationEditor";
 import Editor from "./_components/Editor";
 import DraftToast from "./_components/DraftToast";
 import DraftListModal from "./_components/DraftListModal";
 import Iframe from "./_components/Iframe";
-
-import translationService from "@/services/translationService";
 
 import cn from "@/utils/cn";
 
 export default function TranslationWritePage() {
   const { translationId } = useParams();
   const router = useRouter();
-  const pathname = usePathname();
-  const previousPath = pathname.replace(/\/[^/]+$/, "");
-  const errorPath = pathname.replace(/\/[^/]+\/[^/]+\/[^/]+$/, "");
   const { openModal, closeModal } = useModal();
   const { isDraftLoaded, draftList, saveDraft, deleteDraft } = useDraft(translationId);
+  const { translationData, editTranslation, quitTranslation, parseTranslation } = useTranslationEditor();
 
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [isIframeOpen, setIsIframeOpen] = useState(false);
@@ -36,58 +33,17 @@ export default function TranslationWritePage() {
   });
   const [reveal, setReveal] = useState(false);
 
-  const { data, isError } = useQuery({
-    queryKey: ["translation", translationId],
-    queryFn: () => translationService.getTranslationDetail(translationId),
-    refetchOnMount: "always",
-  });
-  const { mutate: edit } = useMutation({
-    mutationKey: ["translation", translationId],
-    mutationFn: (stringifiedContent) => translationService.updateTranslation(translationId, stringifiedContent),
-    onSuccess: () => {
-      router.push(previousPath);
-    },
-  });
-  const { mutate: quit } = useMutation({
-    mutationKey: ["translation", translationId],
-    mutationFn: () => translationService.quitTranslation(translationId),
-    onSuccess: () => {
-      router.replace(errorPath);
-    },
-  });
-
+  // DB에서 받은 stringified된 content data를 parsing해서 state 초기화
   useEffect(() => {
-    if (!data?.content) return;
-
-    let content;
-    try {
-      content = JSON.parse(data.content);
-      if (!content?.json || content.json.type !== "doc") {
-        throw new Error("Invalid content structure");
-      }
-    } catch (e) {
-      alert("잘못된 content 형식입니다.");
-      content = {
-        json: {
-          type: "doc",
-          content: [],
-        },
-        text: "",
-      };
-    }
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (!translationData?.content) return;
+    const content = parseTranslation(translationData.content);
     setInitialDraft(content.json);
     setDraft(content);
-  }, [data?.content]);
-  useEffect(() => {
-    if (isError) {
-      alert("존재하지 않는 페이지입니다.");
-      router.replace(errorPath);
-    }
-  }, [isError]);
+  }, [translationData?.content]);
+
+  // 해당 translationId와 연관된 draft가 localStorage에 저장되어 있을 시 임시저장 불러오기 토스트 띄기
   useEffect(() => {
     if (isDraftLoaded && draftList.length > 0) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsToastOpen(true);
     }
   }, [isDraftLoaded]);
@@ -115,7 +71,7 @@ export default function TranslationWritePage() {
               variant="tonal"
               onClick={() => {
                 const quitConfirmation = confirm("정말로 포기하시겠습니까?");
-                if (quitConfirmation) quit();
+                if (quitConfirmation) quitTranslation();
               }}
             >
               <p className="hidden md:block">포기</p>
@@ -135,7 +91,7 @@ export default function TranslationWritePage() {
             <Button
               variant="solid"
               onClick={() => {
-                edit(JSON.stringify(draft));
+                editTranslation(JSON.stringify(draft));
               }}
             >
               제출하기
@@ -143,7 +99,9 @@ export default function TranslationWritePage() {
           </div>
         </header>
 
-        <h1 className="text-[20px] text-gray-800 font-semibold pb-[24px] border-b border-b-gray-200">{data?.title}</h1>
+        <h1 className="text-[20px] text-gray-800 font-semibold pb-[24px] border-b border-b-gray-200">
+          {translationData?.title}
+        </h1>
 
         <div className="overflow-hidden">
           <div
@@ -176,7 +134,7 @@ export default function TranslationWritePage() {
       </div>
 
       <Iframe
-        src={data?.link}
+        src={translationData?.link}
         isIframeOpen={isIframeOpen}
         isIframeLoading={isIframeLoading}
         setIsIframeOpen={setIsIframeOpen}
