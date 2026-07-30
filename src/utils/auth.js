@@ -19,7 +19,7 @@ export async function checkAuth() {
     return true;
   }
 
-  return true;
+  return false;
 }
 
 export async function checkRole() {
