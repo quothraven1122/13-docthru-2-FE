@@ -33,7 +33,7 @@ const challengeService = {
 
   // 신청 상세 조회 (어드민)
   getApplicationDetail: async (challengeId) => {
-    return authApi.get(`${BASE}/applications/${challengeId}`);
+    return authApi.get(`${BASE}/applications/${challengeId}`, { cache: "no-store" });
   },
 
   // 신청 승인
