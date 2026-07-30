@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import Button from "@/components/Button";
 
-import { loginSchema } from "@/app/schemas/loginSchema";
+import { loginSchema } from "@/schemas/loginSchema";
 import { useAuth } from "@/providers/AuthProvider";
 import AuthField from "../_components/AuthField";
 import PasswordField from "../_components/PasswordField";
