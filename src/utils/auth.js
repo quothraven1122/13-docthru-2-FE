@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { jwtDecode } from "jwt-decode";
 
 // 서버 사이드 전용 함수
 export async function getServerSideToken(type = "accessToken") {
@@ -24,4 +25,11 @@ export async function checkAuth() {
   }
 
   return true;
+}
+
+export async function checkRole() {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+  const accessTokenData = jwtDecode(accessToken);
+  return accessTokenData.role;
 }
