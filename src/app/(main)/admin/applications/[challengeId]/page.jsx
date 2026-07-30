@@ -43,7 +43,7 @@ export default function AdminApplicationDetailPage() {
   const statusInfo = APPLICATION_STATUS[application.status] ?? APPLICATION_STATUS.PENDING;
 
   return (
-    <div className="mx-auto flex max-w-[890px] flex-col gap-4 px-4 py-8 md:py-10">
+    <div className="mx-auto flex w-full max-w-[890px] flex-col gap-4 px-4 py-8 md:py-10">
       <ApplicationStatusBanner banner={statusInfo.banner} />
 
       {application.status === "REJECTED" && <RejectReasonBox reason={application.rejectReason} />}
