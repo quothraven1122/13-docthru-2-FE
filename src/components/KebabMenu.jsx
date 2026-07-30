@@ -76,6 +76,16 @@ export default function KebabMenu({ type = "admin", onEdit, onDelete }) {
                 type="button"
                 role="menuitem"
                 className="w-full px-9.75 py-3 text-sm text-gray-700 hover:bg-gray-100"
+                onClick={handleEdit}
+              >
+                수정하기
+              </button>
+            </li>
+            <li role="none">
+              <button
+                type="button"
+                role="menuitem"
+                className="w-full px-9.75 py-3 text-sm text-gray-700 hover:bg-gray-100"
                 onClick={handleDelete}
               >
                 취소하기

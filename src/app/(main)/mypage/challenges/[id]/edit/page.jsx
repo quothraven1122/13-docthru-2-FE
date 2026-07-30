@@ -1,62 +1,54 @@
 "use client";
 
-import { useState } from "react";
-
-import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import Button from "@/components/Button";
 import DateInput from "@/components/DateInput";
 import Dropdown from "@/components/Dropdown";
 import Input from "@/components/Input";
 
-import { useApplicationDetail, useUpdateChallenge } from "@/hooks/useApplications";
+import { DOC_TYPE_OPTIONS, FIELD_OPTIONS } from "@/constants/challengeOptions";
+import { useParams, useRouter } from "next/navigation";
+import myChallengeService from "@/services/myChallengeService";
+import { useModal } from "@/providers/ModalProvider";
+import Modal from "@/components/Modal";
 
-import {
-  DOC_TYPE_OPTIONS,
-  FIELD_OPTIONS,
-  FIELD_LABELS,
-  DOC_TYPE_LABELS,
-  FIELD_LABEL_TO_VALUE,
-  DOC_TYPE_LABEL_TO_VALUE,
-} from "@/constants/challengeOptions";
+//서버에 있는 걸로 다시 보내주기위해서 매핑...
+const DOCTYPE_LABEL_REVERSE = { 블로그: "BLOG", 공식문서: "OFFICIAL" };
+const FIELD_LABEL_REVERSE = { Web: "WEB", API: "API", Career: "CAREER", "Next.js": "NEXTJS" };
 
-export default function AdminChallengeEditPage() {
-  const { challengeId } = useParams();
+const INITIAL_TEXT_FORM = { title: "", link: "", headcount: "", content: "" };
+const INITIAL_SELECT_FORM = { field: null, docType: null, deadline: null };
+
+export default function ChallengeUpdatePage() {
+  const [textForm, setTextForm] = useState(INITIAL_TEXT_FORM);
+  const [selectForm, setSelectForm] = useState(INITIAL_SELECT_FORM);
+  const [errors, setErrors] = useState({});
+  const { openModal, closeModal } = useModal();
+
+  const { id } = useParams();
   const router = useRouter();
 
-  const { data, isPending, error } = useApplicationDetail(challengeId);
-  const update = useUpdateChallenge(challengeId);
-
-  if (isPending) {
-    return <p className="py-20 text-center text-gray-400">불러오는 중...</p>;
-  }
-  if (error || !data) {
-    return <p className="py-20 text-center text-gray-400">챌린지 정보를 불러오지 못했습니다.</p>;
-  }
-
-  function handleSubmit(payload) {
-    update.mutate(payload, {
-      onSuccess: () => router.back(),
-      onError: (err) => alert(err.message),
-    });
-  }
-
-  return <ChallengeEditForm challenge={data} isSaving={update.isPending} onSubmit={handleSubmit} />;
-}
-
-function ChallengeEditForm({ challenge, isSaving, onSubmit }) {
-  const [textForm, setTextForm] = useState({
-    title: challenge.title ?? "",
-    link: challenge.link ?? "",
-    headcount: String(challenge.headcount ?? ""),
-    content: challenge.content ?? "",
-  });
-  const [selectForm, setSelectForm] = useState({
-    field: FIELD_LABELS[challenge.field] ?? null,
-    docType: DOC_TYPE_LABELS[challenge.docType] ?? null,
-    deadline: challenge.deadline ? new Date(challenge.deadline) : null,
-  });
-  const [errors, setErrors] = useState({});
+  useEffect(() => {
+    //수정하기 위해서 그 전에 입력한 챌린지 정보를 가져와서 미리 입력해준다.
+    async function getMyAppliedChallenge() {
+      const result = await myChallengeService.getMyAppliedChallenge(id);
+      setTextForm((prev) => ({
+        ...prev,
+        title: result.title,
+        link: result.link,
+        headcount: result.headcount,
+        content: result.content,
+      }));
+      setSelectForm((prev) => ({
+        ...prev,
+        field: result.field,
+        docType: result.doctype,
+        deadline: new Date(result.deadline),
+      }));
+    }
+    getMyAppliedChallenge();
+  }, []);
 
   const handleTextChange = (key) => (e) => {
     setTextForm((prev) => ({ ...prev, [key]: e.target.value }));
@@ -78,6 +70,7 @@ function ChallengeEditForm({ challenge, isSaving, onSubmit }) {
       nextErrors.headcount = "참여 인원을 1명 이상 입력해주세요.";
     }
     if (!textForm.content.trim()) nextErrors.content = "내용을 입력해주세요.";
+    if (selectForm.deadline <= new Date()) nextErrors.deadline = "설정할 수 없는 마감일 입니다.";
 
     setErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;
@@ -87,20 +80,39 @@ function ChallengeEditForm({ challenge, isSaving, onSubmit }) {
     e.preventDefault();
     if (!validate()) return;
 
-    onSubmit({
-      title: textForm.title.trim(),
-      link: textForm.link.trim(),
-      content: textForm.content.trim(),
-      field: FIELD_LABEL_TO_VALUE[selectForm.field],
-      docType: DOC_TYPE_LABEL_TO_VALUE[selectForm.docType],
-      deadline: selectForm.deadline,
-      headcount: Number(textForm.headcount),
-    });
+    async function updateMyAppliedChallenge() {
+      const { docType } = textForm;
+      const { field } = selectForm;
+
+      await myChallengeService.updateMyAppliedChallenge(id, {
+        ...textForm,
+        ...selectForm,
+        docType: DOCTYPE_LABEL_REVERSE[docType],
+        field: FIELD_LABEL_REVERSE[field],
+      });
+
+      openModal(
+        <Modal
+          handleClose={() => {
+            closeModal();
+            router.push(`/mypage/challenges/${id}`);
+          }}
+          confirmText="네"
+          onConfirm={() => {
+            closeModal();
+            router.push(`/mypage/challenges/${id}`);
+          }}
+        >
+          수정이 완료되었습니다.
+        </Modal>,
+      );
+    }
+    updateMyAppliedChallenge();
   };
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-[590px] flex-col gap-6 px-4 py-10 md:px-0">
-      <h1 className="text-[20px] font-semibold text-gray-800">챌린지 수정</h1>
+      <h1 className="text-[20px] font-semibold text-gray-800">챌린지 수정하기</h1>
 
       <div className="flex flex-col gap-2">
         <label htmlFor="title" className="text-[14px] font-medium text-gray-900">
@@ -175,8 +187,8 @@ function ChallengeEditForm({ challenge, isSaving, onSubmit }) {
         {errors.content && <p className="mt-1 text-[12px] text-error">{errors.content}</p>}
       </div>
 
-      <Button type="submit" variant="solid" size="lg" className="w-full rounded-[8px]" disabled={isSaving}>
-        {isSaving ? "수정 중..." : "수정하기"}
+      <Button type="submit" variant="solid" size="lg" className="w-full rounded-[8px]">
+        수정하기
       </Button>
     </form>
   );

@@ -57,3 +57,31 @@ export function useApplicationMutations(challengeId) {
 
   return { approve, reject };
 }
+
+// 챌린지 수정 (어드민).성공 시 신청 상세•목록 캐시 무효화
+export function useUpdateChallenge(challengeId) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data) => challengeService.updateChallenge(challengeId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["application", challengeId] });
+      queryClient.invalidateQueries({ queryKey: ["applications"] });
+      queryClient.invalidateQueries({ queryKey: ["challenges"] });
+    },
+  });
+}
+
+// 챌린지 삭제 (어드민). 목록 등 여러 챌린지 컨텍스트에서 쓰도록 id를 mutate 시점에 받음
+export function useDeleteChallenge() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ challengeId, reason }) => challengeService.deleteChallenge(challengeId, reason),
+    onSuccess: (_, { challengeId }) => {
+      queryClient.invalidateQueries({ queryKey: ["application", challengeId] });
+      queryClient.invalidateQueries({ queryKey: ["applications"] });
+      queryClient.invalidateQueries({ queryKey: ["challenges"] });
+    },
+  });
+}

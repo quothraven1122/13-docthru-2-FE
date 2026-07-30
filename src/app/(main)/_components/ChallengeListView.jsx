@@ -4,6 +4,9 @@ import { useMemo, useRef, useState } from "react";
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+import ModalForm from "@/components/ModalForm";
 
 import { useQuery } from "@tanstack/react-query";
 
@@ -16,6 +19,8 @@ import Sort from "@/components/Sort";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useAuth } from "@/providers/AuthProvider";
+import { useDeleteChallenge } from "@/hooks/useApplications";
+import { useModal } from "@/providers/ModalProvider";
 
 import challengeService from "@/services/challengeService";
 
@@ -32,6 +37,9 @@ const PAGE_SIZE = 10;
 
 export default function ChallengeListView({ role = "USER" }) {
   const { user } = useAuth();
+  const router = useRouter();
+  const { openModal, closeModal } = useModal();
+  const deleteChallenge = useDeleteChallenge();
 
   const [page, setPage] = useState(1);
   const [keyword, setKeyword] = useState("");
@@ -94,11 +102,21 @@ export default function ChallengeListView({ role = "USER" }) {
   };
 
   const handleEdit = (id) => {
-    console.log("수정 클릭:", id);
+    router.push(`/admin/challenges/${id}/edit`);
   };
 
   const handleDelete = (id) => {
-    console.log("삭제 클릭:", id);
+    openModal(
+      <ModalForm
+        title="삭제 사유"
+        placeholder="삭제 사유를 입력해주세요"
+        handleClose={closeModal}
+        handleConfirm={(reason) => {
+          deleteChallenge.mutate({ challengeId: id, reason }, { onError: (err) => alert(err.message) });
+          closeModal();
+        }}
+      />,
+    );
   };
 
   return (

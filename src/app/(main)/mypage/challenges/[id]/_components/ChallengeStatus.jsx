@@ -1,3 +1,4 @@
+import dateUtils from "@/utils/date";
 import React from "react";
 
 export default function ChallengeStatus({ challenge }) {
@@ -10,7 +11,9 @@ export default function ChallengeStatus({ challenge }) {
         <div className="w-full rounded-[16px] border-[1px] border-gray-200 bg-gray-50 text-center px-[16px] pt-[18px] pb-[16px]">
           <p className="text-center mx-auto text-[14px] font-[600]">삭제 사유</p>
           <p className="text-center mx-auto mt-[12px] text-[16px] font-[500]">{challenge.deletionReason}</p>
-          <p className="text-right mt-[18px] text-gray-500 text-[14px] font-[400]">24/02/24 16:38</p>
+          <p className="text-right mt-[18px] text-gray-500 text-[14px] font-[400]">
+            {dateUtils.formatDateTime(challenge.deletedAt)}
+          </p>
         </div>
       </div>
     );
@@ -25,9 +28,11 @@ export default function ChallengeStatus({ challenge }) {
           <p className="text-center mx-auto text-[14px] font-[600]">신청 거절 사유</p>
           <p className="text-center mx-auto mt-[12px] text-[16px] font-[500]">{challenge.rejectReason}</p>
           <div className="flex justify-end gap-[8px] mt-[17px]">
-            <p className="text-right text-gray-500 text-[14px] font-[400]">운영진</p>
+            <p className="text-right text-gray-500 text-[14px] font-[400]">{challenge.approver.nickname}</p>
             <p className="text-gray-200">|</p>
-            <p className="text-right text-gray-500 text-[14px] font-[400]">24/02/24 16:38</p>
+            <p className="text-right text-gray-500 text-[14px] font-[400]">
+              {dateUtils.formatDateTime(challenge.updatedAt)}
+            </p>
           </div>
         </div>
       </div>
