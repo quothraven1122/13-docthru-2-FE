@@ -10,7 +10,7 @@ export const authService = {
     return publicApi.post(`${defaultEndpoint}/login`, { email, password });
   },
   getMe: async () => {
-    return authApi.get("/users/me");
+    return authApi.get("/users/me", { cache: "no-store" });
   },
   logout: async () => {
     return authApi.post(`${defaultEndpoint}/logout`);
