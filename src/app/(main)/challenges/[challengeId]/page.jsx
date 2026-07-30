@@ -1,36 +1,154 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Chip from "@/components/Chip";
 import Container from "@/components/Container";
 import List from "@/components/List";
 import KebabMenu from "@/components/KebabMenu";
+import Modal from "@/components/Modal";
 import ParticipantPagination from "./_components/ParticipantPagination";
+import { useAuth } from "@/providers/AuthProvider";
+import challengeService from "@/services/challengeService";
+import translationService from "@/services/translationService";
 
-// 더미 데이터
-const dummyChallenge = {
-  title: "Next.js - App Router : Routing Fundamentals",
-  category: "Next.js",
-  docType: "공식문서",
-  description:
-    "Next.js App Router 공식 문서 중 Routing Fundamentals 내용입니다! 라우팅에 따른 폴더와 파일이 구성되는 법칙과 컨벤션 등에 대해 공부할 수 있을 것 같아요~! 다들 챌린지 많이 참여해 주세요 :)",
-  deadlineDate: "2026-08-30",
-  member: 14,
-  maxMember: 15,
-  authorName: "럽윈즈울",
-};
-
-// 더미 데이터
-const dummyParticipants = [
-  { id: 1, rank: 1, name: "개발life", role: "전문가", likeCount: 9999, liked: true },
-  { id: 2, rank: 2, name: "라우터장인", role: "전문가", likeCount: 1800, liked: true },
-  { id: 3, rank: 3, name: "DevCat99", role: "일반", likeCount: 700, liked: true },
-  { id: 4, rank: 4, name: "ts_master", role: "전문가", likeCount: 600, liked: true },
-  { id: 5, rank: 5, name: "사피엔스", role: "일반", likeCount: 500, liked: true },
-];
+const PARTICIPANTS_PAGE_SIZE = 5;
 
 export default function ChallengeDetailPage() {
-  const challenge = dummyChallenge;
+  const { challengeId } = useParams();
+  const router = useRouter();
+  const { user } = useAuth();
+
+  const [challenge, setChallenge] = useState(null);
+  const [isChallengeLoading, setIsChallengeLoading] = useState(true);
+  const [challengeError, setChallengeError] = useState(null);
+
+  const [participants, setParticipants] = useState([]);
+  const [totalPageCount, setTotalPageCount] = useState(1);
+  const [participantsPage, setParticipantsPage] = useState(1);
+  const [prevChallengeId, setPrevChallengeId] = useState(challengeId);
+  const [isParticipantsLoading, setIsParticipantsLoading] = useState(true);
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  if (challengeId !== prevChallengeId) {
+    setPrevChallengeId(challengeId);
+    setParticipantsPage(1);
+  }
+  // 챌린지 상세 조회
+  useEffect(() => {
+    if (!challengeId) return;
+
+    let ignore = false;
+
+    const fetchChallenge = async () => {
+      setIsChallengeLoading(true);
+      setChallengeError(null);
+      try {
+        const data = await challengeService.getChallengeDetail(challengeId);
+        if (!ignore) setChallenge(data);
+      } catch (err) {
+        if (!ignore) setChallengeError(err.message);
+      } finally {
+        if (!ignore) setIsChallengeLoading(false);
+      }
+    };
+
+    fetchChallenge();
+
+    return () => {
+      ignore = true;
+    };
+  }, [challengeId]);
+
+  // 참여자 목록 조회
+  useEffect(() => {
+    if (!challengeId) return;
+
+    let ignore = false;
+
+    const fetchParticipants = async () => {
+      setIsParticipantsLoading(true);
+      try {
+        const data = await challengeService.getParticipants(challengeId, {
+          page: participantsPage,
+          pageSize: PARTICIPANTS_PAGE_SIZE,
+        });
+        if (!ignore) {
+          setParticipants(data.list);
+          setTotalPageCount(data.totalPageCount);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        if (!ignore) setIsParticipantsLoading(false);
+      }
+    };
+
+    fetchParticipants();
+
+    return () => {
+      ignore = true;
+    };
+  }, [challengeId, participantsPage]);
+
+  if (isChallengeLoading) {
+    return <div className="mx-auto max-w-3xl px-6 py-10">불러오는 중...</div>;
+  }
+
+  if (challengeError || !challenge) {
+    return <div className="mx-auto max-w-3xl px-6 py-10">챌린지를 불러오지 못했어요.</div>;
+  }
+
+  // 관리자만 수정/삭제 가능
+  const isAdmin = user?.role === "ADMIN";
+
+  const handleViewOriginal = () => {
+    window.open("https://www.wikipedia.org/", "_blank", "noopener,noreferrer");
+  };
+  const handleChallenge = async () => {
+    try {
+      const translation = await translationService.createTranslation(challengeId);
+      router.push(`/challenges/${challengeId}/translations/${translation.id}/editor`);
+    } catch (err) {
+      alert(err.message || "작업을 시작할 수 없습니다.");
+    }
+  };
+  const handleViewWork = (item) => {
+    if (!item.translationId) {
+      alert("아직 제출된 작업물이 없습니다.");
+      return;
+    }
+    router.push(`/challenges/${challengeId}/translations/${item.translationId}`);
+  };
+
+  const handleEdit = () => {
+    if (!isAdmin) return;
+    router.push(`/challenges/${challengeId}/edit`);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!isAdmin || isDeleting) return;
+
+    try {
+      setIsDeleting(true);
+      await challengeService.deleteChallenge(challengeId);
+      alert("챌린지가 삭제되었습니다.");
+      router.push("/challenges");
+    } catch (err) {
+      alert(err.message || "삭제 중 오류가 발생했습니다.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    if (isDeleting) return;
+    setIsDeleteModalOpen(false);
+  };
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-10">
@@ -39,15 +157,7 @@ export default function ChallengeDetailPage() {
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <h1 className="text-2xl font-bold text-neutral-900">{challenge.title}</h1>
-              {/* 작성자 본인일 때만 노출되도록 조건 처리 예정  */}
-              <KebabMenu
-                onEdit={() => {
-                  // 수정 페이지 이동 로직 연결 예정
-                }}
-                onDelete={() => {
-                  // 삭제 확인 모달/API 연결 예정
-                }}
-              />
+              {isAdmin && <KebabMenu onEdit={handleEdit} onDelete={() => setIsDeleteModalOpen(true)} />}
             </div>
 
             <div className="mt-3 flex items-center gap-2">
@@ -69,21 +179,51 @@ export default function ChallengeDetailPage() {
             </div>
           </div>
 
-          <Container date={challenge.deadlineDate} member={challenge.member} maxMember={challenge.maxMember} />
+          <Container
+            date={challenge.deadlineDate}
+            member={challenge.member}
+            maxMember={challenge.headcount}
+            onViewOriginal={handleViewOriginal}
+            onChallenge={handleChallenge}
+          />
         </div>
       </section>
 
       <section className="mt-6 rounded-xl border border-neutral-200 p-5">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-neutral-900">참여 현황</h2>
-          {/* totalPageCount는 실제 참여자 수 기반으로 API 연동 시 계산해서 넣어야 함 */}
-          <ParticipantPagination totalPageCount={3} />
+          <ParticipantPagination
+            currentPage={participantsPage}
+            totalPageCount={totalPageCount}
+            onPageChange={setParticipantsPage}
+          />
         </div>
 
         <div className="mt-4">
-          <List items={dummyParticipants} />
+          {isParticipantsLoading ? (
+            <p className="text-sm text-neutral-400">불러오는 중...</p>
+          ) : (
+            <List items={participants} onItemClick={handleViewWork} />
+          )}
         </div>
       </section>
+
+      {/* 삭제 모달 (Portal 적용) - 관리자만 열 수 있음 */}
+      {isDeleteModalOpen &&
+        isAdmin &&
+        typeof window !== "undefined" &&
+        createPortal(
+          <Modal
+            handleClose={handleDeleteCancel}
+            cancelText="아니오"
+            confirmText={isDeleting ? "삭제 중..." : "네"}
+            onCancel={handleDeleteCancel}
+            onConfirm={handleDeleteConfirm}
+          >
+            정말 삭제하시겠어요?
+          </Modal>,
+          document.body,
+        )}
     </div>
   );
 }

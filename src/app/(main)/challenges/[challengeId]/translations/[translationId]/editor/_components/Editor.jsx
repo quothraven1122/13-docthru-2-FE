@@ -94,7 +94,7 @@ export default function Editor({ content, loadedDraft, setContent }) {
     return () => cancelAnimationFrame(frameId);
   }, [loadedDraft, editor]);
 
-  if (!editor || !content) {
+  if (!editor) {
     return null;
   }
   return (

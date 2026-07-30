@@ -46,6 +46,16 @@ const challengeService = {
     return authApi.patch(`${BASE}/${challengeId}/reject`, { reason });
   },
 
+  // 챌린지 상세 조회
+  getChallengeDetail: async (challengeId) => {
+    return authApi.get(`${BASE}/${challengeId}`);
+  },
+
+  // 참여자 목록 조회
+  getParticipants: async (challengeId, params = {}) => {
+    return authApi.get(`${BASE}/${challengeId}/participants${buildQueryString(params)}`);
+  },
+
   // 챌린지 수정 (어드민, 전달한 필드만 부분 수정)
   updateChallenge: async (challengeId, data) => {
     return authApi.patch(`${BASE}/${challengeId}`, data);
