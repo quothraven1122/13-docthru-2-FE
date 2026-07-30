@@ -23,7 +23,6 @@ export default function MyAppliedChalleng() {
   useEffect(() => {
     async function getMyAppliedChallenge() {
       const result = await myChallengeService.getMyAppliedChallenge(id);
-      console.log(result);
       setChallenge(result);
       setIsLoading(false);
     }
@@ -86,7 +85,7 @@ export default function MyAppliedChalleng() {
         <Link
           href={challenge.link}
           target="_blank"
-          className="relative w-full h-[490px] flex justify-end py-[8px] px-[16px] overflow-hidden rounded-[8px]"
+          className="relative w-full h-[490px] flex justify-end py-[8px] px-[16px] overflow-hidden rounded-[8px] pb-[50px]"
         >
           <iframe
             className="w-full h-full pointer-events-none" //link이벤트를 안받아서 클릭방지.
