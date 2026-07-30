@@ -156,7 +156,7 @@ export default function ChallengeDetailPage() {
         <div className="flex items-start justify-between gap-6">
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-neutral-900">{challenge.title}</h1>
+              <h1 className="text-2xl font-bold text-neutral-900 break-keep whitespace-nowrap">{challenge.title}</h1>
               {isAdmin && <KebabMenu onEdit={handleEdit} onDelete={() => setIsDeleteModalOpen(true)} />}
             </div>
 
@@ -165,7 +165,9 @@ export default function ChallengeDetailPage() {
               <Chip variant="docType" value={challenge.docType} />
             </div>
 
-            <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{challenge.description}</p>
+            <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-neutral-700 break-keep">
+              {challenge.description}
+            </p>
 
             <div className="mt-4 flex items-center gap-2 text-sm text-neutral-500">
               <Image
