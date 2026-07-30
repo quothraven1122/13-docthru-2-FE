@@ -27,7 +27,12 @@ export function CardView({ challenge, user, onEdit, onDelete }) {
           <div className=" text-xl/normal font-semibold text-gray-700 md:text-[22px]/[normal]">{challenge.title}</div>
         </div>
         {isAdmin && (
-          <div onClick={(e) => e.stopPropagation()}>
+          <div
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
             <KebabMenu onEdit={() => onEdit?.(challenge.id)} onDelete={() => onDelete?.(challenge.id)} />
           </div>
         )}
@@ -77,7 +82,12 @@ export function MyCardView({ challenge, user, onEdit, onDelete, onChallenge, cla
           <div className=" text-xl/normal font-semibold text-gray-700 md:text-[22px]/[normal]">{challenge.title}</div>
         </div>
         {isAdmin && (
-          <div onClick={(e) => e.stopPropagation()}>
+          <div
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
             <KebabMenu onEdit={() => onEdit?.(challenge.id)} onDelete={() => onDelete?.(challenge.id)} />
           </div>
         )}
@@ -101,7 +111,12 @@ export function MyCardView({ challenge, user, onEdit, onDelete, onChallenge, cla
             </span>
           </div>
         </div>
-        <div onClick={(e) => e.stopPropagation()}>
+        <div
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        >
           <WorkButton isExpired={isExpired} onClick={() => onChallenge?.(challenge.id)} />
         </div>
       </div>
