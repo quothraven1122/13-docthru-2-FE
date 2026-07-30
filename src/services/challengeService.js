@@ -16,6 +16,11 @@ function buildQueryString(params) {
 }
 
 const challengeService = {
+  // 챌린지 생성
+  createChallenges: async (body) => {
+    return authApi.post(`${BASE}/create`, body);
+  },
+
   // 챌린지 목록 조회
   getChallenges: async (params = {}) => {
     return authApi.get(`${BASE}${buildQueryString(params)}`);
@@ -39,6 +44,16 @@ const challengeService = {
   // 신청 거절 (사유 필수)
   rejectApplication: async (challengeId, reason) => {
     return authApi.patch(`${BASE}/${challengeId}/reject`, { reason });
+  },
+
+  // 챌린지 수정 (어드민, 전달한 필드만 부분 수정)
+  updateChallenge: async (challengeId, data) => {
+    return authApi.patch(`${BASE}/${challengeId}`, data);
+  },
+
+  // 챌린지 삭제 (어드민, 사유 필수 soft delete)
+  deleteChallenge: async (challengeId, reason) => {
+    return authApi.delete(`${BASE}/${challengeId}`, { body: { reason } });
   },
 };
 

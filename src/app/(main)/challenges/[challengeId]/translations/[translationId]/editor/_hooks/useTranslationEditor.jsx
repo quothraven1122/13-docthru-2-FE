@@ -46,6 +46,7 @@ export default function useTranslationEditor() {
   });
   //번역글 파싱
   function parseTranslation(content) {
+    if (!content) return EMPTY_DRAFT;
     try {
       const parsed = JSON.parse(content);
 
