@@ -28,7 +28,10 @@ export default function ChallengeStatus({ challenge }) {
           <p className="text-center mx-auto text-[14px] font-[600]">신청 거절 사유</p>
           <p className="text-center mx-auto mt-[12px] text-[16px] font-[500]">{challenge.rejectReason}</p>
           <div className="flex justify-end gap-[8px] mt-[17px]">
-            <p className="text-right text-gray-500 text-[14px] font-[400]">{challenge.approver.nickname}</p>
+            {/* challenge.approver가 그래도 없을경우를 대비해서 삼항연산자로 체크. */}
+            <p className="text-right text-gray-500 text-[14px] font-[400]">
+              {challenge.approver ? challenge.approver.nickname : "어드민"}
+            </p>
             <p className="text-gray-200">|</p>
             <p className="text-right text-gray-500 text-[14px] font-[400]">
               {dateUtils.formatDateTime(challenge.updatedAt)}
