@@ -5,7 +5,7 @@ function buildRequestOptions({ method, body, headers, cache }) {
     method,
     // accessToken/refreshToken 쿠키 전송을 위한 설정 (둘 다 httpOnly)
     credentials: "include",
-    cache: cache ?? (method && method !== "GET" ? "no-store" : "force-cache"),
+    cache: "no-store",
     headers: {
       "Content-Type": "application/json",
       ...headers,
