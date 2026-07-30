@@ -106,16 +106,11 @@ export default function ChallengeDetailPage() {
   const isAdmin = user?.role === "ADMIN";
 
   const handleViewOriginal = () => {
-    const translationId = challenge.translationId ?? challenge.participation?.translationId;
-    if (translationId) {
-      router.push(`/challenges/${challengeId}/translations/${translationId}`);
-    } else {
-      alert("연결된 번역 작업물이 없습니다.");
-    }
+    window.open("https://www.wikipedia.org/", "_blank", "noopener,noreferrer");
   };
 
   const handleChallenge = () => {
-    router.push(`/challenges/${challengeId}/translations/create`);
+    router.push(`/challenges/${challengeId}/translations/new/editor`);
   };
 
   const handleEdit = () => {
