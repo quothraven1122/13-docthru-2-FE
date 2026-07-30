@@ -1,0 +1,139 @@
+@import "tailwindcss";
+@import "react-calendar/dist/Calendar.css";
+
+:root {
+  --gray-900: #171717;
+  --gray-800: #262626;
+  --gray-700: #404040;
+  --gray-600: #525252;
+  --gray-500: #737373;
+  --gray-400: #a3a3a3;
+  --gray-300: #d4d4d4;
+  --gray-200: #e5e5e5;
+  --gray-100: #e8ebed;
+  --gray-50: #fafafa;
+
+  --brand-dark: #262626;
+  --brand-yellow: #ffc117;
+  --brand-light: #f1f2f5;
+
+  --error-red: #eb3e3e;
+
+  --z-sticky: 100;
+  --z-editor-menu: 150;
+  --z-fixed: 200;
+  --z-modal: 300;
+}
+
+@theme inline {
+  --color-gray-900: var(--gray-900);
+  --color-gray-800: var(--gray-800);
+  --color-gray-700: var(--gray-700);
+  --color-gray-600: var(--gray-600);
+  --color-gray-500: var(--gray-500);
+  --color-gray-400: var(--gray-400);
+  --color-gray-300: var(--gray-300);
+  --color-gray-200: var(--gray-200);
+  --color-gray-100: var(--gray-100);
+  --color-gray-50: var(--gray-50);
+
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-yellow: var(--brand-yellow);
+  --color-brand-light: var(--brand-light);
+
+  --color-error: var(--error-red);
+
+  --z-index-sticky: var(--z-sticky);
+  --z-index-fixed: var(--z-fixed);
+  --z-index-modal: var(--z-modal);
+  --z-index-editor-menu: var(--z-editor-menu);
+}
+@theme {
+  --breakpoint-lg: 1200px; /*PC*/
+  --breakpoint-md: 744px; /*태블릿*/
+
+  --font-pretendard: var(--font-pretendard-variable), sans-serif;
+
+  --background-image-landing-bg-sm: url("/landing/img_landing_bg_sm.svg");
+  --background-image-landing-bg-md: url("/landing/img_landing_bg_md.svg");
+  --background-image-landing-bg-lg: url("/landing/img_landing_bg_lg.svg");
+
+  --animate-spinner: spin 1.5s linear infinite;
+  --animate-reveal: reveal 2s ease-in-out forwards;
+}
+
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  10%,
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+/*#region 스크롤바 커스텀 부분*/
+/* 스크롤관련 CSS부분만 묶어서 보려고 region 사용했습니다.*/
+.scrollbar::-webkit-scrollbar {
+  width: 15px;
+}
+.scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: var(--gray-200);
+  border-radius: 7.5px;
+  border: 5px solid transparent;
+  background-clip: content-box;
+}
+/* #endregion*/
+
+.react-calendar {
+  width: 300px;
+  border: none;
+  border-radius: 16px;
+  right: 0;
+}
+.react-calendar abbr {
+  text-decoration: none;
+}
+.react-calendar__navigation {
+  margin-bottom: 16px;
+}
+.react-calendar__navigation button {
+  min-width: 40px;
+}
+.react-calendar__month-view__weekdays {
+  font-weight: 600;
+}
+.react-calendar__tile {
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.react-calendar__tile:hover {
+  background: #f3f4f6;
+}
+.react-calendar__tile--active {
+  background: #2563eb !important;
+  color: white !important;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  aspect-ratio: 1/1;
+}
+.react-calendar__tile--now {
+  background: #dbeafe;
+}
+
+.react-calendar__tile--now:hover {
+  background: #f3f4f6 !important;
+}

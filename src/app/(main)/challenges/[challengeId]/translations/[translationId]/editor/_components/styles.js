@@ -1,0 +1,130 @@
+export const contentStyle = `
+  [&_.ProseMirror]:outline-none
+  [&_.ProseMirror>p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]
+  [&_.ProseMirror>p.is-editor-empty:first-child::before]:text-gray-400
+  [&_.ProseMirror>p.is-editor-empty:first-child::before]:float-left
+  [&_.ProseMirror>p.is-editor-empty:first-child::before]:pointer-events-none
+  [&_.ProseMirror>p.is-editor-empty:first-child::before]:h-0
+
+  [&>:first-child]:mt-0
+
+  [&_li_p]:my-2
+
+  [&_ul]:my-2
+  [&_ul]:mr-4
+  [&_ul]:pl-4
+  [&_ul]:list-disc
+
+  [&_ul_ul]:[list-style-type:square]
+  [&_ul_ul_ul]:list-disc
+  [&_ul_ul_ul_ul]:[list-style-type:square]
+  [&_ul_ul_ul_ul_ul]:list-disc
+  [&_ul_ul_ul_ul_ul_ul]:[list-style-type:square]
+
+  [&_ol]:my-2
+  [&_ol]:mr-4
+  [&_ol]:pl-4
+  [&_ol]:list-decimal
+
+  [&_ol_ol]:[list-style-type:lower-alpha]
+  [&_ol_ol_ol]:[list-style-type:lower-roman]
+  [&_ol_ol_ol_ol]:list-decimal
+  [&_ol_ol_ol_ol_ol]:[list-style-type:lower-alpha]
+  [&_ol_ol_ol_ol_ol_ol]:[list-style-type:lower-roman]
+
+  [&_h1]:my-[20px]
+  [&_h1]:text-[36px]
+  [&_h1]:leading-tight
+
+  [&_h2]:my-[15px]
+  [&_h2]:text-[28px]
+  [&_h2]:leading-tight
+
+  [&_h3]:my-[10px]
+  [&_h3]:text-[20px]
+  [&_h3]:leading-tight
+
+  [&_blockquote]:my-6
+  [&_blockquote]:border-l-[3px]
+  [&_blockquote]:border-gray-300
+  [&_blockquote]:pl-4
+
+  [&_hr]:my-8
+  [&_hr]:border-0
+  [&_hr]:border-t
+  [&_hr]:border-gray-200
+`;
+
+export const disabledMenuButtonStyle = `
+  w-[30px]
+  h-[30px]
+  text-gray-900
+  flex
+  justify-center
+  items-center
+  hover:bg-gray-300
+  hover:cursor-pointer
+`;
+export const activeMenuButtonStyle = `
+  w-[30px]
+  h-[30px]
+  flex
+  justify-center
+  items-center
+  opacity-40
+`;
+
+export const codeBlockStyle = `
+  [&_.code-block]:relative
+
+  [&_.code-block_select]:absolute
+  [&_.code-block_select]:top-2
+  [&_.code-block_select]:right-2
+
+  [&_pre]:my-6
+  [&_pre]:rounded-lg
+  [&_pre]:bg-black
+  [&_pre]:px-4
+  [&_pre]:py-3
+  [&_pre]:font-mono
+  [&_pre]:text-white
+
+  [&_pre_code]:bg-transparent
+  [&_pre_code]:p-0
+  [&_pre_code]:text-inherit
+  [&_pre_code]:text-[0.8rem]
+
+  [&_.hljs-comment]:text-[#616161]
+  [&_.hljs-quote]:text-[#616161]
+
+  [&_.hljs-variable]:text-[#f98181]
+  [&_.hljs-template-variable]:text-[#f98181]
+  [&_.hljs-attribute]:text-[#f98181]
+  [&_.hljs-tag]:text-[#f98181]
+  [&_.hljs-name]:text-[#f98181]
+  [&_.hljs-regexp]:text-[#f98181]
+  [&_.hljs-link]:text-[#f98181]
+  [&_.hljs-selector-id]:text-[#f98181]
+  [&_.hljs-selector-class]:text-[#f98181]
+
+  [&_.hljs-number]:text-[#fbbc88]
+  [&_.hljs-meta]:text-[#fbbc88]
+  [&_.hljs-built_in]:text-[#fbbc88]
+  [&_.hljs-builtin-name]:text-[#fbbc88]
+  [&_.hljs-literal]:text-[#fbbc88]
+  [&_.hljs-type]:text-[#fbbc88]
+  [&_.hljs-params]:text-[#fbbc88]
+
+  [&_.hljs-string]:text-[#b9f18d]
+  [&_.hljs-symbol]:text-[#b9f18d]
+  [&_.hljs-bullet]:text-[#b9f18d]
+
+  [&_.hljs-title]:text-[#faf594]
+  [&_.hljs-section]:text-[#faf594]
+
+  [&_.hljs-keyword]:text-[#70cff8]
+  [&_.hljs-selector-tag]:text-[#70cff8]
+
+  [&_.hljs-emphasis]:italic
+  [&_.hljs-strong]:font-bold
+`;
