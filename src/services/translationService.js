@@ -15,6 +15,9 @@ const translationService = {
   async quitTranslation(translationId) {
     return await authApi.delete(`/translation/${translationId}`);
   },
+  async createTranslation(challengeId) {
+    return await authApi.post("/translation", { challengeId });
+  },
 };
 
 export default translationService;

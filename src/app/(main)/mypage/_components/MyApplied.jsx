@@ -29,8 +29,8 @@ export default function MyApplied({ challenges }) {
               )}
             >
               <p className="px-[16px] py-[15px]">{challenge.no}</p>
-              <p className="px-[16px] py-[15px] whitespace-nowrap">{challenge.docType}</p>
               <p className="px-[16px] py-[15px] whitespace-nowrap">{challenge.field}</p>
+              <p className="px-[16px] py-[15px] whitespace-nowrap">{challenge.docType}</p>
               <p className="font-[500] text-gray-700 truncate px-[16px] py-[15px]">{challenge.title}</p>
               <p className="px-[16px] py-[15px]">{challenge.headcount}</p>
               <p className="px-[16px] py-[15px]">{dateUtils.formatDateSlash(challenge.createdAt)}</p>

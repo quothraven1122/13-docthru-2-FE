@@ -9,19 +9,9 @@ export default function ApplicationDetail({ application }) {
 
   return (
     <div className="flex flex-col gap-3">
-      {/* NO. + 좌우 네비 */}
-      <div className="flex items-center justify-between">
+      {/* NO. */}
+      <div className="flex items-center">
         <span className="text-[15px] font-medium text-gray-500">NO. {no}</span>
-        <div className="flex items-center gap-[10px]">
-          <Image
-            src="/icons/ic_arrow_right.svg"
-            alt="이전"
-            width={24}
-            height={24}
-            className="rotate-180 cursor-pointer"
-          />
-          <Image src="/icons/ic_arrow_right.svg" alt="다음" width={24} height={24} className="cursor-pointer" />
-        </div>
       </div>
 
       {/* 제목 + chip */}
@@ -52,7 +42,8 @@ export default function ApplicationDetail({ application }) {
       <div className="mt-2 border-t border-gray-200 pt-4">
         <p className="text-[16px] font-semibold text-gray-900">원문 링크</p>
         <div className="relative mt-4 h-[206px] w-full overflow-hidden rounded-[12px] bg-gray-800 md:h-[490px]">
-          {/* 실제 원문 임베드는 API 연동 시 iframe 또는 링크로 교체 */}
+          {/* iframe 임베드. X-Frame-Options로 차단되는 사이트는 빈 화면이 될 수 있어 링크 열기 버튼을 항상 노출 */}
+          {link && <iframe src={link} title="원문" className="h-full w-full border-0" />}
           <a
             href={link}
             target="_blank"

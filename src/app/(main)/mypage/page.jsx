@@ -53,7 +53,6 @@ export default function MyPage() {
           keyword: keyword,
           pageSize: 5,
         });
-        console.log(result);
         setChallenges(result.dataList);
         setNextCursorId(result.nextCursorId);
         setIsLoading(false);
@@ -66,10 +65,9 @@ export default function MyPage() {
         const result = await myChallengeService.getMyAppliedChallenges({
           keyword: keyword,
           page: page,
-          pageSize: 5,
+          pageSize: 10,
           sort: sortValue,
         });
-        console.log(result);
         setChallenges(result.dataList);
         setTotalPage(result.totalPage);
         setIsLoading(false);
