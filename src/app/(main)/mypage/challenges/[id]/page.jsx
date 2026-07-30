@@ -82,20 +82,16 @@ export default function MyAppliedChalleng() {
         </div>
         <div className="border-[1px] border-gray-200" />
         <p className="text-gray-800 text-[18px] font-[600]">원문링크</p>
-        <Link
-          href={challenge.link}
-          target="_blank"
-          className="relative w-full h-[490px] flex justify-end py-[8px] px-[16px] overflow-hidden rounded-[8px] pb-[50px]"
-        >
-          <iframe
-            className="w-full h-full pointer-events-none" //link이벤트를 안받아서 클릭방지.
-            src={challenge.link}
-          />
-          <Button className="absolute top-[16px] right-[32px]" variant="transparent">
-            링크 열기
-            <Image src="/icons/ic_click.svg" alt="하이퍼링크" width={24} height={24} />
-          </Button>
-        </Link>
+
+        <div className="relative w-full h-[490px] flex justify-end py-[8px] px-[16px] overflow-hidden rounded-[8px] pb-[50px]">
+          <iframe className="w-full h-full" src={challenge.link} />
+          <Link href={challenge.link} target="_blank">
+            <Button className="absolute top-[16px] right-[32px]" variant="transparent">
+              링크 열기
+              <Image src="/icons/ic_click.svg" alt="하이퍼링크" width={24} height={24} />
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );
