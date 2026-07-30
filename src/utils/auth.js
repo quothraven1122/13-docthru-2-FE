@@ -14,14 +14,9 @@ export async function getServerSideToken(type = "accessToken") {
 export async function checkAuth() {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
-  const refreshToken = cookieStore.get("refreshToken")?.value;
 
   if (accessToken) {
     return true;
-  }
-
-  if (!refreshToken) {
-    return false;
   }
 
   return true;
