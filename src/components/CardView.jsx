@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import Chip from "./Chip.jsx";
 import KebabMenu from "./KebabMenu.jsx";
 import StatusBadge from "./StatusBadge.jsx";
@@ -19,13 +20,17 @@ export function CardView({ challenge, user, onEdit, onDelete }) {
   const badgeType = isExpired ? "closed" : isFull ? "full" : null;
 
   return (
-    <div className="w-full max-w-249 p-6 border-2 border-gray-800 rounded-xl">
+    <Link href={`/challenges/${challenge.id}`} className="block w-full max-w-249 p-6 border-2 border-gray-800 rounded-xl">
       <div className="flex justify-between items-start">
         <div>
           {badgeType ? <StatusBadge type={badgeType} className="mb-3 md:mb-3.5 lg:mb-4" /> : <span />}
           <div className=" text-xl/normal font-semibold text-gray-700 md:text-[22px]/[normal]">{challenge.title}</div>
         </div>
-        {isAdmin && <KebabMenu onEdit={() => onEdit?.(challenge.id)} onDelete={() => onDelete?.(challenge.id)} />}
+        {isAdmin && (
+          <div onClick={(e) => e.stopPropagation()}>
+            <KebabMenu onEdit={() => onEdit?.(challenge.id)} onDelete={() => onDelete?.(challenge.id)} />
+          </div>
+        )}
       </div>
 
       <div className="flex gap-2 mt-3.5">
@@ -47,7 +52,7 @@ export function CardView({ challenge, user, onEdit, onDelete }) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
@@ -62,13 +67,20 @@ export function MyCardView({ challenge, user, onEdit, onDelete, onChallenge, cla
   const badgeType = isExpired ? "closed" : isFull ? "full" : null;
 
   return (
-    <div className={cn("w-full max-w-249 p-6 border-2 border-gray-800 rounded-xl", className)}>
+    <Link
+      href={`/challenges/${challenge.id}`}
+      className={cn("block w-full max-w-249 p-6 border-2 border-gray-800 rounded-xl", className)}
+    >
       <div className="flex justify-between items-start ">
         <div>
           {badgeType ? <StatusBadge type={badgeType} className="mb-3 md:mb-3.5 lg:mb-4" /> : <span />}
           <div className=" text-xl/normal font-semibold text-gray-700 md:text-[22px]/[normal]">{challenge.title}</div>
         </div>
-        {isAdmin && <KebabMenu onEdit={() => onEdit?.(challenge.id)} onDelete={() => onDelete?.(challenge.id)} />}
+        {isAdmin && (
+          <div onClick={(e) => e.stopPropagation()}>
+            <KebabMenu onEdit={() => onEdit?.(challenge.id)} onDelete={() => onDelete?.(challenge.id)} />
+          </div>
+        )}
       </div>
 
       <div className="flex gap-2 mt-3.5">
@@ -89,8 +101,10 @@ export function MyCardView({ challenge, user, onEdit, onDelete, onChallenge, cla
             </span>
           </div>
         </div>
-        <WorkButton isExpired={isExpired} onClick={() => onChallenge?.(challenge.id)} />
+        <div onClick={(e) => e.stopPropagation()}>
+          <WorkButton isExpired={isExpired} onClick={() => onChallenge?.(challenge.id)} />
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }

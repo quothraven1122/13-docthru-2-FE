@@ -313,8 +313,7 @@ export default function Page() {
                 challenge={challenge}
                 user={USER}
                 onChallenge={(challengeId) => {
-                  //일단 도전하기, 작업물보기로 클릭했을때 이동되어야해서 임시로 아무곳이나 이동되게 걸어둠.
-                  router.push(`/challenge/${challengeId}/translation`);
+                  router.push(`/challenges/${challengeId}`);
                 }}
               />
             ))
