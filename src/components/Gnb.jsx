@@ -32,7 +32,7 @@ export default function Gnb({
   };
 
   return (
-    <header className="h-14 w-full border-b border-[#F5F5F5] bg-white md:h-[60px]">
+    <header className="h-14 w-full py-[11px]  border-b border-[#F5F5F5] bg-white md:h-[60px]">
       <div className="mx-auto flex h-full items-center justify-between px-4 md:px-6 lg:max-w-[1200px] lg:px-0">
         <div className="flex items-center gap-4 md:gap-6">
           <Link
