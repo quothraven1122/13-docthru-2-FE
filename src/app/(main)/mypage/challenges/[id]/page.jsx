@@ -61,7 +61,7 @@ export default function MyAppliedChalleng() {
                 );
               }}
               onEdit={() => {
-                router.push(`/mypage/challenges/${id}/patch`);
+                router.push(`/mypage/challenges/${id}/edit`);
               }}
             />
           )}

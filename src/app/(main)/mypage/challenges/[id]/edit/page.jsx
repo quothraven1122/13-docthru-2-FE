@@ -70,6 +70,7 @@ export default function ChallengeUpdatePage() {
       nextErrors.headcount = "참여 인원을 1명 이상 입력해주세요.";
     }
     if (!textForm.content.trim()) nextErrors.content = "내용을 입력해주세요.";
+    if (selectForm.deadline <= new Date()) nextErrors.deadline = "설정할 수 없는 마감일 입니다.";
 
     setErrors(nextErrors);
     return Object.keys(nextErrors).length === 0;

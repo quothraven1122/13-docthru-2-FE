@@ -26,7 +26,6 @@ export const myChallengeService = {
         translationId: item.translation?.[0]?.id,
       };
     });
-
     return { dataList, nextCursorId: result.nextCursorId };
   },
   getMyAppliedChallenges: async (params) => {
@@ -37,6 +36,7 @@ export const myChallengeService = {
       const { ...challenge } = item;
       return {
         ...challenge,
+        no: challenge.id.slice(0, 8),
         docType: DOCTYPE_LABEL[challenge.docType] ?? challenge.docType,
         field: FIELD_LABEL[challenge.field] ?? challenge.field,
         status: challenge.deleterId ? "DELETED" : challenge.status,
