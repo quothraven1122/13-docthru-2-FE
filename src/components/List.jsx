@@ -17,7 +17,7 @@ function ListItem({ rank, name, role, likeCount, liked = true, onViewWork }) {
   return (
     <div className="flex h-[35px] w-full items-center justify-between self-stretch">
       <div className="flex items-center gap-3">
-        <span className="flex h-6 min-w-[28px] items-center justify-center gap-0.5 rounded-full bg-black px-1.5 text-xs font-semibold text-white">
+        <span className="w-[50px] flex h-6 min-w-[28px] items-center justify-center gap-0.5 rounded-full bg-black px-1.5 text-xs font-semibold text-brand-yellow">
           {isTop && (
             <Image src={ICONS.crown} alt="왕관 아이콘" width={12} height={12} className="h-3 w-3" aria-hidden="true" />
           )}
@@ -39,7 +39,7 @@ function ListItem({ rank, name, role, likeCount, liked = true, onViewWork }) {
       </div>
 
       <div className="flex items-center gap-4">
-        <span className="flex items-center gap-1 text-sm text-gray-700">
+        <span className="flex items-center gap-1 text-sm text-gray-500">
           <Image
             src={liked ? ICONS.heartActive : ICONS.heartInactive}
             alt={liked ? "좋아요 활성 아이콘" : "좋아요 비활성 아이콘"}
