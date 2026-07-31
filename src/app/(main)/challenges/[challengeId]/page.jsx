@@ -151,12 +151,12 @@ export default function ChallengeDetailPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-10">
+    <div className="w-full p-[16px] mx-auto lg:w-[890px]">
       <section className="border-b border-neutral-200 pb-6">
-        <div className="flex items-start justify-between gap-6">
+        <div className="flex flex-col items-start justify-between gap-6 md:flex-row">
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold text-neutral-900">{challenge.title}</h1>
+              <h1 className="text-2xl font-bold text-neutral-900 break-keep whitespace-nowrap">{challenge.title}</h1>
               {isAdmin && <KebabMenu onEdit={handleEdit} onDelete={() => setIsDeleteModalOpen(true)} />}
             </div>
 
@@ -165,7 +165,9 @@ export default function ChallengeDetailPage() {
               <Chip variant="docType" value={challenge.docType} />
             </div>
 
-            <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{challenge.description}</p>
+            <p className="mt-4 whitespace-pre-line text-sm leading-relaxed text-neutral-700 break-keep">
+              {challenge.description}
+            </p>
 
             <div className="mt-4 flex items-center gap-2 text-sm text-neutral-500">
               <Image
@@ -189,7 +191,7 @@ export default function ChallengeDetailPage() {
         </div>
       </section>
 
-      <section className="mt-6 rounded-xl border border-neutral-200 p-5">
+      <section className="mt-6 rounded-xl border-2 border-gray-800 p-5">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-neutral-900">참여 현황</h2>
           <ParticipantPagination
